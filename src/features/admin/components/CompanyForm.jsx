@@ -64,7 +64,7 @@ export default function CompanyForm() {
           Location
           <input
             className={styles.input}
-            placeholder="চট্টগ্রাম, বাংলাদেশ"
+            placeholder="exp: চট্টগ্রাম, বাংলাদেশ"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
           />
