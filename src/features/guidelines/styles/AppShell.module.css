@@ -1,0 +1,50 @@
+.root {
+  display: flex;
+  flex: 1;
+  padding-top: 4rem;
+}
+.main {
+  flex: 1;
+  background: #0f172a; /* slate-900-ish */
+  overflow-y: auto;
+}
+.inner {
+  min-height: 100%;
+  background: #0f172a;
+}
+.header {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #334155; /* gray-700 */
+  background: #1f2937; /* gray-800 */
+}
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+.title {
+  color: #fff;
+  font-weight: 800;
+  font-size: clamp(1.5rem, 2vw, 2rem);
+}
+.subtitle {
+  color: #cbd5e1;
+  font-size: clamp(1rem, 1.5vw, 1.125rem);
+}
+.content {
+  padding: 1rem 1.5rem;
+}
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+@media (min-width: 1024px) {
+  .grid { grid-template-columns: 1fr 1fr; }
+}
+.footerNote {
+  text-align: center;
+  color: #94a3b8;
+  padding: 1.25rem;
+}

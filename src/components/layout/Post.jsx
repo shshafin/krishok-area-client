@@ -1,0 +1,278 @@
+import { useState, useMemo } from "react";
+import { NavLink } from "react-router-dom";
+import { format } from "timeago.js";
+
+import "@/assets/styles/Post.css";
+import "@/assets/styles/ZoomInOutOff.css";
+
+import HeartIcon from "@/assets/IconComponents/Love";
+import CommentIcon from "@/assets/IconComponents/Comment";
+import MoreIcon from "@/assets/IconComponents/More";
+
+import Lightbox from "yet-another-react-lightbox";
+import "yet-another-react-lightbox/styles.css";
+
+import CommentBox from "../ui/CommentBox";
+import { baseApi } from "../../api";
+import { likePost, commentOnPost } from "@/api/authApi";
+import { Video, Zoom } from "yet-another-react-lightbox/plugins";
+
+export default function Post({
+  post,
+  onLikeClick = () => {},
+  onLikesView = () => {},
+  onCommentsView = () => {},
+}) {
+  const {
+    _id,
+    user,
+    text = "",
+    images = [],
+    videos = [],
+    likes = [],
+    comments: initialComments = [],
+    createdAt,
+  } = post;
+
+  const [isLiked, setIsLiked] = useState(likes.includes(user._id));
+  const [likesCount, setLikesCount] = useState(likes.length);
+  const [comments, setComments] = useState(initialComments);
+  const [openIndex, setOpenIndex] = useState(-1);
+
+  const formattedTime = useMemo(
+    () => (createdAt ? format(new Date(createdAt)) : "just now"),
+    [createdAt]
+  );
+
+  const media = useMemo(() => [...images, ...videos], [images, videos]);
+
+  const slides = useMemo(
+    () =>
+      media.map((url) => {
+        // ensure full URL
+        const fullUrl = url.startsWith("http") ? url : `${baseApi}${url}`;
+
+        const isVideo = /\.(mp4|webm|ogg)$/i.test(fullUrl);
+        if (isVideo) {
+          return {
+            type: "video",
+            sources: [{ src: fullUrl, type: "video/mp4" }],
+          };
+        }
+        return { src: fullUrl }; // image
+      }),
+    [media]
+  );
+
+  // Like / Unlike
+  const handleLikeToggle = async () => {
+    try {
+      const newIsLiked = !isLiked;
+      setIsLiked(newIsLiked);
+      setLikesCount((prev) => (newIsLiked ? prev + 1 : prev - 1));
+      await likePost(_id);
+      onLikeClick(_id, newIsLiked);
+    } catch (error) {
+      console.error("Failed to like/unlike post:", error);
+      setIsLiked((prev) => !prev);
+      setLikesCount((prev) => (isLiked ? prev + 1 : prev - 1));
+    }
+  };
+
+  // Comment Submission
+  const handleCommentSubmit = async (commentText) => {
+    if (!commentText.trim()) return;
+    try {
+      const res = await commentOnPost(_id, commentText);
+      const newComment = res?.data || {
+        text: commentText,
+        user,
+        createdAt: new Date(),
+      };
+      setComments((prev) => [...prev, newComment]);
+      onCommentsView(_id);
+    } catch (error) {
+      console.error("Failed to submit comment:", error);
+    }
+  };
+
+  return (
+    <article className="post">
+      {/* Header */}
+      <header className="post-header flex FY-center F-space">
+        <NavLink
+          to={`/user?id=${user._id}`}
+          className="flex profile-container">
+          <div className="profile">
+            <img
+              src={
+                user.profileImage
+                  ? user.profileImage.startsWith("http") ||
+                    user.profileImage.startsWith("blob:")
+                    ? user.profileImage
+                    : `${baseApi}${user.profileImage}`
+                  : "https://i.postimg.cc/fRVdFSbg/e1ef6545-86db-4c0b-af84-36a726924e74.png"
+              }
+              alt={`${user.username}'s profile`}
+              className="object-cover"
+            />
+          </div>
+          <div className="info">
+            <div className="name">{user.username}</div>
+            <div className="time">{formattedTime}</div>
+          </div>
+        </NavLink>
+        <div className="options flex F-center">
+          <MoreIcon />
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <section className="post-main">
+        {text && (
+          <div className="content">
+            <p>{text}</p>
+          </div>
+        )}
+
+        {/* Media */}
+        {media.map((url, index) => {
+          const isVideo = /\.(mp4|webm|ogg)$/i.test(url);
+          return (
+            <div
+              key={`${_id}-${index}`}
+              className="media-item cursor-pointer"
+              onClick={() => setOpenIndex(index)}>
+              {isVideo ? (
+                <video
+                  src={url.startsWith("http") ? url : `${baseApi}${url}`}
+                  muted
+                  controls
+                  preload="metadata"
+                  className="media-video"
+                />
+              ) : (
+                <img
+                  src={url.startsWith("http") ? url : `${baseApi}${url}`}
+                  alt={`media-${index}`}
+                />
+              )}
+            </div>
+          );
+        })}
+
+        {/* Interactions */}
+        <footer className="interactions flex gap-4 mt-3">
+          <button
+            type="button"
+            onClick={handleLikeToggle}
+            className={`like-btn flex F-center ${isLiked ? "liked" : ""}`}>
+            <HeartIcon />
+            <span>Like</span>
+            {likesCount > 0 && (
+              <span
+                className="likes-count"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onLikesView(_id);
+                }}>
+                ({likesCount})
+              </span>
+            )}
+          </button>
+
+          <button
+            type="button"
+            className="comment-btn flex F-center">
+            <CommentIcon />
+            <span>Comment</span>
+            {comments.length > 0 && (
+              <span
+                className="comments-count"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onCommentsView(_id);
+                }}>
+                ({comments.length})
+              </span>
+            )}
+          </button>
+        </footer>
+
+        {/* Comments */}
+        <section className="comment-section">
+          {comments.length > 0 && (
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+              {comments.map((c, i) => (
+                <div
+                  key={i}
+                  style={{
+                    display: "flex",
+                    gap: "12px",
+                    alignItems: "flex-start",
+                    marginTop: "8px",
+                    padding: "12px",
+                    background: "#222B3A",
+                    borderRadius: "10px",
+                    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+                    transition: "box-shadow 0.2s ease-in-out",
+                  }}>
+                  <img
+                    src={
+                      c.user?.profileImage
+                        ? c.user.profileImage.startsWith("http")
+                          ? c.user.profileImage
+                          : `${baseApi}${c.user.profileImage}`
+                        : "https://i.postimg.cc/fRVdFSbg/e1ef6545-86db-4c0b-af84-36a726924e74.png"
+                    }
+                    alt={c.user?.username || "User"}
+                    style={{
+                      width: "40px",
+                      height: "40px",
+                      borderRadius: "50%",
+                      objectFit: "cover",
+                      border: "2px solid #e5e7eb",
+                    }}
+                  />
+                  <div
+                    style={{
+                      background: "#222B3A",
+                      borderRadius: "8px",
+                      padding: "10px 14px",
+                      flex: 1,
+                      lineHeight: "1.5",
+                    }}>
+                    <span
+                      style={{
+                        fontWeight: "600",
+                        color: "#9C9888",
+                        marginRight: "8px",
+                      }}>
+                      {c.user?.username || "Anonymous"}
+                    </span>
+                    <span style={{ color: "#9C9888" }}>{c.text}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+          <CommentBox
+            onSubmit={handleCommentSubmit}
+            profileSrc={user.profileImage}
+          />
+        </section>
+      </section>
+
+      {/* Lightbox */}
+      <Lightbox
+        open={openIndex >= 0}
+        index={openIndex}
+        close={() => setOpenIndex(-1)}
+        slides={slides}
+        plugins={[Video, Zoom]}
+        zoom={{ maxZoomPixelRatio: 4, wheelZoomDistanceFactor: 100 }}
+      />
+    </article>
+  );
+}

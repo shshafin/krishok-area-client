@@ -1,0 +1,40 @@
+.follower-suggest {
+    width: 100%;
+    left: 0;
+    top: 4rem;
+    max-width: 320px;
+    padding: 1rem;
+    height: 100vh;
+    position: fixed;
+    display: inline-block;
+    background: var(--layout);
+    border-right: 1px solid #374151;
+}
+
+@media only screen and (max-width: 850px) {
+    .follower-suggest {
+        display: none;
+    }
+    .fake-follow-section {
+        display: none;
+    }
+    .feed-area {
+        margin-top: 0.5rem;
+    }
+}
+
+.follower-suggest .scrollViw {
+    height: calc(100vh - 8rem);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+}
+
+.scrollViw a {
+    margin-top: .75rem;
+}
+
+.title {
+    color: var(--text);
+}

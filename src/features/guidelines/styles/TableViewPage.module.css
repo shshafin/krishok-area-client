@@ -1,0 +1,74 @@
+.page {
+  /* center content on huge displays; allow full width on small */
+  margin: 0 auto;
+  width: min(96vw, 1920px);
+  padding-top: 1rem;
+  background: #0f172a; /* dark */
+  color: #e5e7eb;
+}
+
+.header {
+  background: #1f2937;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  padding: clamp(.5rem, 2vw, 1rem);
+  margin: 0 clamp(.25rem, 2vw, .75rem);
+}
+
+.titleRow {
+  display: flex; align-items: center; gap: .6rem;
+  margin-bottom: .25rem;
+}
+.titleRow i { color: #60a5fa; font-size: clamp(16px, 3vw, 28px); }
+
+.title {
+  font-size: clamp(16px, 4.5vw, 32px);
+  line-height: 1.15;
+  font-weight: 800;
+  margin: 0;
+}
+
+.subtitle {
+  margin: 0;
+  color: #cbd5e1;
+  font-size: clamp(11px, 3.2vw, 18px);
+}
+
+.grid {
+  display: grid;
+  gap: clamp(.5rem, 2vw, 1rem);
+  padding: clamp(.25rem, 2vw, .75rem);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 960px) {
+  .grid { grid-template-columns: 1fr 1fr; }
+}
+
+.card {
+  border: 1px solid #334155;
+  background: #1f2937;
+  border-radius: 12px;
+  min-width: 0; /* allow shrink for 250px screens */
+  overflow: hidden;
+}
+
+.cardHead {
+  padding: clamp(.5rem, 2vw, 1rem);
+  border-bottom: 1px solid #334155;
+}
+
+.cardTitle {
+  margin: 0; display: flex; align-items: center; gap: .6rem;
+  font-weight: 700; color: #fff; font-size: clamp(14px, 3.8vw, 22px);
+}
+.cardTitle i { font-size: clamp(14px, 3.5vw, 20px); }
+
+.cardBody { padding: clamp(.25rem, 2vw, .75rem); }
+
+.footer {
+  text-align: center;
+  color: #94a3b8;
+  font-size: clamp(10px, 2.8vw, 14px);
+  padding: clamp(.5rem, 2vw, 1rem);
+}

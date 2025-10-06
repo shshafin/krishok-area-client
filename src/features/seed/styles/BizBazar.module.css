@@ -1,0 +1,251 @@
+.page {
+  min-height: 100vh;
+  padding: 1rem;
+  background:  #020817;
+  color: var(--foreground, #e7edf5);
+}
+.header {
+  max-width: 80rem;
+  margin: 0 auto 2rem;
+}
+.h1 {
+  font-size: 1.875rem;
+  font-weight: 800;
+  margin-bottom: 0.25rem;
+}
+.sub {
+  color: #97a3b6;
+}
+
+.filters {
+  max-width: 80rem;
+  margin: 0 auto 1rem;
+  display: grid;
+  grid-template-columns: 1fr 220px 220px auto;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+@media only screen and (max-width: 900px){
+  .filters {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.searchWrap {
+  position: relative;
+}
+.searchIcon {
+  position: absolute;
+  left: 0.6rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  color: #9fb3d1;
+}
+.input {
+  width: 100%;
+  padding: 0.5rem 0.75rem 0.5rem 2rem;
+  border: 1px solid #253044;
+  border-radius: 0.5rem;
+  color: #e7edf5;
+}
+.select {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #253044;
+  border-radius: 0.5rem;
+  background: #020817;
+  color: #e7edf5;
+}
+.chkLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #e7edf5;
+}
+
+.topRow {
+  max-width: 80rem;
+  margin: 0 auto 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.count {
+  color: #97a3b6;
+}
+.viewBtns {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.iconBtn {
+  width: 35px;
+  height: 35px;
+  padding: .10rem;
+  border-radius: .5rem;
+  color: #9fb3d1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iconBtnActive {
+  color: #6aa2ff;
+  background: rgba(1, 98, 255, 0.199);
+}
+
+.grid {
+  max-width: 80rem;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1rem;
+}
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+.list {
+  max-width: 80rem;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.bizCard {
+  border: 1px solid #1d2738;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+.bizTop {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+.bizNames {
+  flex: 1;
+}
+.nameRow {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.25rem;
+}
+.bizTitle {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #fff;
+}
+.verified {
+  width: 18px;
+  height: 18px;
+  color: #22c55e;
+}
+.enName {
+  color: #9fb3d1;
+  font-size: 0.9rem;
+  margin-bottom: 0.15rem;
+}
+.cat {
+  color: #7fb0ff;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+.tagline {
+  color: #97a3b6;
+  font-size: 0.8rem;
+}
+
+.ratingBox {
+  text-align: right;
+  min-width: 120px;
+}
+.starsRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+}
+.starFill {
+  width: 16px;
+  height: 16px;
+  color: #fbbf24;
+  fill: currentColor;
+}
+.starEmpty {
+  width: 16px;
+  height: 16px;
+  color: #475569;
+}
+.ratingNum {
+  margin-left: 0.25rem;
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+.reviews {
+  color: #64748b;
+  font-size: 0.75rem;
+}
+
+.desc {
+  color: var(--text);
+  font-size: 0.9rem;
+  margin: 0.5rem 0 0.75rem;
+}
+.infoList {
+  display: grid;
+  gap: 0.4rem;
+  margin-bottom: 0.75rem;
+}
+.infoItem {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #9fb3d1;
+  font-size: 0.9rem;
+}
+.infoIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.productsWrap {
+  margin-bottom: 0.75rem;
+}
+.productsLabel {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+.chip {
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  background: #e0edff;
+  color: #1f365a;
+}
+
+.footerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #8ea0b9;
+  font-size: 0.85rem;
+}

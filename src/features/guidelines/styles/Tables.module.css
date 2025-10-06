@@ -1,0 +1,74 @@
+.pTable {
+  width: 100%;
+}
+
+/* Header cells */
+.pTable :global(.p-datatable-thead > tr > th) {
+  background: #334155;
+  color: #e5e7eb;
+  border-color: #334155;
+  font-size: clamp(10px, 2.8vw, 12px);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: clamp(0.35rem, 2vw, 0.5rem) clamp(0.35rem, 2.5vw, 0.75rem);
+}
+
+/* Body cells */
+.pTable :global(.p-datatable-tbody > tr > td) {
+  border-color: #334155;
+  padding: clamp(0.35rem, 2vw, 0.5rem) clamp(0.35rem, 2.5vw, 0.75rem);
+  vertical-align: top;
+}
+
+/* Row hover */
+.pTable :global(.p-datatable-tbody > tr:hover) {
+  background: #0b1220;
+}
+
+/* Paginator */
+.pTable :global(.p-paginator) {
+  background: transparent;
+  border-top: 1px solid #334155;
+  padding: clamp(0.25rem, 2vw, 0.5rem);
+}
+.pTable :global(.p-paginator .p-paginator-pages .p-paginator-page) {
+  min-width: clamp(26px, 6vw, 36px);
+}
+
+/* On extra tiny screens, show only Prev/Next to save space */
+@media (max-width: 360px) {
+  .pTable :global(.p-paginator .p-paginator-pages) {
+    display: none;
+  }
+}
+
+/* Utility bits used in body templates */
+.flexWrap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+}
+.imgWrap {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.thumb {
+  width: clamp(20px, 9vw, 40px);
+  height: clamp(20px, 9vw, 40px);
+  object-fit: cover;
+  border-radius: 0.3rem;
+  border: 1px solid #334155;
+}
+
+.extra {
+  font-size: clamp(10px, 2.8vw, 12px);
+  color: #9ca3af;
+  margin-left: 0.25rem;
+}
+.cropCol {
+  white-space: nowrap;
+  color: #93c5fd;
+  font-weight: 600;
+}

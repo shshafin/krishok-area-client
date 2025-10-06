@@ -1,0 +1,137 @@
+/* Page scaffold (dark) */
+.page {
+  width: 100%;
+  min-height: 100vh;
+  background: #111827;
+  color: #fff;
+  overflow-y: auto;
+}
+
+/* Header */
+.headerBar {
+  background: #1f2937;
+  border-bottom: 1px solid #374151;
+  padding: 1.5rem;
+}
+.backBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 2.5rem;
+  padding: 0 0.9rem;
+  border-radius: 0.5rem;
+  color: #9ca3af;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+.backBtn:hover {
+  color: #fff;
+  background: #374151;
+}
+.backIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.titles {
+  margin-top: 1rem;
+}
+.h1 {
+  font-size: 1.875rem;
+  font-weight: 800;
+}
+.sub {
+  color: #9ca3af;
+  margin-top: 0.25rem;
+}
+.blurb {
+  margin-top: 1rem;
+  color: #d1d5db;
+  font-size: 1.125rem;
+}
+
+.main {
+  padding: 1.5rem;
+}
+.section {
+  background: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+}
+.sectionIcon {
+  width: 20px;
+  height: 20px;
+  color: #c084fc;
+}
+
+/* Grid */
+.grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 640px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Card */
+.card {
+  display: block;
+  background: #374151;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.15s ease, transform 0.05s ease;
+  border: 1px solid #4b5563;
+}
+.card:hover {
+  background: #4b5563;
+}
+
+/* Aspect square image */
+.square {
+  position: relative;
+  width: 100%;
+  padding-top: 100%;
+  overflow: hidden;
+}
+.thumb {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.2s ease;
+}
+.card:hover .thumb {
+  transform: scale(1.05);
+}
+
+.cardBody {
+  padding: 0.75rem;
+  background: rgba(0, 0, 0, 0.05);
+}
+.caption {
+  color: #d1d5db;
+  font-size: 0.9rem;
+  text-align: center;
+}

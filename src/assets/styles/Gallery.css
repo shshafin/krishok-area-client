@@ -1,0 +1,43 @@
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1rem;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: flex-start
+}
+
+/* card sizing using flex-basis instead of grid minmax */
+.cards .card {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    box-sizing: border-box;
+    overflow: hidden;
+    flex: 1 1 320px; /* grow, shrink, base width */
+    max-width: 400px;
+    min-width: 0; /* prevents overflow of flex items */
+}
+
+/* tablet */
+@media (max-width: 767px) {
+    .cards {
+            justify-content: center;
+    }
+    .cards .card {
+        flex: 1 1 280px;
+    }
+}
+
+.cards .media {
+    cursor: pointer;
+}
+
+.cards .card img {
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    display: block;
+}

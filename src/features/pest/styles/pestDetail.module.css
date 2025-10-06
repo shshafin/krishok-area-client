@@ -1,0 +1,267 @@
+.page {
+  width: 100%;
+  min-height: 100vh;
+  background: var(--background, #111827);
+  color: var(--text, #fff);
+  overflow-y: auto;
+}
+
+/* Header */
+.headerBar {
+  background: var(--layout, #1f2937);
+  border-bottom: 1px solid var(--border, #374151);
+  padding: 1rem 1.25rem;
+}
+.headerRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+.backBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 2.5rem;
+  padding: 0 0.75rem;
+  border: 0;
+  border-radius: var(--radius, 0.5rem);
+  background: transparent;
+  color: var(--gray, #9ca3af);
+  cursor: pointer;
+}
+.backBtn:hover {
+  background: var(--hover, #374151);
+  color: #fff;
+}
+.backIcon {
+  width: 16px;
+  height: 16px;
+}
+.backLabel {
+  display: none;
+}
+@media (min-width: 640px) {
+  .backLabel {
+    display: inline;
+  }
+}
+
+.titles {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+.h1 {
+  font-size: clamp(1.25rem, 1.2rem + 1.2vw, 1.875rem);
+  font-weight: 800;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sub {
+  color: var(--gray, #9ca3af);
+  font-size: 0.95rem;
+}
+
+.leadWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+@media (min-width: 640px) {
+  .leadWrap {
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+  }
+}
+.cover {
+  width: 5.5rem;
+  height: 5.5rem;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background: #374151;
+  flex-shrink: 0;
+}
+.coverImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.leadText {
+  min-width: 0;
+}
+.leadHeadline {
+  font-weight: 700;
+  color: #f87171;
+  font-size: 1.125rem;
+}
+.leadSummary {
+  color: #d1d5db;
+  font-size: 0.95rem;
+  margin-top: 0.25rem;
+}
+
+/* Body */
+.main {
+  padding: 1rem 1.25rem;
+}
+.section {
+  background: var(--card, #1f2937);
+  border: 1px solid var(--cardBorder, #3a455b);
+  border-radius: 0.75rem;
+  padding: 1rem;
+}
+.section + .section {
+  margin-top: 1rem;
+}
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  font-size: 1.125rem;
+  margin-bottom: 0.75rem;
+}
+.sectionIcon {
+  width: 20px;
+  height: 20px;
+  color: var(--purple-800, #5b21b6);
+}
+
+/* Card & Grid */
+.card {
+  display: block;
+  background: var(--layout, #1f2937);
+  border: 1px solid var(--cardBorder, #3a455b);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  color: inherit;
+  text-decoration: none;
+  transition: background 0.15s ease, transform 0.05s ease;
+}
+.card:hover {
+  background: var(--hover, #374151);
+}
+.cardPad {
+  padding: 1rem;
+}
+
+.square {
+  position: relative;
+  width: 100%;
+  padding-top: 100%;
+  overflow: hidden;
+  background: #374151;
+}
+.squareMb {
+  margin-bottom: 0.75rem;
+}
+.thumb {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.2s ease;
+}
+.card:hover .thumb {
+  transform: scale(1.04);
+}
+
+.titleSm {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+}
+.center {
+  text-align: center;
+}
+.muted {
+  color: var(--gray, #9ca3af);
+  font-size: 0.9rem;
+}
+.mtXs {
+  margin-top: 0.5rem;
+}
+
+.gridTwo {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 1024px) {
+  .gridTwo {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.relatedGrid {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 640px) {
+  .relatedGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Table */
+.tableWrap {
+  overflow-x: auto;
+}
+.table {
+  min-width: 100%;
+  border-collapse: collapse;
+}
+.th {
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  font-weight: 800;
+  border-bottom: 1px solid #4b5563;
+  font-size: 0.95rem;
+}
+.thYellow {
+  color: #facc15;
+}
+.thGreen {
+  color: #22c55e;
+}
+.td {
+  padding: 0.75rem 0.75rem;
+  border-bottom: 1px solid #374151;
+  vertical-align: top;
+}
+.tdTop {
+  vertical-align: top;
+}
+
+/* Bullets */
+.bulletList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.bulletItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+.dot {
+  line-height: 1;
+  font-size: 0.9rem;
+  margin-top: 0.15rem;
+  user-select: none;
+}
+.dotRed {
+  color: #ef4444;
+}
+.dotGreen {
+  color: #22c55e;
+}
+.bulletText {
+  color: #d1d5db;
+  font-size: 0.92rem;
+}

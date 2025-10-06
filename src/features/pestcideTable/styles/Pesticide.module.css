@@ -1,0 +1,234 @@
+.page {
+    width: 100%;
+    min-height: 100vh;
+    background: #0b1220;
+    color: #e5eaf3;
+}
+
+.pageHeader {
+    background: #121a2a;
+    border-bottom: 1px solid #24324a;
+    padding: 1.25rem;
+}
+
+.h1 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: .35rem;
+}
+
+.h2 {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #fff;
+}
+
+.sub {
+    color: #97a3b6;
+}
+
+.subSmall {
+    color: #97a3b6;
+    font-size: .9rem;
+}
+
+.card {
+    background: #121a2a;
+    border: 1px solid #24324a;
+    border-radius: .9rem;
+    padding: 1rem;
+    margin: 1rem;
+}
+
+.filters {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: .75rem;
+}
+
+.searchWrap {
+    position: relative;
+}
+
+.searchIcon {
+    position: absolute;
+    left: .7rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    color: #9fb3d1;
+}
+
+.input {
+    width: 100%;
+    background: #0f1521;
+    border: 1px solid #33415e;
+    color: #e7edf5;
+    padding: .5rem .75rem .5rem 2rem;
+    border-radius: .6rem;
+    outline: none;
+}
+
+.input:focus {
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, .35);
+    border-color: transparent;
+}
+
+.companyHeader {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.backBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    color: #b6c2d9;
+    background: #0f1521;
+    border: 1px solid #33415e;
+    padding: .5rem .75rem;
+    border-radius: .6rem;
+}
+
+.backBtn:hover {
+    background: #182033;
+    color: #fff;
+}
+
+.backIcon {
+    width: 16px;
+    height: 16px;
+}
+
+.tableWrap {
+    overflow-x: auto;
+    border-radius: .75rem;
+    border: 1px solid #24324a;
+}
+
+.table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.thead th {
+    background: #1a2336;
+    color: #b9c6dc;
+    font-size: .75rem;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    text-align: left;
+    padding: .9rem 1rem;
+    border-bottom: 1px solid #24324a;
+}
+
+.row {
+    transition: background .15s ease;
+}
+
+.row:hover {
+    background: #121a2a;
+}
+
+.cell {
+    padding: .9rem 1rem;
+    vertical-align: top;
+    border-bottom: 1px solid #1f2a40;
+}
+
+.prodBn {
+    color: #fff;
+    font-size: .95rem;
+    font-weight: 600;
+}
+
+.prodEn {
+    color: #9fb3d1;
+    font-size: .85rem;
+}
+
+.chipsRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .35rem;
+}
+
+.chipGreen {
+    display: inline-flex;
+    align-items: center;
+    padding: .25rem .5rem;
+    border-radius: 999px;
+    font-size: .7rem;
+    background: rgba(6, 78, 59, .25);
+    color: #34d399;
+}
+
+.chipGreen:hover {
+    background: rgba(6, 78, 59, .45);
+}
+
+.chipRed {
+    display: inline-flex;
+    align-items: center;
+    padding: .25rem .5rem;
+    border-radius: 999px;
+    font-size: .7rem;
+    background: rgba(127, 29, 29, .25);
+    color: #f87171;
+}
+
+.chipRed:hover {
+    background: rgba(127, 29, 29, .45);
+}
+
+.linkBlue {
+    color: #60a5fa;
+    cursor: pointer;
+}
+
+.linkBlue:hover {
+    color: #93c5fd;
+}
+
+.linkPurple {
+    color: #c084fc;
+    cursor: pointer;
+}
+
+.linkPurple:hover {
+    color: #e9d5ff;
+}
+
+.badgeWarn {
+    padding: .25rem .5rem;
+    border-radius: 999px;
+    font-size: .7rem;
+    color: #fbbf24;
+    background: rgba(146, 92, 0, .3);
+}
+
+.badgeDanger {
+    padding: .25rem .5rem;
+    border-radius: 999px;
+    font-size: .7rem;
+    color: #ef4444;
+    background: rgba(127, 29, 29, .35);
+}
+
+.badgeSafe {
+    padding: .25rem .5rem;
+    border-radius: 999px;
+    font-size: .7rem;
+    color: #34d399;
+    background: rgba(6, 78, 59, .35);
+}
+
+.empty {
+    text-align: center;
+    padding: 2.5rem 1rem;
+    color: #93a3be;
+}
