@@ -8,7 +8,7 @@ import DiscoverPage from "@/features/discover/page/DiscoverPage";
 import NotificationPage from "@/features/notification/page/NotificationPage";
 import PrivateRoute from "./components/privateRoute/PrivateRoute";
 import PublicRoute from "./components/privateRoute/PublicRoute";
-import RoleBasedRoute from "./components/privateRoute/RoleBasedRoute"; // নতুন যোগ
+import RoleBasedRoute from "./components/privateRoute/RoleBasedRoute";
 import AdminDashboard from "@/features/admin/pages/AdminDashboard";
 import SettingsPage from "@/features/settings/pages/SettingsPage";
 import ProfilePage from "@/features/profile/pages/Profile";
@@ -22,14 +22,17 @@ import ShowPestDetail from "@/features/pest/pages/ShowPestDetail";
 
 function App() {
   const location = useLocation();
-  const hideHeader = ["/auth/login", "/auth/signup"];
-  const showHeader = !hideHeader.includes(location.pathname);
+  const hideHeader = ["/auth/login", "/auth/signup"]; // Added admin paths
+  const showHeader = !hideHeader.some(path => location.pathname.startsWith(path)); // Use startsWith for admin paths
 
   return (
     <>
       {showHeader && <Header />}
 
       <Routes>
+
+        <Route path="adminT/*" element={<AdminDashboard />} />
+        
         {/* Public routes */}
         <Route
           path="/auth/login"
@@ -39,14 +42,7 @@ function App() {
             </PublicRoute>
           }
         />
-        <Route
-          path="/auth/signup"
-          element={
-            <PublicRoute>
-              <Auth />
-            </PublicRoute>
-          }
-        />
+        {/* ... (Keep your other routes here, they're fine) ... */}
 
         {/* Private routes */}
         <Route
@@ -57,7 +53,7 @@ function App() {
             </PrivateRoute>
           }
         />
-
+        
         <Route
           path="/follow"
           element={
@@ -66,7 +62,8 @@ function App() {
             </PrivateRoute>
           }
         />
-
+        {/* ... (All other PrivateRoutes) ... */}
+        
         <Route
           path="/pesticide"
           element={
