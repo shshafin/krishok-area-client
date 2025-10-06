@@ -1,5 +1,15 @@
 :root {
   --radius: .5rem;
+  --rail-w: 72px;
+  --overlay-w: 280px;
+  --bg: #0c0d0f;
+  --panel: #14161a;
+  --elev: #181a20;
+  --text: #e8ebf0;
+  --muted: #9aa1ad;
+  --border: #252833;
+  --accent: #6ee7b7;
+  --active: #22d3ee;
 }
 
 .dark {

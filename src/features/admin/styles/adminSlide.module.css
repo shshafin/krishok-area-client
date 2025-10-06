@@ -1,0 +1,116 @@
+.sidebar {
+  --collapsed: 56px; /* icon-only width */
+  --label-max: 176px; /* max pixels allowed for the text label */
+  --max: 280px;
+  position: fixed;
+  inset: auto auto 0 0;
+  height: calc(100vh - 4rem);
+  content: '\F1904';
+  width: var(--collapsed); /* icon-only by default */
+  background: linear-gradient(180deg, var(--panel), var(--elev));
+  border-right: 1px solid var(--border);
+  color: var(--text);
+  display: grid;
+  grid-template-rows: 56px 1fr;
+  z-index: 50;
+  bottom: 0 !important;
+  transition: width 0.2s ease;
+}
+
+/* EXPAND: width grows just enough for labels (+ padding), but never beyond --max */
+.expanded {
+  width: min(var(--max), calc(var(--collapsed) + var(--label-max) + 24px));
+}
+
+/* header */
+.header {
+  display: grid;
+  grid-template-columns: 1fr 36px;
+  align-items: center;
+  gap: 6px;
+  padding: 0 8px 0 10px;
+}
+.brandDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #6ee7b7;
+  box-shadow: 0 0 0 4px rgba(110, 231, 183, 0.12);
+}
+
+.toggleBtn {
+  right: -1rem;
+  top: 50%;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  position: absolute;
+  place-items: center;
+  border: 1px solid var(--border);
+  background: #0f1116;
+  border-radius: 25px;
+  cursor: pointer;
+}
+.toggleIcon {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.2s ease;
+}
+.toggleOpen .toggleIcon {
+  transform: rotate(180deg);
+}
+
+/* nav list — tighter vertical rhythm */
+.nav {
+  display: flex;
+  gap: 4px;
+  padding: 6px; 
+  flex-direction: column;
+}
+
+/* item — compact size & minimal padding */
+.item {
+  height: 40px; /* <<< smaller row height */
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  align-items: center;
+  gap: 8px; /* <<< smaller gap between icon and text */
+  padding: 0 10px; /* <<< tighter padding */
+  border-radius: 10px;
+  color: #b4bcc8;
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  overflow: hidden; /* hide text when collapsed */
+}
+.item:hover {
+  background: #0f1116;
+  border-color: #1c2230;
+  color: var(--text);
+}
+.active {
+  color: var(--active);
+  background: #0f131a;
+  border-color: #1e2630;
+}
+
+.itemIcon {
+  width: 20px;
+  height: 20px;
+  color: #98a3b7;
+}
+
+/* labels: show only when expanded; keep ellipsis with hard max */
+.itemText {
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 0.16s ease, transform 0.16s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: var(--label-max); /* <<< ensures … when long */
+}
+.expanded .itemText {
+  opacity: 1;
+  transform: translateX(0);
+}

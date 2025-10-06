@@ -1,0 +1,212 @@
+/* Dark-only palette */
+:root {
+  --bg: #0b0b0c;
+  --card: #121315;
+  --elev: #17181b;
+  --text: #e6e7ea;
+  --muted: #a1a6b3;
+  --border: #25262b;
+  --accent: #ff0a88; /* pink dropzone */
+  --accent-ink: #100610;
+  --success: #29d159; /* green button */
+}
+
+/* Page wrapper */
+.page {
+  min-height: 100svh;
+  background: radial-gradient(
+      1200px 800px at 20% -10%,
+      #15161a 0%,
+      var(--bg) 60%
+    ),
+    radial-gradient(1200px 800px at 120% 20%, #141519 0%, var(--bg) 60%);
+  color: var(--text);
+  padding: 32px 16px 56px;
+  display: grid;
+  place-items: start center;
+}
+
+/* Card: single column, image-first */
+.card {
+  width: min(860px, 92vw);
+  background: linear-gradient(180deg, var(--card), var(--elev));
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.02);
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+/* Dropzone / Preview area (image column) */
+.dropzone {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: var(--accent);
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+}
+.dropzoneEmpty {
+  /* subtle texture like the mock */
+  background: linear-gradient(
+      0deg,
+      rgba(3, 250, 65, 0.08),
+      rgba(254, 255, 255, 0.08)
+    ),
+    var(--accent);
+}
+
+.media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Centered hint when empty */
+.dropHint {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  gap: 8px;
+  color: #1a1a1a;
+  mix-blend-mode: multiply;
+}
+.dropHint p {
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+.dropHint small {
+  color: #2a2a2a;
+}
+
+/* Small “Upload” tag */
+.badge {
+  display: inline-block;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--accent-ink);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Progress overlay: black/white mask with moving stripes */
+.progressMask {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.15);
+  overflow: hidden;
+}
+.progressFill {
+  height: 100%;
+  background: repeating-linear-gradient(135deg, #000 0 12px, #fff 12px 24px);
+  animation: slide 1s linear infinite;
+  transition: width 0.2s ease;
+}
+@keyframes slide {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 48px 0;
+  }
+}
+
+/* Content stack */
+.stack {
+  display: grid;
+  gap: 18px;
+  padding: 18px clamp(16px, 4vw, 28px) 24px;
+}
+.label {
+  display: grid;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.input {
+  width: 100%;
+  background: #0f1013;
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.input:focus {
+  border-color: #4f5361;
+  box-shadow: 0 0 0 4px rgba(79, 83, 97, 0.2);
+}
+.textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* CTA */
+.cta {
+  height: 48px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--success);
+  color: #0b1a0e;
+  font-weight: 800;
+  font-size: 16px;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  transition: transform 0.06s ease, filter 0.2s ease;
+}
+.cta:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+.cta:hover:not(:disabled) {
+  filter: brightness(0.96);
+}
+.cta:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+/* Result JSON */
+.result {
+  width: min(860px, 92vw);
+  margin-top: 20px;
+  border: 1px solid var(--border);
+  background: #0f1013;
+  border-radius: 12px;
+  padding: 14px 18px;
+}
+.result h3 {
+  margin: 4px 0 10px;
+  color: var(--muted);
+  font-weight: 700;
+}
+.result pre {
+  margin: 0;
+  max-width: 100%;
+  overflow: auto;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #a8ffb0;
+  background: #0a0b0d;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #1c1d22;
+}
+
+/* Hidden file input */
+.hiddenInput {
+  display: none;
+}
