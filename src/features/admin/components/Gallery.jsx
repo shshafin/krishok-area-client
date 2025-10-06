@@ -67,9 +67,8 @@ const AdminGallery = () => {
 
   return (
     <div className={styles.page}>
-    <AdminSlide />
       <form className={styles.card} onSubmit={handleSubmit}>
-        {/* Image-first column: dropzone/preview */}
+
         <div
           className={`${styles.dropzone} ${!file ? styles.dropzoneEmpty : ""}`}
           onClick={pickFile}

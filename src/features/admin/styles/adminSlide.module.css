@@ -88,10 +88,9 @@
   border-color: #1c2230;
   color: var(--text);
 }
-.active {
+
+.active svg path {
   color: var(--active);
-  background: #0f131a;
-  border-color: #1e2630;
 }
 
 .itemIcon {

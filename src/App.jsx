@@ -19,9 +19,6 @@ import ShowBizBazar from "@/features/seed/pages/BizBazar";
 import FollowPage from "@/features/follow/pages/Follow";
 import PestPage from "@/features/pest/pages/pestGallery";
 import ShowPestDetail from "@/features/pest/pages/ShowPestDetail";
-import AdminGallery from "@/features/admin/components/Gallery";
-import AdminSlide from "./features/admin/components/AdminSlide";
-import CompanyForm from "./features/admin/components/CompanyForm";
 
 function App() {
   const location = useLocation();
@@ -33,15 +30,8 @@ function App() {
       {showHeader && <Header />}
 
       <Routes>
-        {/* --- Admin Panel Routes (Nested for Layout) --- */}
-        <Route path="/adminT" element={<AdminSlide />}>
 
-          <Route index element={<AdminDashboard />} /> 
-          
-
-        </Route>
-          <Route path="adminT/gallery" element={<AdminGallery />} /> 
-          <Route path="adminT/company" element={<CompanyForm />} />
+        <Route path="adminT/*" element={<AdminDashboard />} />
         
         {/* Public routes */}
         <Route
