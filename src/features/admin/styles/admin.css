@@ -7,6 +7,7 @@
     --collapsed: 56px;
     --label-max: 176px;
     --max: 280px;
+    min-width: 66px;
     inset: auto auto 0 0;
     height: calc(100vh - 4rem);
     content: '\F1904';
