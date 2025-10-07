@@ -20,3 +20,13 @@
 tr[role="row"] th {
   padding: .5rem 1rem !important;
 }
+
+.create {
+    background: #27943c;
+    padding: .4rem 1rem;
+    border-radius: 8px;
+}
+
+.create:hover {
+    background: #2d9e44;
+}

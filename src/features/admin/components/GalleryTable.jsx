@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { InputText } from "primereact/inputtext";
@@ -221,6 +221,10 @@ export default function GalleryTable() {
 
   return (
     <div className={styles.wrap}>
+
+      <NavLink to="new" className="create">New</NavLink>
+      <br /><br />
+
       {/* react-hot-toast portal */}
       <Toaster position="top-right" />
 
