@@ -9,13 +9,15 @@ import IconGallery from "@/assets/iconComponents/IconGallery";
 import ArrowIcon from "@/assets/iconComponents/ArrowIcon";
 import MarcketIcon from "@/assets/iconComponents/MarcketIcon";
 import InjectionIcon from "@/assets/iconComponents/InjectionIcon";
+import SeedIcon from "@/assets/iconComponents/SeedIcon";
 
 const NAV = [
   { to: "/adminT", label: "Dashboard", Icon: DashIcon },
   { to: "/adminT/company", label: "Company", Icon: CompanyIcon },
   { to: "/adminT/gallery", label: "Gallery", Icon: IconGallery },
+  { to: "/adminT/marcket-price", label: "Marcket Price", Icon: MarcketIcon},
+  { to: "/adminT/seed", label: "Seed Marcket", Icon: SeedIcon},
   { to: "/adminT/disease", label: "Disease", Icon: InjectionIcon},
-  { to: "/adminT/marcket-price", label: "Marcket Price", Icon: MarcketIcon}
 ];
 
 const AdminSlide = () => {
