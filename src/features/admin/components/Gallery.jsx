@@ -1,6 +1,7 @@
 import { useState,useRef } from "react";
 import styles from "../styles/gallery.module.css";
 import toast from "react-hot-toast";
+import StarRating from "../../../components/ui/StarRating";
 
 const AdminGallery = () => {
   const [file, setFile] = useState(null);
@@ -142,6 +143,8 @@ const AdminGallery = () => {
             />
           </label>
 
+
+          <StarRating></StarRating>
           <button type="submit" className={styles.cta} disabled={uploading}>
             {uploading ? `Uploading ${progress}%` : "Upload"}
           </button>
