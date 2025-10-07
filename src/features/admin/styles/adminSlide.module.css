@@ -22,20 +22,32 @@
   width: min(var(--max), calc(var(--collapsed) + var(--label-max) + 24px));
 }
 
+@keyframes mysterious-ring {
+  0% {
+    box-shadow: 0 0 0 2px rgba(110, 231, 183, 0.432); 
+  }
+  100% {
+    box-shadow: 0 0 0 6px rgba(110, 231, 183, 0.075);
+  }
+}
+
 /* header */
 .header {
-  display: grid;
-  grid-template-columns: 1fr 36px;
+  display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 0 8px 0 10px;
+  justify-content: flex-end;
+  padding: 0 5px 0 8px;
 }
+
 .brandDot {
   width: 10px;
   height: 10px;
-  border-radius: 50%;
+  border-radius: 100%;
   background: #6ee7b7;
-  box-shadow: 0 0 0 4px rgba(110, 231, 183, 0.12);
+  opacity: 1; 
+  transform: none;
+  box-shadow: 0 0 0 2px rgba(110, 231, 183, 0.247);
+  animation: mysterious-ring 0.8s infinite ease-out;
 }
 
 .toggleBtn {

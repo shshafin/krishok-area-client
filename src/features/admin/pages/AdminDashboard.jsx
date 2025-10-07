@@ -9,6 +9,7 @@ import CompanyTable from "../components/CompanyTable";
 import DiseaseAdminForm from "../components/DiseaseAdminForm";
 import DiseaseTable from "../components/DiseaseTable";
 import SeedForm from "../components/SeedForm";
+import SeedTable from "../components/SeedTable";
 
 import "../styles/admin.css"
 
@@ -35,7 +36,7 @@ function AdminDashboard() {
   }else if (currentPath.endsWith("/disease/new")) {
     ContentComponent = <DiseaseAdminForm />;
   }else if (currentPath.endsWith("/seed")) {
-    ContentComponent = <SeedForm />;
+    ContentComponent = <SeedTable />;
   }else if (currentPath.endsWith("/seed/new")) {
     ContentComponent = <SeedForm />;
   } else {
