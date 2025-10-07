@@ -150,7 +150,7 @@ export default function CompanyTable() {
       className={styles.ratingWrap}
       title={`${Number(row.rating).toFixed(1)} / 5`}
     >
-      <StarRating value={Number(row.rating)} />
+      <StarRating value={Number(row.rating)} disable />
       <span className={styles.ratingVal}>{Number(row.rating).toFixed(1)}</span>
     </div>
   );
