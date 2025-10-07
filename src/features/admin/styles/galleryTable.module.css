@@ -1,0 +1,214 @@
+/* page—extra breathing room */
+.wrap {
+  padding: 26px 28px;
+  background: #0b0c10;
+  min-height: 100vh;
+  color: #e9edf3;
+}
+
+/* give table a touch of margin too */
+.table {
+  margin-top: 8px;
+}
+
+/* table header */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 2px;
+}
+.search {
+  padding: 8px 10px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 300;
+  position: relative;
+}
+
+.search input,
+.search .p-inputtext,
+.searchInput {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  background: transparent;
+  color: #e9edf3;
+  padding-left: 32px;
+}
+
+.search i {
+  top: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-50%);
+}
+
+/* media thumb — max width + subtle margin */
+.mediaWrap {
+  width: min(220px, 28vw);
+  aspect-ratio: 16/9;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #232834;
+  background: #0f1116;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: zoom-in;
+}
+.media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* rows: add space in cells */
+:global(.p-datatable .p-datatable-tbody > tr > td) {
+  padding: 18px 20px;
+}
+
+/* actions centered */
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* icon buttons */
+.iconBtn {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border: none;
+  outline: none;
+  border-radius: 12px;
+  background: #10141b;
+  color: #c6cfdd;
+  cursor: pointer;
+  transition: transform 0.06s ease, filter 0.15s ease, background 0.15s ease;
+}
+.iconBtn i {
+  font-size: 1.05rem;
+}
+.iconBtn:hover {
+  filter: brightness(1.05);
+}
+.iconBtn:active {
+  transform: translateY(1px);
+}
+.iconBtn:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+/* edit */
+.btnEdit {
+  background: linear-gradient(180deg, #1a2030, #141a26);
+}
+.btnEdit:hover {
+  background: linear-gradient(180deg, #1f2638, #161d2c);
+}
+
+/* delete red */
+.btnDelete {
+  background: linear-gradient(180deg, #ef4444, #dc2626);
+  color: #fff;
+}
+.btnDelete:hover {
+  background: linear-gradient(180deg, #f05252, #d01f1f);
+}
+
+/* Confirm dialog — big, colored, no outline */
+.confirm :global(.p-dialog) {
+  width: min(640px, 92vw);
+  border: none;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+  background: radial-gradient(900px 420px at 20% -10%, #1a2030 0%, #11151d 60%);
+  color: #e9edf3;
+}
+
+.confirm :global(.p-dialog-header) {
+  display: none;
+}
+
+.confirm :global(.p-dialog-content) {
+  padding: 24px 22px 10px;
+  backdrop-filter: blur(5px);
+  border: solid 1px #ffffff;
+  background: rgb(3 2 12 / 71%);
+  border-radius: 4px;
+}
+
+.confirm :global(.p-dialog-footer) {
+  padding: 0 22px 20px;
+  border: none;
+}
+
+/* Dialog body content */
+.confirmBody {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: 14px;
+}
+.confirmIcon {
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(180deg, #ef4444, #dc2626);
+  color: #fff;
+  box-shadow: 0 6px 22px rgba(239, 68, 68, 0.35);
+}
+.confirmIcon i {
+  font-size: 1.35rem;
+}
+.confirmTitle {
+  margin: 6px 0 0;
+  font-size: 20px;
+  font-weight: 800;
+}
+.confirmText {
+  margin: 0;
+  color: #b6c0d2;
+  max-width: 44ch;
+}
+
+.confirmActions {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+  justify-content: center;
+}
+.ghostBtn {
+  border: none;
+  outline: none;
+  background: #0f1116;
+  color: #e9edf3;
+  border-radius: 12px;
+  padding: 10px 16px;
+  cursor: pointer;
+}
+.ghostBtn:hover {
+  filter: brightness(1.05);
+}
+.dangerBtn {
+  border: none;
+  outline: none;
+  background: linear-gradient(180deg, #ef4444, #dc2626);
+  color: #fff;
+  border-radius: 12px;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-weight: 700;
+}
+.dangerBtn:hover {
+  background: linear-gradient(180deg, #f05252, #d01f1f);
+}
