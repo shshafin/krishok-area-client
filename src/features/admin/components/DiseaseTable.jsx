@@ -14,7 +14,7 @@ import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
 
-const PAGE_SIZE = 15;
+const PAGE_SIZE = 10;
 
 /* fallback mock */
 const MOCK = Array.from({ length: 43 }).map((_, i) => ({
