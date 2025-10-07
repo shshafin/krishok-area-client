@@ -60,7 +60,7 @@ export default function SeedForm() {
       <Toaster position="top-right" />
 
       <form className={styles.card} onSubmit={handleSubmit}>
-        <h1 className={styles.title}>Company — Admin Form</h1>
+        <h1 className={styles.title}>Create New Seed Item</h1>
 
         {/* titles */}
         <div className={styles.row2}>

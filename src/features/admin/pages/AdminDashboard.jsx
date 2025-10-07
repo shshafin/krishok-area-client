@@ -36,6 +36,8 @@ function AdminDashboard() {
     ContentComponent = <DiseaseAdminForm />;
   }else if (currentPath.endsWith("/seed")) {
     ContentComponent = <SeedForm />;
+  }else if (currentPath.endsWith("/seed/new")) {
+    ContentComponent = <SeedForm />;
   } else {
     ContentComponent = <h2>Select a section from the navigation.</h2>;
   }
