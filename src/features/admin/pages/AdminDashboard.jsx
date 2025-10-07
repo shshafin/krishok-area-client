@@ -5,6 +5,7 @@ import AdminSlide from "../components/AdminSlide";
 import GalleryTable from "../components/GalleryTable";
 import MarketPriceForm from "../components/MarketPriceForm";
 import MarketPriceTable from "../components/MarketPriceTable";
+import CompanyTable from "../components/CompanyTable";
 import "../styles/admin.css"
 
 function AdminDashboard() {
@@ -14,6 +15,8 @@ function AdminDashboard() {
   let ContentComponent = null;
 
   if (currentPath.endsWith("/company")) {
+    ContentComponent = <CompanyTable />;
+  } else if (currentPath.endsWith("/company/new")) {
     ContentComponent = <CompanyForm />;
   } else if (currentPath.endsWith("/gallery/new")) {
     ContentComponent = <AdminGallery />;
