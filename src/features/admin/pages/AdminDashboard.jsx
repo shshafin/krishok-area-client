@@ -8,6 +8,8 @@ import MarketPriceTable from "../components/MarketPriceTable";
 import CompanyTable from "../components/CompanyTable";
 import DiseaseAdminForm from "../components/DiseaseAdminForm";
 import DiseaseTable from "../components/DiseaseTable";
+import SeedForm from "../components/SeedForm";
+import SeedTable from "../components/SeedTable";
 
 import "../styles/admin.css"
 
@@ -33,6 +35,10 @@ function AdminDashboard() {
     ContentComponent = <DiseaseTable />;
   }else if (currentPath.endsWith("/disease/new")) {
     ContentComponent = <DiseaseAdminForm />;
+  }else if (currentPath.endsWith("/seed")) {
+    ContentComponent = <SeedTable />;
+  }else if (currentPath.endsWith("/seed/new")) {
+    ContentComponent = <SeedForm />;
   } else {
     ContentComponent = <h2>Select a section from the navigation.</h2>;
   }
