@@ -2,6 +2,8 @@ import { useLocation } from "react-router-dom";
 import CompanyForm from "../components/CompanyForm";
 import AdminGallery from "../components/gallery";
 import AdminSlide from "../components/AdminSlide";
+import GalleryTable from "../components/GalleryTable";
+import "../styles/admin.css"
 
 function AdminDashboard() {
   const location = useLocation();
@@ -11,8 +13,10 @@ function AdminDashboard() {
 
   if (currentPath.endsWith("/company")) {
     ContentComponent = <CompanyForm />;
-  } else if (currentPath.endsWith("/gallery")) {
+  } else if (currentPath.endsWith("/gallery/new")) {
     ContentComponent = <AdminGallery />;
+  }  else if (currentPath.endsWith("/gallery")) {
+    ContentComponent = <GalleryTable />;
   } else {
     ContentComponent = <h2>Select a section from the navigation.</h2>;
   }
@@ -21,7 +25,10 @@ function AdminDashboard() {
     <>
       <AdminSlide />
 
-      <main>{ContentComponent}</main>
+      <main className="content">
+        <section className="fake-slide"></section>
+        <section className="render-admin">{ContentComponent}</section>
+      </main>
     </>
   );
 }

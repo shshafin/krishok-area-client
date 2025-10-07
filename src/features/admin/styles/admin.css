@@ -1,0 +1,22 @@
+.content {
+    width: 100%;
+    display: flex;
+}
+
+.fake-slide {
+    --collapsed: 56px;
+    --label-max: 176px;
+    --max: 280px;
+    inset: auto auto 0 0;
+    height: calc(100vh - 4rem);
+    content: '\F1904';
+    width: var(--collapsed);
+}
+
+.render-admin {
+    width: 100%;
+}
+
+tr[role="row"] th {
+  padding: .5rem 1rem !important;
+}
