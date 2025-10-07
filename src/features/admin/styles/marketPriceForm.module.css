@@ -1,0 +1,241 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  background: var(--background);
+  color: var(--text);
+  padding: clamp(14px, 3.2vw, 28px);
+}
+
+.card {
+  width: min(960px, 100%);
+  background: linear-gradient(
+    180deg,
+    var(--card, #14161a),
+    var(--layoutSecondary, #191c22)
+  );
+  border: 1px solid var(--cardBorder, #262b36);
+  border-radius: 16px;
+  padding: clamp(16px, 2.6vw, 24px);
+  display: grid;
+  gap: 16px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.title {
+  margin: 0 0 6px;
+  font-size: clamp(18px, 2.2vw, 22px);
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+
+/* rows: flex wrap; mobile-first full width */
+.row2,
+.row3,
+.catRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.row2 > *,
+.row3 > *,
+.catRow > * {
+  flex: 1 1 100%;
+}
+
+/* grow to columns on wider screens */
+@media (min-width: 720px) {
+  .row2 > * {
+    flex: 1 1 0;
+  }
+  .catRow > * {
+    flex: 1 1 0;
+  }
+}
+@media (min-width: 1024px) {
+  .row3 > * {
+    flex: 1 1 0;
+  }
+}
+
+/* fields */
+.label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.input {
+  height: 44px;
+  width: 100%;
+  background: #0f1116;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0 12px;
+  line-height: normal;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.input:focus {
+  border-color: #384257;
+  box-shadow: 0 0 0 3px rgba(56, 66, 87, 0.25);
+}
+
+/* add category group */
+.addCatGroup {
+  display: flex;
+  gap: 8px;
+}
+.addBtn {
+  height: 44px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--success);
+  color: #0b1a10;
+  font-weight: 800;
+  cursor: pointer;
+}
+.addBtn:hover {
+  filter: brightness(0.96);
+}
+
+/* unit-on-top stacks for price & previous */
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* unit (select) above price input */
+.unitTop {
+  height: 40px;
+  width: 100%;
+  background: #0f1116;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0 10px;
+  outline: none;
+}
+.unitTop:focus {
+  border-color: #384257;
+  box-shadow: 0 0 0 3px rgba(56, 66, 87, 0.25);
+}
+
+/* read-only unit pill above previous input */
+.unitTopReadonly {
+  height: 40px;
+  display: grid;
+  place-items: center;
+  padding: 0 10px;
+  border-radius: 10px;
+  background: #0f1116;
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+/* quality chips */
+.fieldset {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px;
+}
+.legend {
+  padding: 0 6px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.segment {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+.segmentBtn {
+  border: 1px solid var(--border);
+  background: #0f1116;
+  color: var(--text);
+  padding: .5rem 1rem;
+  font-size: 12.5px;
+  border-radius: 999px;
+  cursor: pointer;
+  line-height: normal;
+}
+.segmentActive {
+  background: var(--success);
+  color: #0b1a10;
+  border-color: transparent;    
+}
+
+/* trend to the side; becomes full-width on small */
+.trendSide {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-top: 6px;
+}
+.trendDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.up {
+  background: #ff6b6b;
+}
+.down {
+  background: #60a5fa;
+}
+.flat {
+  background: #8892a6;
+}
+.trendText {
+  color: var(--muted);
+}
+
+/* submit */
+.submit {
+  height: 46px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--success);
+  color: #0b1a10;
+  font-weight: 800;
+  cursor: pointer;
+  align-self: flex-start;
+  padding: 0 16px;
+}
+@media (max-width: 560px) {
+  .submit {
+    width: 100%;
+  }
+}
+
+/* output */
+.output {
+  width: min(960px, 100%);
+  background: #0f1116;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: clamp(12px, 2.4vw, 18px);
+}
+.outTitle {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-weight: 800;
+  font-size: 14px;
+}
+.pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono",
+    monospace;
+  font-size: 13px;
+  color: #a8ffb0;
+}
