@@ -7,6 +7,7 @@ import MarketPriceForm from "../components/MarketPriceForm";
 import MarketPriceTable from "../components/MarketPriceTable";
 import CompanyTable from "../components/CompanyTable";
 import DiseaseAdminForm from "../components/DiseaseAdminForm";
+import DiseaseTable from "../components/DiseaseTable";
 
 import "../styles/admin.css"
 
@@ -28,6 +29,8 @@ function AdminDashboard() {
     ContentComponent = <MarketPriceTable />;
   }else if (currentPath.endsWith("/marcket-price/new")) {
     ContentComponent = <MarketPriceForm />;
+  }else if (currentPath.endsWith("/disease")) {
+    ContentComponent = <DiseaseTable />;
   }else if (currentPath.endsWith("/disease/new")) {
     ContentComponent = <DiseaseAdminForm />;
   } else {
