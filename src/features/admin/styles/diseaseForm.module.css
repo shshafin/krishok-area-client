@@ -1,0 +1,269 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  background: var(--background);
+  color: var(--text);
+  padding: clamp(14px, 3.2vw, 28px);
+}
+.card {
+  width: min(1200px, 100%);
+  background: linear-gradient(
+    180deg,
+    var(--card, #14161a),
+    var(--layoutSecondary, #191c22)
+  );
+  border: 1px solid var(--cardBorder, #262b36);
+  border-radius: 16px;
+  padding: clamp(16px, 2.6vw, 24px);
+  display: grid;
+  gap: 16px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+.title {
+  margin: 0 0 6px;
+  font-size: clamp(18px, 2.2vw, 22px);
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+
+.row2 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.row2 > * {
+  flex: 1 1 100%;
+}
+@media (min-width: 720px) {
+  .row2 > * {
+    flex: 1 1 0;
+  }
+}
+
+/* === GRID: left (image1) + right (two lists) === */
+.grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 980px) {
+  .grid {
+    grid-template-columns: 1.1fr 0.9fr;
+  }
+}
+.leftCol,
+.rightCol {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* labels & inputs */
+.label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.input {
+  height: 44px;
+  width: 100%;
+  background: #0f1116;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0 12px;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  line-height: normal;
+}
+.input:focus {
+  border-color: #384257;
+  box-shadow: 0 0 0 3px rgba(56, 66, 87, 0.25);
+}
+
+/* === Media card === */
+.mediaCard {
+  border: 1px solid var(--border);
+  background: #0f1116;
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.mediaHead {
+  font-weight: 700;
+  color: var(--muted);
+  font-size: 13px;
+  padding: 2px 4px;
+}
+.dropzone {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16/11;
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  background: #0b0f16;
+  cursor: pointer;
+}
+.file {
+  display: none;
+}
+.preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.emptyZone {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  color: #8892a6;
+  font-size: 14px;
+}
+.captionRow {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.labelSmall {
+  color: var(--muted);
+  font-size: 12px;
+}
+.mediaFoot {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* === List cards === */
+.listCard {
+  border: 1px solid var(--border);
+  background: #0f1116;
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.listHead {
+  font-weight: 800;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: #0f171f;
+}
+.accent_green {
+  box-shadow: inset 0 0 0 1px rgba(34, 197, 94, 0.25);
+}
+.accent_amber {
+  box-shadow: inset 0 0 0 1px rgba(245, 158, 11, 0.25);
+}
+
+.listAdd {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.addBtn {
+  height: 44px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--success);
+  color: #0b1a10;
+  font-weight: 800;
+  cursor: pointer;
+}
+.addBtn:hover {
+  filter: brightness(0.96);
+}
+
+.listUl {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.listItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 10px;
+  background: #0f1116;
+}
+.bullet {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #6ee7b7;
+}
+.itemText {
+  flex: 1;
+}
+.removeBtn {
+  border: 0;
+  outline: 0;
+  background: #1a2030;
+  color: #e9edf3;
+  border-radius: 8px;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+}
+.listEmpty {
+  color: var(--muted);
+  padding: 8px 4px;
+}
+
+/* submit + output (same as other forms) */
+.submit {
+  height: 46px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--success);
+  color: #0b1a10;
+  font-weight: 800;
+  cursor: pointer;
+  align-self: flex-start;
+  padding: 0 16px;
+}
+@media (max-width: 560px) {
+  .submit {
+    width: 100%;
+  }
+}
+
+.output {
+  width: min(1200px, 100%);
+  background: #0f1116;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: clamp(12px, 2.4vw, 18px);
+}
+.outTitle {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-weight: 800;
+  font-size: 14px;
+}
+.pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono",
+    monospace;
+  font-size: 13px;
+  color: #a8ffb0;
+}
