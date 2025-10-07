@@ -4,6 +4,7 @@ import AdminGallery from "../components/gallery";
 import AdminSlide from "../components/AdminSlide";
 import GalleryTable from "../components/GalleryTable";
 import MarketPriceForm from "../components/MarketPriceForm";
+import MarketPriceTable from "../components/MarketPriceTable";
 import "../styles/admin.css"
 
 function AdminDashboard() {
@@ -19,6 +20,8 @@ function AdminDashboard() {
   } else if (currentPath.endsWith("/gallery")) {
     ContentComponent = <GalleryTable />;
   }else if (currentPath.endsWith("/marcket-price")) {
+    ContentComponent = <MarketPriceTable />;
+  }else if (currentPath.endsWith("/marcket-price/new")) {
     ContentComponent = <MarketPriceForm />;
   } else {
     ContentComponent = <h2>Select a section from the navigation.</h2>;

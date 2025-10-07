@@ -21,7 +21,7 @@
 .search {
   padding: 8px 10px;
   border-radius: 10px;
-  font-size: 0.9rem;
+  font-size: .9rem;
   font-weight: 300;
   position: relative;
 }
@@ -38,14 +38,15 @@
 }
 
 .search i {
-  top: 50%;
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transform: translateY(-50%);
+    top: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(-50%);
 }
+
 
 /* media thumb — max width + subtle margin */
 .mediaWrap {
@@ -138,11 +139,11 @@
 }
 
 .confirm :global(.p-dialog-content) {
-  padding: 24px 22px 10px;
-  backdrop-filter: blur(5px);
-  border: solid 1px #ffffff;
-  background: rgb(3 2 12 / 71%);
-  border-radius: 4px;
+padding: 24px 22px 10px;
+    backdrop-filter: blur(5px);
+    border: solid 1px #ffffff;
+    background: rgb(3 2 12 / 71%);
+    border-radius: 4px;
 }
 
 .confirm :global(.p-dialog-footer) {
