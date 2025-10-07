@@ -1,195 +1,213 @@
-import { useState, useRef, useCallback, useMemo } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from "react";
 
-const StarRating = ({ onChange, value = 0 }) => {
-  const [rating, setRating] = useState(value);
-  const [interactiveRating, setInteractiveRating] = useState(value);
+const StarRating = ({
+  value,                  // if provided => controlled
+  defaultValue = 0,       // used only when uncontrolled
+  onChange,
+  max = 5,
+  step = 0.5,
+  allowZero = true,
+  disabled,
+  diable,                 // alias
+  size = 24,
+  activeColor = "#ffc107",
+  inactiveColor = "#e4e5e9",
+  showHint = true,
+}) => {
+  const isDisabled = Boolean(disabled ?? diable);
+  const isControlled = value !== undefined && value !== null;
+
+  // Uncontrolled internal value
+  const [internal, setInternal] = useState(defaultValue);
+
+  const currentBase = isControlled ? Number(value) : Number(internal);
   const [isInteracting, setIsInteracting] = useState(false);
+  const [interactiveValue, setInteractiveValue] = useState(currentBase);
+
   const containerRef = useRef(null);
 
-  const calculateRating = useCallback((clientX) => {
-    if (!containerRef.current) return 0.5;
-    
-    const rect = containerRef.current.getBoundingClientRect();
-    const x = Math.max(0, Math.min(rect.width, clientX - rect.left));
-    const percentage = x / rect.width;
-    
-    // Calculate rating from 0.5 to 5 with 0.5 increments
-    const rawRating = 0.5 + percentage * 4.5;
-    const roundedRating = Math.round(rawRating * 2) / 2;
-    
-    return Math.max(0.5, Math.min(5, roundedRating));
-  }, []);
+  // keep interactiveValue in sync when external value changes (controlled)
+  useEffect(() => {
+    if (isControlled) setInteractiveValue(Number(value));
+    // NOTE: no sync on interaction end; avoids "snap back"
+  }, [isControlled, value]);
 
-  // Unified interaction handlers
-  const handleStartInteraction = useCallback((clientX) => {
-    setIsInteracting(true);
-    const newRating = calculateRating(clientX);
-    setInteractiveRating(newRating);
-  }, [calculateRating]);
+  const minVal = allowZero ? 0 : step;
 
-  const handleMoveInteraction = useCallback((clientX) => {
+  const clampQuantize = useCallback(
+    (n) => {
+      const q = Math.round(n / step) * step;
+      return Math.max(minVal, Math.min(max, q));
+    },
+    [step, minVal, max]
+  );
+
+  const calcFromClientX = useCallback(
+    (clientX) => {
+      if (!containerRef.current) return minVal;
+      const rect = containerRef.current.getBoundingClientRect();
+      const x = Math.max(0, Math.min(rect.width, clientX - rect.left));
+      const pct = rect.width ? x / rect.width : 0;
+      return clampQuantize(pct * max);
+    },
+    [clampQuantize, max, minVal]
+  );
+
+  const commit = useCallback(
+    (finalVal) => {
+      if (!isControlled) setInternal(finalVal);
+      onChange?.(finalVal);
+    },
+    [isControlled, onChange]
+  );
+
+  // Pointer lifecycle
+  const startAt = useCallback(
+    (clientX) => {
+      if (isDisabled) return;
+      setIsInteracting(true);
+      setInteractiveValue(calcFromClientX(clientX));
+    },
+    [isDisabled, calcFromClientX]
+  );
+
+  const moveAt = useCallback(
+    (clientX) => {
+      if (isDisabled || !isInteracting) return;
+      setInteractiveValue(calcFromClientX(clientX));
+    },
+    [isDisabled, isInteracting, calcFromClientX]
+  );
+
+  const endAt = useCallback(
+    (clientX) => {
+      if (isDisabled || !isInteracting) return;
+      const v = calcFromClientX(clientX);
+      setIsInteracting(false);
+      setInteractiveValue(v);
+      commit(v); // <-- persist selection (no reset)
+    },
+    [isDisabled, isInteracting, calcFromClientX, commit]
+  );
+
+  // Global listeners so dragging outside still works
+  useEffect(() => {
     if (!isInteracting) return;
-    const newRating = calculateRating(clientX);
-    setInteractiveRating(newRating);
-  }, [isInteracting, calculateRating]);
+    const onMouseMove = (e) => moveAt(e.clientX);
+    const onMouseUp   = (e) => endAt(e.clientX);
+    const onTouchMove = (e) => { if (e.touches[0]) { e.preventDefault(); moveAt(e.touches[0].clientX); } };
+    const onTouchEnd  = (e) => { if (e.changedTouches[0]) endAt(e.changedTouches[0].clientX); };
 
-  const handleEndInteraction = useCallback((clientX) => {
-    if (!isInteracting) return;
-    
-    const newRating = calculateRating(clientX);
-    setRating(newRating);
-    setInteractiveRating(newRating);
-    setIsInteracting(false);
-    
-    onChange?.(newRating);
-  }, [isInteracting, calculateRating, onChange]);
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mouseup", onMouseUp);
+    window.addEventListener("touchmove", onTouchMove, { passive: false });
+    window.addEventListener("touchend", onTouchEnd);
 
-  // Mouse event handlers
-  const handleMouseDown = useCallback((e) => {
-    handleStartInteraction(e.clientX);
-  }, [handleStartInteraction]);
+    return () => {
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mouseup", onMouseUp);
+      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("touchend", onTouchEnd);
+    };
+  }, [isInteracting, moveAt, endAt]);
 
-  const handleMouseMove = useCallback((e) => {
-    handleMoveInteraction(e.clientX);
-  }, [handleMoveInteraction]);
+  // Handlers for initial down inside the control
+  const onMouseDown = (e) => startAt(e.clientX);
+  const onTouchStart = (e) => e.touches[0] && startAt(e.touches[0].clientX);
 
-  const handleMouseUp = useCallback((e) => {
-    handleEndInteraction(e.clientX);
-  }, [handleEndInteraction]);
+  const displayValue = isInteracting ? interactiveValue : currentBase;
 
-  // Touch event handlers
-  const handleTouchStart = useCallback((e) => {
-    const touch = e.touches[0];
-    handleStartInteraction(touch.clientX);
-  }, [handleStartInteraction]);
+  // Render one star (supports half overlay)
+  const renderStar = (i) => {
+    const index = i + 1; // star # (1..max)
+    const isFull = displayValue >= index;
+    const isHalf = !isFull && displayValue >= index - 0.5;
 
-  const handleTouchMove = useCallback((e) => {
-    const touch = e.touches[0];
-    handleMoveInteraction(touch.clientX);
-  }, [handleMoveInteraction]);
-
-  const handleTouchEnd = useCallback((e) => {
-    const touch = e.changedTouches[0];
-    handleEndInteraction(touch.clientX);
-  }, [handleEndInteraction]);
-
-  const currentRating = isInteracting ? interactiveRating : rating;
-
-  // Render individual star with half-star support
-  const renderStar = useCallback((index) => {
-    const starValue = index + 0.5;
-    const isFull = currentRating >= starValue + 0.5;
-    const isHalf = currentRating >= starValue && currentRating < starValue + 0.5;
-    
-    if (isHalf) {
-      return (
-        <div
-          key={index}
-          style={{
-            position: 'relative',
-            display: 'inline-block',
-            width: '24px',
-            height: '24px',
-            margin: '0 2px'
-          }}
-        >
-          {/* Background star */}
-          <span
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              color: '#e4e5e9',
-              fontSize: '24px',
-              lineHeight: '24px'
-            }}
-          >
-            ★
-          </span>
-          {/* Half-filled overlay */}
-          <span
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              color: '#ffc107',
-              fontSize: '24px',
-              lineHeight: '24px',
-              width: '50%',
-              overflow: 'hidden'
-            }}
-          >
-            ★
-          </span>
-        </div>
-      );
-    }
+    const wrap = {
+      position: "relative",
+      display: "inline-block",
+      width: `${size}px`,
+      height: `${size}px`,
+      margin: "0 2px",
+      lineHeight: `${size}px`,
+      fontSize: `${size}px`,
+    };
 
     return (
-      <span
-        key={index}
-        style={{
-          color: isFull ? '#ffc107' : '#e4e5e9',
-          fontSize: '24px',
-          lineHeight: '24px',
-          margin: '0 2px',
-          display: 'inline-block',
-          width: '24px',
-          height: '24px',
-          transition: 'color 0.1s ease'
-        }}
-      >
-        ★
-      </span>
+      <div key={index} style={wrap} aria-hidden="true">
+        <span
+          style={{
+            position: "absolute",
+            inset: 0,
+            color: inactiveColor,
+            textAlign: "center",
+            userSelect: "none",
+          }}
+        >
+          ★
+        </span>
+        <span
+          style={{
+            position: "absolute",
+            inset: 0,
+            width: isFull ? "100%" : isHalf ? "50%" : "0%",
+            overflow: "hidden",
+            color: activeColor,
+            textAlign: "left",
+            userSelect: "none",
+          }}
+        >
+          ★
+        </span>
+      </div>
     );
-  }, [currentRating]);
+  };
 
   return (
     <div
       ref={containerRef}
       style={{
-        width: 'fit-content',
-        display: 'inline-flex',
-        alignItems: 'center',
-        position: 'relative',
-        cursor: 'pointer',
-        userSelect: 'none',
-        padding: '8px 4px',
-        touchAction: 'none',
-        background: 'transparent'
+        width: "fit-content",
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 0,
+        position: "relative",
+        cursor: isDisabled ? "default" : "pointer",
+        userSelect: "none",
+        padding: "8px 4px",
+        touchAction: "none",
+        opacity: isDisabled ? 0.6 : 1,
+        background: "transparent",
       }}
-      onMouseDown={handleMouseDown}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-      onMouseLeave={handleMouseUp}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
+      onMouseDown={onMouseDown}
+      onTouchStart={onTouchStart}
+      role="slider"
+      aria-valuemin={allowZero ? 0 : step}
+      aria-valuemax={max}
+      aria-valuenow={displayValue}
+      aria-disabled={isDisabled}
     >
-      {/* Render 5 stars with half-star capability */}
-      {[0, 1, 2, 3, 4].map(renderStar)}
-      
-      {/* Current rating indicator during interaction */}
-      {isInteracting && (
+      {Array.from({ length: max }).map((_, i) => renderStar(i))}
+
+      {showHint && !isDisabled && isInteracting && (
         <div
           style={{
-            position: 'absolute',
-            top: '-60%',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            fontSize: '12px',
-            fontWeight: 'bold',
-            color: '#666',
-            background: 'white',
-            padding: '2px 8px',
-            borderRadius: '12px',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-            marginTop: '4px',
-            whiteSpace: 'nowrap',
-            zIndex: 10
+            position: "absolute",
+            top: `-${Math.max(28, size)}px`,
+            left: "50%",
+            transform: "translateX(-50%)",
+            fontSize: "12px",
+            fontWeight: "bold",
+            color: "#1f2937",
+            background: "#fff",
+            padding: "2px 8px",
+            borderRadius: "12px",
+            boxShadow: "0 2px 4px rgba(0,0,0,.15)",
+            whiteSpace: "nowrap",
+            zIndex: 10,
           }}
         >
-          {currentRating.toFixed(1)}
+          {displayValue.toFixed(1)}
         </div>
       )}
     </div>
