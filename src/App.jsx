@@ -35,7 +35,7 @@ function App() {
         
         {/* Public routes */}
         <Route
-          path="/auth/login"
+          path="/auth/*"
           element={
             <PublicRoute>
               <Auth />
