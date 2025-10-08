@@ -9,8 +9,8 @@ export default function LockIcon(props) {
       viewBox="0 0 24 24"
       fill="currentColor"
       stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
+      strokeWidth="2"
+      strokeLinecap="round"
       stroke-linejoin="round"
       class="lucide lucide-heart h-5 w-5"
     >
