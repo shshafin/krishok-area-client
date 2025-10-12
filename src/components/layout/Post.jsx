@@ -135,6 +135,8 @@ export default function Post({
           </div>
         )}
 
+
+        <div className="media-content flex FY-center">
         {/* Media */}
         {media.map((url, index) => {
           const isVideo = /\.(mp4|webm|ogg)$/i.test(url);
@@ -160,6 +162,7 @@ export default function Post({
             </div>
           );
         })}
+        </div>
 
         {/* Interactions */}
         <footer className="interactions flex gap-4 mt-3">

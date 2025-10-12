@@ -12,7 +12,7 @@ function InjectionIcon(props) {
       <path
         d="M17 2C17 2.50986 17 2.76479 17.0677 3.00236C17.1049 3.13286 17.157 3.25864 17.223 3.37723C17.3431 3.59309 17.5234 3.77336 17.8839 4.13388L19.8661 6.11612C20.2266 6.47664 20.4069 6.65691 20.6228 6.77701C20.7414 6.84298 20.8671 6.89509 20.9976 6.93228C21.2352 7 21.4901 7 22 7"
         stroke="currentColor"
-        strokeWidth="1.5" // 'stroke-width' becomes 'strokeWidth'
+        strokeWidth="1.5" // 'strokeWidth' becomes 'strokeWidth'
         strokeLinecap="round" // 'stroke-linecap' becomes 'strokeLinecap'
         strokeLinejoin="round" // 'stroke-linejoin' becomes 'strokeLinejoin'
       />

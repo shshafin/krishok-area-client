@@ -74,6 +74,11 @@
   color: black;
 }
 
+input::placeholder,
+select::placeholder {
+  color: #d1d5db !important;
+}
+
 .auth-page .gap {
   margin-top: 0.75rem;
 }
