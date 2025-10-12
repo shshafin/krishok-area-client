@@ -22,9 +22,9 @@ function Navigation() {
         <img src={imageIcon} alt="Gallery" style={iconStyle} />
       </NavLink>
 
-      <NavLink to="/notifications" >
+      <butotn>
         <img src={notificationIcon} alt="Notifications" style={iconStyle} />
-      </NavLink>
+      </butotn>
 
       <NavLink to="/guidelines" >
         <img src={bookIcon} alt="Library" style={iconStyle} />
