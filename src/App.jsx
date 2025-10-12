@@ -20,6 +20,8 @@ import FollowPage from "@/features/follow/pages/Follow";
 import PestPage from "@/features/pest/pages/pestGallery";
 import ShowPestDetail from "@/features/pest/pages/ShowPestDetail";
 
+import GalleryPost from "./features/gallery/pages/GalleryPost";
+
 function App() {
   const location = useLocation();
   const hideHeader = ["/auth/login", "/auth/signup"]; // Added admin paths
@@ -62,6 +64,12 @@ function App() {
             </PrivateRoute>
           }
         />
+
+        <Route
+        path="/post/*"
+        element={<GalleryPost />}
+        />
+
         {/* ... (All other PrivateRoutes) ... */}
         
         <Route

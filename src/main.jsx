@@ -1,7 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
-import { Toaster } from "react-hot-toast"; // ✅ Import Toaster
+import { Toaster } from "react-hot-toast";
 
 import 'primereact/resources/themes/lara-dark-indigo/theme.css';
 import 'primereact/resources/primereact.min.css';
