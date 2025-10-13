@@ -4,6 +4,7 @@ import homeIcon from '@/assets/icons/Home.svg';
 import imageIcon from '@/assets/icons/Image.svg';
 import followersIcon from '@/assets/icons/Followers.svg';
 import notificationIcon from '@/assets/icons/Notification.svg';
+import VideoIcon from '@/assets/icons/video.svg';
 
 const iconStyle = { width: 20, height: 20, display: 'inline-block', verticalAlign: 'middle' };
 
@@ -20,6 +21,10 @@ function Navigation() {
 
       <NavLink to="/gallery" >
         <img src={imageIcon} alt="Gallery" style={iconStyle} />
+      </NavLink>
+      
+      <NavLink to="/videos" >
+        <img src={VideoIcon} alt="Video" style={iconStyle} />
       </NavLink>
 
       <butotn>
