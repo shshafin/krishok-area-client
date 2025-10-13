@@ -17,12 +17,12 @@ const sectionsData = [
 export default function TableViewPage() {
   return (
     <>
-      <div class="nir-body">
-        <h4 class="nir-color">ক্ষতিকর পোকামাকড় ও রোগবালাই থেকে</h4>
-        <h1 class="boboo">ফসল সুরক্ষার নির্দেশিকা</h1>
+      <div className="nir-body">
+        <h4 className="nir-color">ক্ষতিকর পোকামাকড় ও রোগবালাই থেকে</h4>
+        <h1 className="boboo">ফসল সুরক্ষার নির্দেশিকা</h1>
       </div>
 
-      <InsectsSection sections={sectionsData} />
+      <InsectsSection sections={sectionsData}  />
     </>
   );
 }

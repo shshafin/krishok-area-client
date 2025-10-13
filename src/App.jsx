@@ -21,20 +21,23 @@ import PestPage from "@/features/pest/pages/pestGallery";
 import ShowPestDetail from "@/features/pest/pages/ShowPestDetail";
 
 import GalleryPost from "./features/gallery/pages/GalleryPost";
+import GuidlinesCard from "./features/gallery/pages/GuidlinesCard";
+import BlogPage from "./features/blog/pages/BlogPage";
 
 function App() {
   const location = useLocation();
   const hideHeader = ["/auth/login", "/auth/signup"]; // Added admin paths
-  const showHeader = !hideHeader.some(path => location.pathname.startsWith(path)); // Use startsWith for admin paths
+  const showHeader = !hideHeader.some((path) =>
+    location.pathname.startsWith(path)
+  ); // Use startsWith for admin paths
 
   return (
     <>
       {showHeader && <Header />}
 
       <Routes>
-
         <Route path="adminT/*" element={<AdminDashboard />} />
-        
+
         {/* Public routes */}
         <Route
           path="/auth/*"
@@ -55,7 +58,7 @@ function App() {
             </PrivateRoute>
           }
         />
-        
+
         <Route
           path="/follow"
           element={
@@ -65,13 +68,14 @@ function App() {
           }
         />
 
-        <Route
-        path="/post/*"
-        element={<GalleryPost />}
-        />
+        <Route path="/post/*" element={<GalleryPost />} />
+
+        <Route path="/insects/*" element={<GuidlinesCard />} />
+
+        <Route path="/disease/*" element={<GuidlinesCard />} />
 
         {/* ... (All other PrivateRoutes) ... */}
-        
+
         <Route
           path="/pesticide"
           element={
@@ -142,7 +146,7 @@ function App() {
             </PrivateRoute>
           }
         />
-        
+
         <Route
           path="/videos"
           element={
@@ -152,7 +156,6 @@ function App() {
           }
         />
 
-
         <Route
           path="/guidelines"
           element={
@@ -161,6 +164,17 @@ function App() {
             </PrivateRoute>
           }
         />
+        
+        <Route
+          path="/blog/:id"
+          element={
+            <PrivateRoute>
+              <BlogPage />
+            </PrivateRoute>
+          }
+        />
+
+
         <Route
           path="/discover"
           element={

@@ -75,7 +75,7 @@ export default function Gallery() {
       {/* Gallery Cards */}
       <div className="cards" style={{ marginTop: "1rem" }}>
         {cards.map((it, idx) => (
-          <Card key={it.id || idx} {...it} />
+          <Card key={it.id || idx} {...it} path="post" />
         ))}
       </div>
     </>
