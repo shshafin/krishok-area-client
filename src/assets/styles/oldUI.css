@@ -7505,10 +7505,16 @@ h4 {
   display: flex;
 }
 
+.plarpkk22 {
+  width: 100%;
+  height: 98px;
+  max-width: 150px;
+}
+
 .plarpkk22 img {
-  width: 144px;
-  height: 100px;
-  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
   border-radius: 5px;
 }
 
@@ -7561,10 +7567,10 @@ h4 {
     margin-top: 20px;
   }
 
-  .plarpkk22 img {
-    width: 100px;
-    height: 75px;
+  .plarpkk22 {
+    height: 80px;
   }
+  
 
   .plarptkk22 h5 {
     font-size: 14px;
@@ -8007,7 +8013,6 @@ h4 {
   font-size: 1.7rem;
 }
 .weather-data h6 {
-  margin-top: 12px;
   font-size: 1rem;
   font-weight: 500;
 }
@@ -8021,6 +8026,10 @@ h4 {
 .current-weather .icon h6 {
   margin-top: -10px;
   text-transform: capitalize;
+}
+
+.city-input {
+  color: white;
 }
 
 .weather-cards {
@@ -8055,6 +8064,11 @@ h4 {
 .weather-cards .card img {
   max-width: 70px;
   margin: 5px 0 -12px 0;
+}
+
+.weather-status {
+  text-align: center;
+  max-width: 100px;
 }
 
 @media (max-width: 1024px) {

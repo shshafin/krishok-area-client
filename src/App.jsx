@@ -23,6 +23,7 @@ import ShowPestDetail from "@/features/pest/pages/ShowPestDetail";
 import GalleryPost from "./features/gallery/pages/GalleryPost";
 import GuidlinesCard from "./features/gallery/pages/GuidlinesCard";
 import BlogPage from "./features/blog/pages/BlogPage";
+import Weather from "./features/weather/page/WeatherPage";
 
 function App() {
   const location = useLocation();
@@ -164,7 +165,7 @@ function App() {
             </PrivateRoute>
           }
         />
-        
+
         <Route
           path="/blog/:id"
           element={
@@ -173,7 +174,6 @@ function App() {
             </PrivateRoute>
           }
         />
-
 
         <Route
           path="/discover"
@@ -197,6 +197,15 @@ function App() {
           element={
             <PrivateRoute>
               <SettingsPage />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/weather"
+          element={
+            <PrivateRoute>
+              <Weather />
             </PrivateRoute>
           }
         />
