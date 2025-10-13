@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import addImage from "@/assets/icons/add.png";
 
-export default function MarketCreateModal({ open = false, onClose, user }) {
+export default function MarketCreateModal({ open = false, onClose, user, title }) {
   const [preview, setPreview] = useState(null);
   const [text, setText] = useState("");
   const [file, setFile] = useState(null);
@@ -82,9 +82,7 @@ export default function MarketCreateModal({ open = false, onClose, user }) {
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
-              <h1 className="modal-title fs-3 m-auto" id="exampleModalLabel">
-                বীজ যোগ করুন
-              </h1>
+              <h1 className="modal-title fs-3 m-auto" id="exampleModalLabel">{title}</h1>
 
               {/* keep classes + attributes; control via React */}
               <button

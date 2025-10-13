@@ -106,6 +106,7 @@ export default function SeedMarketPage() {
 
       {/* Create Modal */}
       <MarketCreateModal
+        title="বীজ যোগ করুন"
         open={createOpen}
         onClose={() => setCreateOpen(false)}
         user={{
