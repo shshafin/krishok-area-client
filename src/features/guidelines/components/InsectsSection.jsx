@@ -12,13 +12,13 @@ export default function InsectsSection({ sections = [] }) {
             <h3 className="b">{sec.title}</h3>
 
             <div className="fsize">
-              {sec.items?.map((it, idx) => (
+              {sec.items?.map((it) => (
                 <NavLink
                   key={it.id}
                   className="bb1"
-                  to={`/${basePath}/${it.id}`}
+                  to={`/${basePath}/${it.name}`}
                 >
-                  {it.name} {idx}
+                  {it.name}
                 </NavLink>
               ))}
             </div>

@@ -1,9 +1,19 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation  } from "react-router-dom";
 import "@/assets/styles/oldUI.css";
 import Card from "@/features/gallery/components/Card.jsx";
 
 export default function Gallery() {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Get the full path, decode Bengali characters, and split by "/"
+  const url = decodeURIComponent(location.pathname);
+  const parts = url.split("/").filter(Boolean); // remove empty parts
+
+  // Get the last part (e.g., "পটল") and split by space to keep only first word
+  const lastSegment = parts[parts.length - 1] || "";
+  const firstWord = lastSegment.split(" ")[0]; // 
+  
 
   const handleBack = () => {
     navigate(-1); // 👈 Takes user to previous page
@@ -64,7 +74,7 @@ export default function Gallery() {
             ← ফিরে যান
           </button>
 
-          <h4>বাংলার কৃষকদের পাশে আমরা থাকবো সবসময়</h4>
+          <h4>{firstWord}</h4>
         </div>
 
         <div className="companyprosearchbox">
