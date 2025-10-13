@@ -5506,6 +5506,10 @@ h4 {
 @media (max-width: 768px) {
   .nir-size {
     width: auto;
+    display: flex;
+    gap: 1rem;
+    margin: 0 1rem;
+    flex-direction: column;
   }
 
   .cco-A {
@@ -6945,6 +6949,22 @@ h4 {
   margin: 0px;
 }
 
+.crop-details-h3 ul li {
+  margin: .3rem auto;
+}
+
+.crop-details-h3 ul {
+  margin-bottom: 1.5rem;
+}
+
+.crop-details-h3 h3 {
+  font-size: 1.4rem;
+}
+
+.singlecropdetailsnew {
+  margin-top: 6rem !important;
+}
+
 .crop-details-textarea p {
   margin-left: 5px;
   margin-right: 5px;
@@ -8036,6 +8056,15 @@ h4 {
   max-width: 70px;
   margin: 5px 0 -12px 0;
 }
+
+@media (max-width: 1024px) {
+  .cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
 @media (max-width: 1400px) {
   .weather-data .current-weather {
     padding: 20px;

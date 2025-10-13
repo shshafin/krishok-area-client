@@ -22,6 +22,7 @@ import ShowPestDetail from "@/features/pest/pages/ShowPestDetail";
 
 import GalleryPost from "./features/gallery/pages/GalleryPost";
 import GuidlinesCard from "./features/gallery/pages/GuidlinesCard";
+import BlogPage from "./features/blog/pages/BlogPage";
 
 function App() {
   const location = useLocation();
@@ -163,6 +164,17 @@ function App() {
             </PrivateRoute>
           }
         />
+        
+        <Route
+          path="/blog/:id"
+          element={
+            <PrivateRoute>
+              <BlogPage />
+            </PrivateRoute>
+          }
+        />
+
+
         <Route
           path="/discover"
           element={
