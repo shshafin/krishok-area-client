@@ -21,28 +21,28 @@ function SeedIcon(props) {
         stroke="currentColor"
         strokeWidth="1.5"
         strokeLinecap="round"
-        stroke-linejoin="round"
+        strokLinejoin="round"
       ></path>
       <path
         d="M12 15L14.5 12.5"
         stroke="currentColor"
         strokeWidth="1.5"
         strokeLinecap="round"
-        stroke-linejoin="round"
+        strokLinejoin="round"
       ></path>
       <path
         d="M12 13L9.5 10.5"
         stroke="currentColor"
         strokeWidth="1.5"
         strokeLinecap="round"
-        stroke-linejoin="round"
+        strokLinejoin="round"
       ></path>
       <path
         d="M10 22H14"
         stroke="currentColor"
         strokeWidth="1.5"
         strokeLinecap="round"
-        stroke-linejoin="round"
+        strokLinejoin="round"
       ></path>
     </svg>
   );
