@@ -14,7 +14,7 @@ function InjectionIcon(props) {
         stroke="currentColor"
         strokeWidth="1.5" // 'strokeWidth' becomes 'strokeWidth'
         strokeLinecap="round" // 'stroke-linecap' becomes 'strokeLinecap'
-        strokeLinejoin="round" // 'stroke-linejoin' becomes 'strokeLinejoin'
+        strokeLinejoin="round" // 'strokLinejoin' becomes 'strokeLinejoin'
       />
       <path
         d="M11.6931 7L6.76525 11.9278C5.70048 12.9926 5.1681 13.525 5.0412 14.163C4.98627 14.4391 4.98627 14.7234 5.0412 14.9996C5.1681 15.6376 5.70049 16.17 6.76525 17.2348C7.83001 18.2995 8.3624 18.8319 9.00037 18.9588C9.27655 19.0137 9.56085 19.0137 9.83704 18.9588C10.475 18.8319 11.0074 18.2995 12.0722 17.2348L17 12.3069"

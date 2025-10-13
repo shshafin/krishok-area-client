@@ -24,6 +24,7 @@ import GalleryPost from "./features/gallery/pages/GalleryPost";
 import GuidlinesCard from "./features/gallery/pages/GuidlinesCard";
 import BlogPage from "./features/blog/pages/BlogPage";
 import Weather from "./features/weather/page/WeatherPage";
+import AllDistrict from "./components/ui/AllDistrict";
 
 function App() {
   const location = useLocation();
@@ -183,6 +184,7 @@ function App() {
             </PrivateRoute>
           }
         />
+      
         <Route
           path="/notifications"
           element={
@@ -206,6 +208,15 @@ function App() {
           element={
             <PrivateRoute>
               <Weather />
+            </PrivateRoute>
+          }
+        />
+        
+        <Route
+          path="/districts"
+          element={
+            <PrivateRoute>
+              <AllDistrict />
             </PrivateRoute>
           }
         />

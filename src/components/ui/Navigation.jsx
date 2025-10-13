@@ -27,9 +27,9 @@ function Navigation() {
         <img src={VideoIcon} alt="Video" style={iconStyle} />
       </NavLink>
 
-      <butotn>
+      <section>
         <img src={notificationIcon} alt="Notifications" style={iconStyle} />
-      </butotn>
+      </section>
 
       <NavLink to="/guidelines" >
         <img src={bookIcon} alt="Library" style={iconStyle} />
