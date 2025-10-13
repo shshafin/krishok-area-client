@@ -1,0 +1,92 @@
+import { useNavigate } from "react-router-dom";
+import "@/assets/styles/oldUI.css";
+import Card from "@/features/gallery/components/Card.jsx";
+
+export default function Gallery() {
+  const navigate = useNavigate();
+
+  const handleBack = () => {
+    navigate(-1); // 👈 Takes user to previous page
+  };
+
+  const randImg = () =>
+    `https://picsum.photos/${400 + Math.floor(Math.random() * 1600)}/${300 +
+      Math.floor(Math.random() * 1300)}?random=${Math.floor(Math.random() * 100000)}`;
+
+  const cards = [
+    {
+      id: 201,
+      type: "image",
+      img: randImg(),
+      title: "সিনজেন্টা কোম্পানির ছত্রাকনাশক — রিডোমিল গোল্ড",
+      username: "syngenta_bd",
+      date: "2025-03-12T10:00:00",
+      likes: 312,
+      comments: 19,
+      shares: 14,
+    },
+    {
+      id: 202,
+      type: "image",
+      img: randImg(),
+      title: "বায়ার ক্রপ সায়েন্সের নাতিভো ছত্রাকনাশক",
+      username: "bayer_crops",
+      date: "2025-04-08T14:25:00",
+      likes: 421,
+      comments: 28,
+      shares: 17,
+    },
+    {
+      id: 203,
+      type: "image",
+      img: randImg(),
+      title: "এগ্রিসায়েন্স এর ট্রাইড্যাক্স — দানার সুরক্ষায় বিশেষ ছত্রাকনাশক",
+      username: "agriscience_bd",
+      date: "2025-06-19T09:15:00",
+      likes: 178,
+      comments: 12,
+      shares: 7,
+    },
+  ];
+
+  return (
+    <>
+      {/* 🌾 Top Dynamic Info Section */}
+      <div className="photo-body-box">
+
+        <div className="flex F-center">
+
+          {/* 👇 Back Button */}
+          <button
+            onClick={handleBack}
+            className="text-white bg-green-600 px-3 py-1 rounded hover:bg-green-700 transition"
+            title="পিছনে যান" >
+            ← ফিরে যান
+          </button>
+
+          <h4>বাংলার কৃষকদের পাশে আমরা থাকবো সবসময়</h4>
+        </div>
+
+        <div className="companyprosearchbox">
+          <div className="allcompanyprosearchbox text-end rounded pb-3 paddingbox mt-5">
+            <div id="onecompanyproduct" className="text-start">
+              <p
+                title="পণ্য খোজ করুন"
+                className="text-center text-white font-semibold"
+              >
+                পণ্য খোজ করুন
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 📸 Gallery Cards */}
+      <div className="cards" style={{ marginTop: "1rem" }}>
+        {cards.map((it, idx) => (
+          <Card key={it.id || idx} {...it} path="blog" />
+        ))}
+      </div>
+    </>
+  );
+}
