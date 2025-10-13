@@ -1,9 +1,8 @@
-import { useNavigate, useLocation  } from "react-router-dom";
+import {useLocation, NavLink } from "react-router-dom";
 import "@/assets/styles/oldUI.css";
 import Card from "@/features/gallery/components/Card.jsx";
 
 export default function Gallery() {
-  const navigate = useNavigate();
   const location = useLocation();
 
   // Get the full path, decode Bengali characters, and split by "/"
@@ -12,16 +11,13 @@ export default function Gallery() {
 
   // Get the last part (e.g., "পটল") and split by space to keep only first word
   const lastSegment = parts[parts.length - 1] || "";
-  const firstWord = lastSegment.split(" ")[0]; // 
-  
+  const firstWord = lastSegment.split(" ")[0]; //
 
-  const handleBack = () => {
-    navigate(-1); // 👈 Takes user to previous page
-  };
 
   const randImg = () =>
-    `https://picsum.photos/${400 + Math.floor(Math.random() * 1600)}/${300 +
-      Math.floor(Math.random() * 1300)}?random=${Math.floor(Math.random() * 100000)}`;
+    `https://picsum.photos/${400 + Math.floor(Math.random() * 1600)}/${
+      300 + Math.floor(Math.random() * 1300)
+    }?random=${Math.floor(Math.random() * 100000)}`;
 
   const cards = [
     {
@@ -61,20 +57,16 @@ export default function Gallery() {
 
   return (
     <>
-      {/* 🌾 Top Dynamic Info Section */}
-      <div className="photo-body-box">
-
-        <div className="flex F-center">
-
-          {/* 👇 Back Button */}
-          <button
-            onClick={handleBack}
-            className="text-white bg-green-600 px-3 py-1 rounded hover:bg-green-700 transition"
-            title="পিছনে যান" >
-            ← ফিরে যান
-          </button>
-
-          <h4>{firstWord}</h4>
+      <div class="header-back">
+        <div class="mainback">
+          <div class="backlink">
+            <NavLink to="/guidelines">
+              <span>⇦</span>
+            </NavLink>
+          </div>
+          <div class="crop-header">
+            <h4 class=""> {firstWord} </h4>
+          </div>
         </div>
 
         <div className="companyprosearchbox">
