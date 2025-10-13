@@ -142,6 +142,17 @@ function App() {
             </PrivateRoute>
           }
         />
+        
+        <Route
+          path="/videos"
+          element={
+            <PrivateRoute>
+              <Gallery type="video" />
+            </PrivateRoute>
+          }
+        />
+
+
         <Route
           path="/guidelines"
           element={

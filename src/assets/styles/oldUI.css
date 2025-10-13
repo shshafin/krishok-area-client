@@ -5437,6 +5437,11 @@ user-icon
 h4 {
   color: white;
   text-align: center;
+  font-size: 2rem;
+}
+
+.photo-body-box h4 {
+  font-size: 1.5rem;
 }
 
 .boboo {
@@ -5449,7 +5454,6 @@ h4 {
 .nir-size {
   width: 80%;
   margin: auto;
-  /*  display: flex; */
 }
 
 .cco-A {
@@ -5458,6 +5462,7 @@ h4 {
   margin: auto;
   color: #224150;
   text-align: center;
+  margin-right: 1rem;
   border: 1px solid rgb(212, 208, 208);
 }
 
@@ -5467,6 +5472,7 @@ h4 {
   margin: auto;
   color: #224150;
   text-align: center;
+  margin-left: 1rem;
   border: 1px solid rgb(212, 208, 208);
 }
 
@@ -7413,16 +7419,12 @@ h4 {
   margin: 20px;
 }
 
-
-
 .itkkk11 img,
 .itkkk11 video {
   width: 100%;
   max-height: 450px;
   object-fit: contain;
 }
-
-
 
 .itkkk11 h5 {
   color: #b5b5b5;
