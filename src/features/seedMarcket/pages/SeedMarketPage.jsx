@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import MarketCard from "@/components/ui/MarketCard";
 import MarketModal from "@/components/ui/MarketModal";
 import MarketCreateModal from "@/components/ui/MarketCreateModal";
+import AddPost from "@/assets/icons/add.png"
 
 export default function SeedMarketPage() {
   const [items, setItems] = useState([]);
@@ -73,7 +74,7 @@ export default function SeedMarketPage() {
         >
           <div className="cbtn_dixbp_xr5">
             <div className="cbtn_minxi_imgsesalesx45x">
-              <img src="assets/icon/add image.png" alt="" />
+              <img src={AddPost} alt="Add items" />
             </div>
             <div className="cbtn_minxd_imagxds46">
               <h4>বীজ বাজার যোগ করুন</h4>
@@ -91,12 +92,12 @@ export default function SeedMarketPage() {
       <MarketModal
         open={openModal}
         onClose={() => setOpenModal(false)}
-        name="qydocinupi"
+        name="username"
         location="রাজশাহী"
-        image="assets/images/profile/1760363697WhatsApp Image 2025-10-10 at 10.42.36 AM.jpeg"
+        image="https://i.postimg.cc/fRVdFSbg/e1ef6545-86db-4c0b-af84-36a726924e74.png"
         priceImage={selected?.image}
         contact="01998604895 এই নাম্বারে যোগাযোগ করুন"
-        description={selected?.description || ""}
+        description={selected?.description || "No Descriptions"}
       />
 
       {/* Create Modal */}
@@ -105,8 +106,8 @@ export default function SeedMarketPage() {
         onClose={() => setCreateOpen(false)}
         user={{
           id: "newnamespaceojkasldkfl",
-          name: "qydocinupi",
-          img: "assets/images/profile/1760363697WhatsApp Image 2025-10-10 at 10.42.36 AM.jpeg",
+          name: "username",
+          img: "https://i.postimg.cc/fRVdFSbg/e1ef6545-86db-4c0b-af84-36a726924e74.png",
         }}
         onSubmit={(e) => {
           e.preventDefault();
