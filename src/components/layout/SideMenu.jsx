@@ -10,6 +10,8 @@ import MessageCircleIcon from "@/assets/IconComponents/MessageCircleIcon";
 import ImageIcon from "@/assets/IconComponents/ImageIcon";
 import UserPlusIcon from "@/assets/IconComponents/UserPlusIcon";
 import SettingsIcon from "@/assets/IconComponents/SettingsColorIcon";
+import LocationIcon from "@/assets/IconComponents/LocationIcon";
+
 import { logoutUser } from "../../api/authApi";
 import { baseApi } from "../../api";
 
@@ -50,6 +52,7 @@ export default function SideMenu({
     () =>
       itemsProp ?? [
         { to: "/weather", label: "প্রতিদিনের আবহাওয়া", Icon: CloudIcon },
+        { to: "/districts", label: "বিভাগ ও জেলাসমূহ", Icon: LocationIcon },
         {
           to: "/pesticide",
           label: "কীটনাশক ও কোম্পানি",
@@ -68,17 +71,15 @@ export default function SideMenu({
   return createPortal(
     <>
       {/* overlay */}
-      <div
-        className={styles.overlay}
-        onClick={onClose}
-      />
+      <div className={styles.overlay} onClick={onClose} />
 
       {/* drawer */}
       <aside
         className={styles.drawer}
         role="dialog"
         aria-modal="true"
-        aria-labelledby="menu-title">
+        aria-labelledby="menu-title"
+      >
         {/* header */}
         <div className={styles.drawerHeader}>
           <NavLink
@@ -86,7 +87,8 @@ export default function SideMenu({
             className={styles.profileBtn}
             onClick={onClose}
             aria-label="Edit profile"
-            title="Edit profile">
+            title="Edit profile"
+          >
             <img
               src={
                 user.avatar
@@ -100,9 +102,7 @@ export default function SideMenu({
             />
 
             <div className={styles.profileText}>
-              <h3
-                id="menu-title"
-                className={styles.profileName}>
+              <h3 id="menu-title" className={styles.profileName}>
                 {user.name}
               </h3>
               <p className={styles.profileHint}>edit profile</p>
@@ -112,15 +112,14 @@ export default function SideMenu({
           <button
             className={styles.iconBtn}
             onClick={onClose}
-            aria-label="Close">
+            aria-label="Close"
+          >
             <CloseIcon />
           </button>
         </div>
 
         {/* menu items */}
-        <nav
-          className={styles.menuList}
-          aria-label="Menu">
+        <nav className={styles.menuList} aria-label="Menu">
           {items.map(({ to, label, Icon }) => {
             const isLogout = to === "/logout";
 
@@ -134,7 +133,8 @@ export default function SideMenu({
                   onClick={() => {
                     onClose();
                     handleSignOut();
-                  }}>
+                  }}
+                >
                   <Icon className={styles.menuIcon} />
                   {label}
                 </button>
@@ -147,7 +147,8 @@ export default function SideMenu({
                 key={to}
                 to={to}
                 className={styles.menuItem}
-                onClick={onClose}>
+                onClick={onClose}
+              >
                 <Icon className={styles.menuIcon} />
                 {label}
               </NavLink>
