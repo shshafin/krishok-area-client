@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import MarketCard from "@/components/ui/MarketCard";
 import MarketModal from "@/components/ui/MarketModal";
 import MarketCreateModal from "@/components/ui/MarketCreateModal";
-import AddPost from "@/assets/icons/add.png"
+import AddPost from "@/assets/icons/add.png";
 
 export default function SeedMarketPage() {
   const [items, setItems] = useState([]);
@@ -66,6 +66,10 @@ export default function SeedMarketPage() {
 
   return (
     <div className="daily_bxp45">
+      <div class="photo-body-box">
+        <h4 class="">আপনার স্বপ্ন ফলানো বীজ ক্রয়-বিক্রয় করুন</h4>
+      </div>
+
       <div className="dxKXr_mboX74">
         {/* Create Button */}
         <button
@@ -102,6 +106,7 @@ export default function SeedMarketPage() {
 
       {/* Create Modal */}
       <MarketCreateModal
+        title="বীজ যোগ করুন"
         open={createOpen}
         onClose={() => setCreateOpen(false)}
         user={{

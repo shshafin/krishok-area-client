@@ -25,7 +25,8 @@ import GuidlinesCard from "./features/gallery/pages/GuidlinesCard";
 import BlogPage from "./features/blog/pages/BlogPage";
 import Weather from "./features/weather/page/WeatherPage";
 import AllDistrict from "./components/ui/AllDistrict";
-import SeedMarketPage from "./features/seedMarcket/pages/SeedMarketPage";
+import SeedMarketPage from "./features/Marcket/pages/SeedMarketPage";
+import MarcketPricePage from "./features/Marcket/pages/MarcketPricePage";
 
 function App() {
   const location = useLocation();
@@ -114,20 +115,30 @@ function App() {
             </PrivateRoute>
           }
         />
-        <Route
+        
+        {/* <Route
           path="/market"
           element={
             <PrivateRoute>
               <ShowBazarRate />
             </PrivateRoute>
           }
-        />
+        /> */}
 
         <Route
           path="/seed-market"
           element={
             <PrivateRoute>
               <SeedMarketPage />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/market"
+          element={
+            <PrivateRoute>
+              <MarcketPricePage />
             </PrivateRoute>
           }
         />
