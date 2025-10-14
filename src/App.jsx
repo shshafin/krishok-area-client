@@ -21,6 +21,7 @@ import SeedMarketPage from "./features/Marcket/pages/SeedMarketPage";
 import MarcketPricePage from "./features/Marcket/pages/MarcketPricePage";
 import CompanyPage from "./features/company/pages/CompanyPage";
 import CompanyName from "./features/company/pages/CompanyName";
+import ProductDetails from "./features/company/components/ProductDetails";
 
 function App() {
   const location = useLocation();
@@ -197,6 +198,14 @@ function App() {
             </PrivateRoute>
           }
         />
+
+        <Route
+        path="/productdetails/*"
+        element={
+          <PrivateRoute>
+            <ProductDetails />
+          </PrivateRoute>
+        } />
 
         {/* Role based routes */}
         <Route
