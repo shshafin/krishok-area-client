@@ -12,11 +12,7 @@ import RoleBasedRoute from "./components/privateRoute/RoleBasedRoute";
 import AdminDashboard from "@/features/admin/pages/AdminDashboard";
 import SettingsPage from "@/features/settings/pages/SettingsPage";
 import ProfilePage from "@/features/profile/pages/Profile";
-import PesticidePage from "@/features/pesticide/pages/PesticidePage";
-import PesticidesTable from "@/features/pestcideTable/pages/PesticidesTable";
 import FollowPage from "@/features/follow/pages/Follow";
-import PestPage from "@/features/pest/pages/pestGallery";
-import ShowPestDetail from "@/features/pest/pages/ShowPestDetail";
 
 import GalleryPost from "./features/gallery/pages/GalleryPost";
 import GuidlinesCard from "./features/gallery/pages/GuidlinesCard";
@@ -78,42 +74,6 @@ function App() {
 
         {/* ... (All other PrivateRoutes) ... */}
 
-        <Route
-          path="/pesticide"
-          element={
-            <PrivateRoute>
-              <PesticidePage />
-            </PrivateRoute>
-          }
-        />
-
-        <Route
-          path="/pest?"
-          element={
-            <PrivateRoute>
-              <PestPage />
-            </PrivateRoute>
-          }
-        />
-
-        <Route
-          path="/pest/details?"
-          element={
-            <PrivateRoute>
-              <ShowPestDetail />
-            </PrivateRoute>
-          }
-        />
-
-        <Route
-          path="/pesticide/table?"
-          element={
-            <PrivateRoute>
-              <PesticidesTable />
-            </PrivateRoute>
-          }
-        />
-        
         {/* <Route
           path="/market"
           element={
