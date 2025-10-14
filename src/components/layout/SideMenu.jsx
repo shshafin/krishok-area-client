@@ -54,7 +54,7 @@ export default function SideMenu({
         { to: "/weather", label: "প্রতিদিনের আবহাওয়া", Icon: CloudIcon },
         { to: "/districts", label: "বিভাগ ও জেলাসমূহ", Icon: LocationIcon },
         {
-          to: "/pesticide",
+          to: "/companyes",
           label: "কীটনাশক ও কোম্পানি",
           Icon: MessageCircleIcon,
         },
