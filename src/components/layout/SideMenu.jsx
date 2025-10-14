@@ -7,10 +7,11 @@ import styles from "@/assets/styles/Menu.module.css";
 import CloseIcon from "@/assets/IconComponents/Close";
 import CloudIcon from "@/assets/IconComponents/CloudIcon";
 import MessageCircleIcon from "@/assets/IconComponents/MessageCircleIcon";
-import ImageIcon from "@/assets/IconComponents/ImageIcon";
+import MarcketIcon from "@/assets/IconComponents/MarcketIcon";
 import UserPlusIcon from "@/assets/IconComponents/UserPlusIcon";
-import SettingsIcon from "@/assets/IconComponents/SettingsColorIcon";
+import LogoutIcon from "@/assets/IconComponents/LogoutIcon";
 import LocationIcon from "@/assets/IconComponents/LocationIcon";
+import SeedIcon from "@/assets/IconComponents/SeedIcon";
 
 import { logoutUser } from "../../api/authApi";
 import { baseApi } from "../../api";
@@ -58,10 +59,10 @@ export default function SideMenu({
           label: "কীটনাশক ও কোম্পানি",
           Icon: MessageCircleIcon,
         },
-        { to: "/market", label: "বাজার দর", Icon: ImageIcon },
-        { to: "/seed-market", label: "বিজ বাজার", Icon: ImageIcon },
+        { to: "/market", label: "বাজার দর", Icon: MarcketIcon },
+        { to: "/seed-market", label: "বিজ বাজার", Icon: SeedIcon },
         { to: "/follow", label: "অনুসরণ করুন", Icon: UserPlusIcon },
-        { to: "/logout", label: "লগ আউট", Icon: SettingsIcon },
+        { to: "/logout", label: "লগ আউট", Icon: LogoutIcon },
       ],
     [itemsProp]
   );

@@ -3,47 +3,39 @@ function SeedIcon(props) {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
-      width="24"
-      height="24"
+      width="18"
+      height="18"
       color="#000000"
       fill="none"
       {...props}
     >
       <path
-        d="M12 22V9"
+        d="M2.5 12C2.5 7.52166 2.5 5.28249 3.89124 3.89124C5.28249 2.5 7.52166 2.5 12 2.5C16.4783 2.5 18.7175 2.5 20.1088 3.89124C21.5 5.28249 21.5 7.52166 21.5 12C21.5 16.4783 21.5 18.7175 20.1088 20.1088C18.7175 21.5 16.4783 21.5 12 21.5C7.52166 21.5 5.28249 21.5 3.89124 20.1088C2.5 18.7175 2.5 16.4783 2.5 12Z"
         stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      ></path>
+        stroke-width="1.5"
+        stroke-linejoin="round"
+      />
       <path
-        d="M9.00195 18.002C7.3451 18.002 6.00195 16.6234 6.00195 14.9665C4.30581 14.7239 3.00195 13.2652 3.00195 11.502C3.00195 10.0052 3.94147 8.7279 5.26293 8.22759C5.09522 7.85339 5.00195 7.43856 5.00195 7.00195C5.00195 5.3451 6.3451 4.00195 8.00195 4.00195C8.3922 4.00195 8.76505 4.07647 9.10703 4.21204C9.45374 2.93842 10.6185 2.00195 12.002 2.00195C13.3854 2.00195 14.5502 2.93842 14.8969 4.21204C15.2389 4.07647 15.6117 4.00195 16.002 4.00195C17.6588 4.00195 19.002 5.3451 19.002 7.00195C19.002 7.43856 18.9087 7.85339 18.741 8.22759C20.0624 8.7279 21.002 10.0052 21.002 11.502C21.002 13.2653 19.698 14.724 18.0017 14.9665C18.0017 16.6234 16.6588 18.002 15.002 18.002"
+        d="M2.5 14.5H3.03875C3.51106 14.5 3.74721 14.5 3.95256 14.4013C4.15791 14.3026 4.30544 14.1182 4.60049 13.7494L6 12L7.5 14.5L9 11L11.5 16L15 9L17 12.5L18.5 11L19.9453 13.168C20.1973 13.546 20.3233 13.735 20.5074 13.8494C20.544 13.8721 20.582 13.8925 20.6212 13.9103C20.8185 14 21.0457 14 21.5 14"
         stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokLinejoin="round"
-      ></path>
+        stroke-width="1.5"
+        stroke-linejoin="round"
+      />
       <path
-        d="M12 15L14.5 12.5"
+        d="M15 2.5V5.5M15 21.5V14.5"
         stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokLinejoin="round"
-      ></path>
-      <path
-        d="M12 13L9.5 10.5"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <circle
+        cx="15"
+        cy="9"
+        r="1"
         stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokLinejoin="round"
-      ></path>
-      <path
-        d="M10 22H14"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokLinejoin="round"
-      ></path>
+        stroke-width="1.5"
+        stroke-linejoin="round"
+      />
     </svg>
   );
 }

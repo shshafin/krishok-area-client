@@ -5,8 +5,6 @@ import "../styles/common.css";
 import ProfileCard from "../components/ProfileCard";
 import ProfileForm from "../components/ProfileForm";
 import PasswordForm from "../components/PasswordForm";
-import Appearance from "../components/Appearance";
-import AccountActions from "../components/AccountActions";
 import { logoutUser } from "../../../api/authApi";
 import { baseApi } from "../../../api";
 
@@ -213,11 +211,6 @@ export default function SettingsPage() {
           onSubmit={handleProfileSubmit}
         />
         <PasswordForm onSubmit={handleChangePassword} />
-      </div>
-
-      <div className="grid-2 mt-24">
-        <Appearance />
-        <AccountActions onSignOut={handleSignOut} />
       </div>
     </div>
   );
