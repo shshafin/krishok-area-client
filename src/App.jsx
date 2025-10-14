@@ -14,8 +14,6 @@ import SettingsPage from "@/features/settings/pages/SettingsPage";
 import ProfilePage from "@/features/profile/pages/Profile";
 import PesticidePage from "@/features/pesticide/pages/PesticidePage";
 import PesticidesTable from "@/features/pestcideTable/pages/PesticidesTable";
-import ShowBazarRate from "@/features/marcketrate/pages/ShowBazarRate";
-import ShowBizBazar from "@/features/seed/pages/BizBazar";
 import FollowPage from "@/features/follow/pages/Follow";
 import PestPage from "@/features/pest/pages/pestGallery";
 import ShowPestDetail from "@/features/pest/pages/ShowPestDetail";
