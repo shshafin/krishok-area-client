@@ -15,25 +15,26 @@ function Navigation() {
         <img src={homeIcon} alt="Home" style={iconStyle} />
       </NavLink>
 
-      <NavLink to="/discover" >
-        <img src={followersIcon} alt="Followers" style={iconStyle} />
-      </NavLink>
-
       <NavLink to="/gallery" >
         <img src={imageIcon} alt="Gallery" style={iconStyle} />
       </NavLink>
-      
-      <NavLink to="/videos" >
-        <img src={VideoIcon} alt="Video" style={iconStyle} />
+
+      <NavLink to="/guidelines" >
+        <img src={bookIcon} alt="Library" style={iconStyle} />
       </NavLink>
 
       <section>
         <img src={notificationIcon} alt="Notifications" style={iconStyle} />
       </section>
 
-      <NavLink to="/guidelines" >
-        <img src={bookIcon} alt="Library" style={iconStyle} />
+      <NavLink to="/discover" >
+        <img src={followersIcon} alt="Followers" style={iconStyle} />
       </NavLink>
+      
+      <NavLink to="/videos" >
+        <img src={VideoIcon} alt="Video" style={iconStyle} />
+      </NavLink>
+
     </nav>
   );
 }
