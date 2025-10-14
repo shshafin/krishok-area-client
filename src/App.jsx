@@ -5,18 +5,12 @@ import Gallery from "@/features/gallery/pages/Gallery";
 import Auth from "@/features/auth/pages/Auth";
 import TableViewPage from "@/features/guidelines/pages/TableViewPage";
 import DiscoverPage from "@/features/discover/page/DiscoverPage";
-import NotificationPage from "@/features/notification/page/NotificationPage";
 import PrivateRoute from "./components/privateRoute/PrivateRoute";
 import PublicRoute from "./components/privateRoute/PublicRoute";
 import RoleBasedRoute from "./components/privateRoute/RoleBasedRoute";
-import AdminDashboard from "@/features/admin/pages/AdminDashboard";
 import SettingsPage from "@/features/settings/pages/SettingsPage";
 import ProfilePage from "@/features/profile/pages/Profile";
-import PesticidePage from "@/features/pesticide/pages/PesticidePage";
-import PesticidesTable from "@/features/pestcideTable/pages/PesticidesTable";
 import FollowPage from "@/features/follow/pages/Follow";
-import PestPage from "@/features/pest/pages/pestGallery";
-import ShowPestDetail from "@/features/pest/pages/ShowPestDetail";
 
 import GalleryPost from "./features/gallery/pages/GalleryPost";
 import GuidlinesCard from "./features/gallery/pages/GuidlinesCard";
@@ -38,7 +32,6 @@ function App() {
       {showHeader && <Header />}
 
       <Routes>
-        <Route path="adminT/*" element={<AdminDashboard />} />
 
         {/* Public routes */}
         <Route
@@ -78,42 +71,6 @@ function App() {
 
         {/* ... (All other PrivateRoutes) ... */}
 
-        <Route
-          path="/pesticide"
-          element={
-            <PrivateRoute>
-              <PesticidePage />
-            </PrivateRoute>
-          }
-        />
-
-        <Route
-          path="/pest?"
-          element={
-            <PrivateRoute>
-              <PestPage />
-            </PrivateRoute>
-          }
-        />
-
-        <Route
-          path="/pest/details?"
-          element={
-            <PrivateRoute>
-              <ShowPestDetail />
-            </PrivateRoute>
-          }
-        />
-
-        <Route
-          path="/pesticide/table?"
-          element={
-            <PrivateRoute>
-              <PesticidesTable />
-            </PrivateRoute>
-          }
-        />
-        
         {/* <Route
           path="/market"
           element={
@@ -194,15 +151,6 @@ function App() {
             </PrivateRoute>
           }
         />
-      
-        <Route
-          path="/notifications"
-          element={
-            <PrivateRoute>
-              <NotificationPage />
-            </PrivateRoute>
-          }
-        />
 
         <Route
           path="/profile"
@@ -221,7 +169,7 @@ function App() {
             </PrivateRoute>
           }
         />
-        
+
         <Route
           path="/districts"
           element={
@@ -235,9 +183,9 @@ function App() {
         <Route
           path="/admin"
           element={
-            <RoleBasedRoute allowedRoles={["admin"]}>
-              <AdminDashboard />
-            </RoleBasedRoute>
+            // <RoleBasedRoute allowedRoles={["admin"]}>
+              <h1>Admin in contraction</h1>
+            // </RoleBasedRoute>
           }
         />
       </Routes>
