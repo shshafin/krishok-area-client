@@ -8,7 +8,6 @@ import DiscoverPage from "@/features/discover/page/DiscoverPage";
 import PrivateRoute from "./components/privateRoute/PrivateRoute";
 import PublicRoute from "./components/privateRoute/PublicRoute";
 import RoleBasedRoute from "./components/privateRoute/RoleBasedRoute";
-import AdminDashboard from "@/features/admin/pages/AdminDashboard";
 import SettingsPage from "@/features/settings/pages/SettingsPage";
 import ProfilePage from "@/features/profile/pages/Profile";
 import FollowPage from "@/features/follow/pages/Follow";
@@ -33,7 +32,6 @@ function App() {
       {showHeader && <Header />}
 
       <Routes>
-        <Route path="adminT/*" element={<AdminDashboard />} />
 
         {/* Public routes */}
         <Route
@@ -185,9 +183,9 @@ function App() {
         <Route
           path="/admin"
           element={
-            <RoleBasedRoute allowedRoles={["admin"]}>
-              <AdminDashboard />
-            </RoleBasedRoute>
+            // <RoleBasedRoute allowedRoles={["admin"]}>
+              <h1>Admin in contraction</h1>
+            // </RoleBasedRoute>
           }
         />
       </Routes>
