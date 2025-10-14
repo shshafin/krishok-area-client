@@ -5,7 +5,6 @@ import Gallery from "@/features/gallery/pages/Gallery";
 import Auth from "@/features/auth/pages/Auth";
 import TableViewPage from "@/features/guidelines/pages/TableViewPage";
 import DiscoverPage from "@/features/discover/page/DiscoverPage";
-import NotificationPage from "@/features/notification/page/NotificationPage";
 import PrivateRoute from "./components/privateRoute/PrivateRoute";
 import PublicRoute from "./components/privateRoute/PublicRoute";
 import RoleBasedRoute from "./components/privateRoute/RoleBasedRoute";
@@ -151,15 +150,6 @@ function App() {
           element={
             <PrivateRoute>
               <DiscoverPage />
-            </PrivateRoute>
-          }
-        />
-
-        <Route
-          path="/notifications"
-          element={
-            <PrivateRoute>
-              <NotificationPage />
             </PrivateRoute>
           }
         />
