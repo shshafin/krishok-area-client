@@ -20,6 +20,7 @@ import AllDistrict from "./components/ui/AllDistrict";
 import SeedMarketPage from "./features/Marcket/pages/SeedMarketPage";
 import MarcketPricePage from "./features/Marcket/pages/MarcketPricePage";
 import CompanyPage from "./features/company/pages/CompanyPage";
+import CompanyName from "./features/company/pages/CompanyName";
 
 function App() {
   const location = useLocation();
@@ -33,7 +34,6 @@ function App() {
       {showHeader && <Header />}
 
       <Routes>
-
         {/* Public routes */}
         <Route
           path="/auth/*"
@@ -181,20 +181,29 @@ function App() {
         />
 
         <Route
-        path="/companyes"
-        element={
-          <PrivateRoute>
-            <CompanyPage />
-          </PrivateRoute>
-        }
-         />
+          path="/companyes"
+          element={
+            <PrivateRoute>
+              <CompanyPage />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/company/*"
+          element={
+            <PrivateRoute>
+              <CompanyName />
+            </PrivateRoute>
+          }
+        />
 
         {/* Role based routes */}
         <Route
           path="/admin"
           element={
             // <RoleBasedRoute allowedRoles={["admin"]}>
-              <h1>Admin in contraction</h1>
+            <h1>Admin in contraction</h1>
             // </RoleBasedRoute>
           }
         />
