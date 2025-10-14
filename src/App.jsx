@@ -154,7 +154,7 @@ function App() {
             </PrivateRoute>
           }
         />
-      
+
         <Route
           path="/notifications"
           element={
@@ -181,7 +181,7 @@ function App() {
             </PrivateRoute>
           }
         />
-        
+
         <Route
           path="/districts"
           element={
