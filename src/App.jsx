@@ -19,6 +19,7 @@ import Weather from "./features/weather/page/WeatherPage";
 import AllDistrict from "./components/ui/AllDistrict";
 import SeedMarketPage from "./features/Marcket/pages/SeedMarketPage";
 import MarcketPricePage from "./features/Marcket/pages/MarcketPricePage";
+import CompanyPage from "./features/company/pages/CompanyPage";
 
 function App() {
   const location = useLocation();
@@ -178,6 +179,15 @@ function App() {
             </PrivateRoute>
           }
         />
+
+        <Route
+        path="/companyes"
+        element={
+          <PrivateRoute>
+            <CompanyPage />
+          </PrivateRoute>
+        }
+         />
 
         {/* Role based routes */}
         <Route
