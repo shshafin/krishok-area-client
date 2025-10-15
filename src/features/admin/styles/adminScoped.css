@@ -1,0 +1,15 @@
+/* Scope everything under this page wrapper so it won't leak */
+._scoped_admin .companyprosearchbox {
+  padding: 12px;
+}
+
+._scoped_admin ._row-removing {
+  transition: opacity 300ms ease, transform 300ms ease, height 300ms ease;
+  opacity: 0.01;
+  transform: translateY(-6px);
+}
+
+/* Optional: keep table visuals consistent if needed */
+._scoped_admin .table-hover tbody tr:hover {
+  background: rgba(0, 0, 0, 0.03);
+}
