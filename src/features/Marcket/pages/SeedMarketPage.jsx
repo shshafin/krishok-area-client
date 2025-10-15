@@ -66,8 +66,8 @@ export default function SeedMarketPage() {
 
   return (
     <div className="daily_bxp45">
-      <div class="photo-body-box">
-        <h4 class="">আপনার স্বপ্ন ফলানো বীজ ক্রয়-বিক্রয় করুন</h4>
+      <div className="photo-body-box">
+        <h4 className="">আপনার স্বপ্ন ফলানো বীজ ক্রয়-বিক্রয় করুন</h4>
       </div>
 
       <div className="dxKXr_mboX74">

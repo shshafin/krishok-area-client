@@ -21,10 +21,14 @@ import SeedMarketPage from "./features/Marcket/pages/SeedMarketPage";
 import MarcketPricePage from "./features/Marcket/pages/MarcketPricePage";
 import CompanyPage from "./features/company/pages/CompanyPage";
 import CompanyName from "./features/company/pages/CompanyName";
+import ProductDetails from "./features/company/components/ProductDetails";
+
+// Admin Pages
+import AdminPage from "./features/admin/pages/AdminPage";
 
 function App() {
   const location = useLocation();
-  const hideHeader = ["/auth/login", "/auth/signup"]; // Added admin paths
+  const hideHeader = ["/auth/login", "/auth/signup", "/admin"]; // Added admin paths
   const showHeader = !hideHeader.some((path) =>
     location.pathname.startsWith(path)
   ); // Use startsWith for admin paths
@@ -198,12 +202,20 @@ function App() {
           }
         />
 
+        <Route
+        path="/productdetails/*"
+        element={
+          <PrivateRoute>
+            <ProductDetails />
+          </PrivateRoute>
+        } />
+
         {/* Role based routes */}
         <Route
           path="/admin"
           element={
             // <RoleBasedRoute allowedRoles={["admin"]}>
-            <h1>Admin in contraction</h1>
+            <AdminPage />
             // </RoleBasedRoute>
           }
         />
