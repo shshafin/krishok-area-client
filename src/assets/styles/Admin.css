@@ -1444,4 +1444,11 @@
 
 .nav-item .nav-link {
   display: flex;
+  align-items: center;
+}
+
+.main-sidebar {
+  margin-top: -9rem;
+  height: none !important;
+  position: sticky !important;
 }
