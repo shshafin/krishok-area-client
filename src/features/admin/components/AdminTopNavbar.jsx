@@ -37,7 +37,7 @@ export default function AdminTopNavbar() {
         {/* Logout */}
         <li className="nav-item">
           <a
-            className="btn btn-sm btn-danger"
+            className="btn"
             href="#"
             role="button"
             onClick={handleLogout}

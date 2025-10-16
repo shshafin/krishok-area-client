@@ -10,7 +10,6 @@
   object-fit: cover;
 }
 .userimg47 {
-  border-right: 1px solid #d1c4c4;
   margin-right: 10px;
 }
 .userimg47 img {
@@ -1441,4 +1440,8 @@
 .paddingbox {
   padding-right: 1.5rem !important;
   padding-left: 1.5rem !important;
+}
+
+.nav-item .nav-link {
+  display: flex;
 }

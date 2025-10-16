@@ -84,7 +84,7 @@ export default function TableView({ items = [], onDelete, onLogin }) {
                 </a>
 
                 {/* Show/Hide buttons as needed in your real app */}
-                <button className="m-1 btn btn-danger btn-sm">Block</button>
+                <button className="m-1 btn  btn-sm">Block</button>
                 <button
                   className="m-1 btn btn-primary btn-sm"
                   style={{ display: "none" }}
@@ -92,7 +92,7 @@ export default function TableView({ items = [], onDelete, onLogin }) {
                   Unblock
                 </button>
 
-                <button className="m-1 btn btn-danger btn-sm">No admin</button>
+                <button className="m-1 btn  btn-sm">No admin</button>
                 <button
                   className="m-1 btn btn-primary btn-sm"
                   style={{ display: "none" }}
