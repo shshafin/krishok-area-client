@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import DeleteOutlineIcon from "@/assets/IconComponents/DeleteOutlineIcon";
+import BlockStrokeIcon from "@/assets/IconComponents/BlockStrokeIcon";
+import LoginArrowIcon from "@/assets/IconComponents/LoginArrowIcon";
 
 export default function TableView({ items = [], onDelete, onLogin }) {
   const [removing, setRemoving] = useState({});
+  const [confirmUser, setConfirmUser] = useState(null);
 
-  const handleDelete = (id) => {
+  const performDelete = (id) => {
     setRemoving((prev) => ({ ...prev, [id]: true }));
     setTimeout(() => {
       onDelete?.(id);
@@ -12,86 +16,142 @@ export default function TableView({ items = [], onDelete, onLogin }) {
         delete next[id];
         return next;
       });
-    }, 300);
+    }, 280);
   };
 
+  const handleDeleteClick = (user) => {
+    setConfirmUser(user);
+  };
+
+  const handleConfirmDelete = () => {
+    if (confirmUser) {
+      performDelete(confirmUser.id);
+      setConfirmUser(null);
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setConfirmUser(null);
+  };
+
+  if (!items.length) {
+    return (
+      <div className="card">
+        <div className="card-body text-center text-muted py-4">No users found.</div>
+      </div>
+    );
+  }
+
   return (
-    <table className="table table-bordered table-hover">
-      <thead>
-        <tr>
-          <th>No</th>
-          <th>User</th>
-          <th>User ID</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
+    <>
+      <div className="manage-posts-grid admin-user-grid">
+        {items.map((user) => (
+          <article
+            key={user.id}
+            className={`manage-post-card admin-user-card ${removing[user.id] ? "is-removing" : ""}`}
+            id={`deleteadminuserdiv_${user.id}`}
+          >
+            <header className="manage-post-header">
+              <img src={user.avatar} alt={user.name} className="manage-post-avatar" />
+              <div className="manage-post-meta">
+                <span className="manage-post-author">{user.name}</span>
+                <span className="manage-post-username">@{user.handle}</span>
+              </div>
+              <span className="badge badge-light border user-index-badge">#{user.no}</span>
+            </header>
 
-      <tbody>
-        {items.map((u) => (
-          <tr key={u.id} id={`deleteadminuserdiv_${u.id}`} className={removing[u.id] ? "_row-removing" : ""}>
-            <td>
-              <span className="idposition">{u.no}</span>
-            </td>
-
-            <td>
-              <div className="flex">
-                <div className="userimg47">
-                  <img
-                    src={u.avatar}
-                    className="admin-user-image rounded-circle border border-2 shadow-sm mx-2"
-                    width="55"
-                    height="55"
-                    style={{ objectFit: "cover" }}
-                    alt={u.name}
-                  />
+            <div className="manage-post-body">
+              <div className="admin-user-contact">
+                <div className="admin-user-contact-item">
+                  <span className="label">Email</span>
+                  <span className="value">{user.email}</span>
                 </div>
-                <div className="user-details">
-                  <h5>{u.name}</h5>
-                  <h6 className="text-muted">{u.handle}</h6>
-                  <h6 className="text-muted">{u.email}</h6>
-
-                  <span className="user-dep mr-3">{u.dept}</span>
-                  <span className="user-add mr-3">{u.address}</span>
-                  <span className="user-mob">{u.phone}</span>
+                <div className="admin-user-contact-item">
+                  <span className="label">Department</span>
+                  <span className="value">{user.dept}</span>
+                </div>
+                <div className="admin-user-contact-item">
+                  <span className="label">Location</span>
+                  <span className="value">{user.address}</span>
+                </div>
+                <div className="admin-user-contact-item">
+                  <span className="label">Phone</span>
+                  <span className="value">{user.phone}</span>
                 </div>
               </div>
-            </td>
+            </div>
 
-            <td>
-              <span className="idposition">{u.id}</span>
-            </td>
-
-            <td>
-              <div className="idposition">
-                <a
-                  href="#"
-                  className="btn btn-success btn-sm m-1"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    onLogin?.(u.username);
-                  }}
+            <footer className="manage-post-footer admin-user-footer">
+              <div className="admin-user-footer-meta">
+                <span className="text-muted">User ID</span>
+                <span className="font-weight-semibold">#{user.id}</span>
+              </div>
+              <div className="admin-user-actions btn-group">
+                <button
+                  type="button"
+                  className="admin-icon-btn admin-login-btn"
+                  onClick={() => onLogin?.(user.username)}
+                  aria-label={`Login as ${user.name}`}
+                  title="Login User"
                 >
-                  Login User
-                </a>
-
-                <button className="m-1 btn btn-danger btn-sm block_user_btn ub">Block</button>
-                <button className="m-1 btn btn-primary btn-sm unblock_user_btn" style={{ display: "none" }}>
-                  Unblock
+                  <LoginArrowIcon />
                 </button>
-
-                <button className="m-1 btn btn-danger btn-sm noadmin_user_btn ub">No admin</button>
-                <button className="m-1 btn btn-primary btn-sm admin_user_btn" style={{ display: "none" }}>
-                  Admin
+                <button
+                  type="button"
+                  className="admin-icon-btn admin-block-btn block_user_btn ub"
+                  aria-label={`Block ${user.name}`}
+                  title="Block User"
+                >
+                  <BlockStrokeIcon />
                 </button>
-
-                <button className="userdeletebtn" type="button" title="Delete User" onClick={() => handleDelete(u.id)}>
-                  Delete
+                <button
+                  type="button"
+                  className="admin-icon-btn admin-trash-btn"
+                  onClick={() => handleDeleteClick(user)}
+                  aria-label={`Delete ${user.name}`}
+                  title="Delete User"
+                >
+                  <DeleteOutlineIcon />
                 </button>
               </div>
-            </td>
-          </tr>
+            </footer>
+          </article>
         ))}
-      </tbody>
-    </table>
+      </div>
+
+      {confirmUser && (
+        <div className="admin-modal-backdrop" role="presentation">
+          <div
+            className="admin-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="admin-delete-title"
+            aria-describedby="admin-delete-description"
+          >
+            <div className="admin-modal-header">
+              <h5 id="admin-delete-title" className="mb-0">
+                Delete user
+              </h5>
+            </div>
+            <div id="admin-delete-description" className="admin-modal-body">
+              <p className="mb-2">
+                Are you sure you want to delete <strong>{confirmUser.name}</strong>?
+              </p>
+              <p className="text-muted mb-0">
+                This action cannot be undone. All access for this user will be removed immediately.
+              </p>
+            </div>
+            <div className="admin-modal-footer">
+              <button type="button" className="btn btn-outline-secondary btn-sm" onClick={handleCancelDelete}>
+                Cancel
+              </button>
+              <button type="button" className="btn btn-danger btn-sm" onClick={handleConfirmDelete}>
+                Confirm Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }

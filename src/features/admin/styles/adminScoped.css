@@ -11,3 +11,432 @@
 ._scoped_admin .table-hover tbody tr:hover {
   background: rgba(0, 0, 0, 0.03);
 }
+
+._scoped_admin .manage-posts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+
+._scoped_admin .manage-post-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
+}
+
+._scoped_admin .manage-post-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+}
+
+._scoped_admin .manage-post-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.95rem 1rem 0.75rem;
+}
+
+._scoped_admin .manage-post-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+._scoped_admin .manage-post-meta {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+._scoped_admin .manage-post-author {
+  font-weight: 600;
+  color: #0f172a;
+  line-height: 1.1;
+}
+
+._scoped_admin .manage-post-username {
+  font-size: 0.8125rem;
+  color: #64748b;
+}
+
+._scoped_admin .manage-post-delete {
+  white-space: nowrap;
+}
+
+._scoped_admin .manage-post-body {
+  padding: 0 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+._scoped_admin .manage-post-text {
+  margin: 0;
+  color: #1e293b;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+._scoped_admin .manage-post-media {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f8fafc;
+  aspect-ratio: 16 / 10;
+}
+
+._scoped_admin .manage-post-image,
+._scoped_admin .manage-post-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+._scoped_admin .manage-post-video {
+  background: #000;
+}
+
+._scoped_admin .manage-post-footer {
+  margin-top: auto;
+  padding: 0.75rem 1rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  font-size: 0.8125rem;
+  color: #64748b;
+  gap: 0.75rem;
+}
+
+._scoped_admin .manage-post-footer > div:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  max-width: 60%;
+}
+
+._scoped_admin .manage-post-location {
+  color: #2563eb;
+}
+
+._scoped_admin .manage-post-stats {
+  display: flex;
+  gap: 0.75rem;
+  font-weight: 500;
+  color: #0f172a;
+}
+
+._scoped_admin .admin-user-grid {
+  margin-bottom: 1.5rem;
+}
+
+._scoped_admin .admin-user-card.is-removing {
+  opacity: 0;
+  transform: translateY(-8px);
+  pointer-events: none;
+}
+
+._scoped_admin .user-index-badge {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+._scoped_admin .admin-user-contact {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.45rem;
+}
+
+._scoped_admin .admin-user-contact-item {
+  background: #f8fafc;
+  border-radius: 10px;
+  padding: 0.5rem 0.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+._scoped_admin .admin-user-contact-item .label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+}
+
+._scoped_admin .admin-user-contact-item .value {
+  color: #0f172a;
+  font-weight: 500;
+  word-break: break-word;
+}
+
+._scoped_admin .admin-user-footer {
+  align-items: center;
+}
+
+._scoped_admin .admin-user-footer-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+._scoped_admin .admin-user-actions {
+  display: inline-flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+._scoped_admin .admin-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: rgba(15, 23, 42, 0.04);
+  padding: 0;
+  transition: background 0.2s ease, transform 0.15s ease, border-color 0.2s ease;
+}
+
+._scoped_admin .admin-icon-btn svg {
+  pointer-events: none;
+}
+
+._scoped_admin .admin-icon-btn:hover,
+._scoped_admin .admin-icon-btn:focus {
+  transform: translateY(-1px);
+}
+
+._scoped_admin .admin-icon-btn:active {
+  transform: scale(0.96);
+}
+
+._scoped_admin .admin-login-btn {
+  border-color: rgba(74, 144, 226, 0.3);
+  background: rgba(74, 144, 226, 0.08);
+}
+
+._scoped_admin .admin-login-btn:hover,
+._scoped_admin .admin-login-btn:focus {
+  background: rgba(74, 144, 226, 0.16);
+  border-color: rgba(74, 144, 226, 0.5);
+}
+
+._scoped_admin .admin-verify-btn {
+  border-color: rgba(155, 155, 155, 0.4);
+  background: rgba(155, 155, 155, 0.12);
+}
+
+._scoped_admin .admin-verify-btn:hover,
+._scoped_admin .admin-verify-btn:focus {
+  background: rgba(155, 155, 155, 0.18);
+  border-color: rgba(155, 155, 155, 0.6);
+}
+
+._scoped_admin .admin-verified-btn {
+  border-color: rgba(74, 144, 226, 0.45);
+  background: rgba(74, 144, 226, 0.2);
+}
+
+._scoped_admin .admin-verified-btn:hover,
+._scoped_admin .admin-verified-btn:focus {
+  background: rgba(74, 144, 226, 0.27);
+  border-color: rgba(74, 144, 226, 0.65);
+}
+
+._scoped_admin .admin-block-btn,
+._scoped_admin .admin-trash-btn {
+  border-color: rgba(208, 2, 27, 0.35);
+  background: rgba(208, 2, 27, 0.08);
+}
+
+._scoped_admin .admin-block-btn:hover,
+._scoped_admin .admin-block-btn:focus,
+._scoped_admin .admin-trash-btn:hover,
+._scoped_admin .admin-trash-btn:focus {
+  background: rgba(208, 2, 27, 0.15);
+  border-color: rgba(208, 2, 27, 0.5);
+}
+
+._scoped_admin .admin-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1055;
+  padding: 1rem;
+}
+
+._scoped_admin .admin-modal {
+  background: #ffffff;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.25);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+._scoped_admin .admin-modal-header {
+  padding: 1rem 1.25rem 0.5rem;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+._scoped_admin .admin-modal-body {
+  padding: 0.9rem 1.25rem 1.1rem;
+  font-size: 0.9375rem;
+  color: #1e293b;
+}
+
+._scoped_admin .admin-modal-footer {
+  padding: 0.75rem 1.25rem 1.2rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  border-top: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+@media (max-width: 576px) {
+  ._scoped_admin .manage-posts-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+}
+._scoped_admin .manage-post-card.is-removing {
+  opacity: 0;
+  transform: translateY(-8px);
+  pointer-events: none;
+}
+
+._scoped_admin .manage-post-media {
+  cursor: zoom-in;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+._scoped_admin .manage-post-media:focus-visible {
+  outline: 2px solid rgba(74, 144, 226, 0.55);
+  outline-offset: 2px;
+}
+
+._scoped_admin .manage-post-stats {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  font-weight: 600;
+  color: #475569;
+}
+
+._scoped_admin .manage-post-stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+._scoped_admin .manage-post-stat svg {
+  width: 18px;
+  height: 18px;
+}
+
+._scoped_admin .admin-lightbox-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1060;
+  padding: 1.5rem;
+}
+
+._scoped_admin .admin-lightbox {
+  position: relative;
+  background: #0f172a;
+  border-radius: 18px;
+  max-width: min(900px, 92vw);
+  max-height: min(90vh, 720px);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 28px 60px rgba(15, 23, 42, 0.4);
+}
+
+._scoped_admin .admin-lightbox-media {
+  position: relative;
+  flex: 1;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+._scoped_admin .admin-lightbox-media img,
+._scoped_admin .admin-lightbox-media video {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+._scoped_admin .admin-lightbox-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  border: none;
+  background: rgba(15, 23, 42, 0.6);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+._scoped_admin .admin-lightbox-close:hover,
+._scoped_admin .admin-lightbox-close:focus {
+  background: rgba(15, 23, 42, 0.9);
+}
+
+._scoped_admin .admin-lightbox-caption {
+  padding: 1rem 1.25rem 1.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  color: #e2e8f0;
+}
+
+._scoped_admin .admin-lightbox-meta {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.85rem;
+  gap: 0.1rem;
+}
+
+._scoped_admin .admin-lightbox-caption p {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: #cbd5f5;
+}
