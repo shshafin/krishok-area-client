@@ -1480,8 +1480,8 @@
 }
 
 .content-wrapper {
-  margin-left: var(--admin-sidebar-width);
-  width: calc(100% - var(--admin-sidebar-width));
+  margin-left: var(--admin-sidebar-width) !important;
+  width: calc(100% - var(--admin-sidebar-width)) !important;
   transition: margin 0.3s ease, width 0.3s ease;
 }
 
@@ -1490,8 +1490,14 @@
   justify-content: space-between;
   align-items: center;
   padding: 0 1rem;
-  margin-left: var(--admin-sidebar-width);
-  width: calc(100% - var(--admin-sidebar-width));
+  margin-left: var(--admin-sidebar-width) !important;
+  width: calc(100% - var(--admin-sidebar-width)) !important;
+  transition: margin 0.3s ease, width 0.3s ease;
+}
+
+.wrapper > .main-footer {
+  margin-left: var(--admin-sidebar-width) !important;
+  width: calc(100% - var(--admin-sidebar-width)) !important;
   transition: margin 0.3s ease, width 0.3s ease;
 }
 
@@ -1510,6 +1516,15 @@
   justify-content: center;
   cursor: pointer;
   color: inherit;
+}
+
+@media (max-width: 768px) {
+  .content-wrapper,
+  .admin-top-navbar,
+  .wrapper > .main-footer {
+    margin-left: var(--admin-sidebar-collapsed-width) !important;
+    width: calc(100% - var(--admin-sidebar-collapsed-width)) !important;
+  }
 }
 
 .wrapper.sidebar-collapsed .main-sidebar {
@@ -1564,9 +1579,10 @@
   width: calc(100% - var(--admin-sidebar-collapsed-width)) !important;
 }
 
+.wrapper.sidebar-collapsed > .main-footer,
 .wrapper.sidebar-collapsed .admin-top-navbar {
-  margin-left: var(--admin-sidebar-collapsed-width);
-  width: calc(100% - var(--admin-sidebar-collapsed-width));
+  margin-left: var(--admin-sidebar-collapsed-width) !important;
+  width: calc(100% - var(--admin-sidebar-collapsed-width)) !important;
 }
 
 .wrapper.sidebar-collapsed .main-sidebar:hover ~ .content-wrapper,
@@ -1576,8 +1592,14 @@
 
 .wrapper.sidebar-collapsed .main-sidebar:hover ~ .admin-top-navbar,
 .wrapper.sidebar-collapsed .main-sidebar:focus-within ~ .admin-top-navbar {
-  margin-left: 250px;
-  width: calc(100% - 250px);
+  margin-left: var(--admin-sidebar-width) !important;
+  width: calc(100% - var(--admin-sidebar-width)) !important;
+}
+
+.wrapper.sidebar-collapsed .main-sidebar:hover ~ .main-footer,
+.wrapper.sidebar-collapsed .main-sidebar:focus-within ~ .main-footer {
+  margin-left: var(--admin-sidebar-width) !important;
+  width: calc(100% - var(--admin-sidebar-width)) !important;
 }
 
 .user-details {
