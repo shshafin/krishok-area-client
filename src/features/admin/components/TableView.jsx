@@ -34,7 +34,7 @@ export default function TableView({ items = [], onDelete, onLogin }) {
             </td>
 
             <td>
-              <div className="d-flex">
+              <div className="flex">
                 <div className="userimg47">
                   <img
                     src={u.avatar}
@@ -45,7 +45,7 @@ export default function TableView({ items = [], onDelete, onLogin }) {
                     alt={u.name}
                   />
                 </div>
-                <div>
+                <div className="user-details">
                   <h5>{u.name}</h5>
                   <h6 className="text-muted">{u.handle}</h6>
                   <h6 className="text-muted">{u.email}</h6>

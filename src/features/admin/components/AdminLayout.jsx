@@ -1,13 +1,18 @@
+import { Suspense } from "react";
 import { Outlet } from "react-router-dom";
 import AdminTopNavbar from "./AdminTopNavbar";
 import Navbar from "./NavBar";
+import "@/assets/styles/Admin.css";
+import "@/assets/styles/Admin.Main.css";
 
 export default function AdminLayout() {
   return (
     <div className="wrapper">
       <AdminTopNavbar />
       <Navbar />
-      <Outlet />
+      <Suspense fallback={<div className="p-4 text-center text-muted">Loading…</div>}>
+        <Outlet />
+      </Suspense>
       <footer className="main-footer">
         <strong>
           &copy; 2021{" "}
