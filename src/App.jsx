@@ -38,6 +38,7 @@ const ManagePostsPage = lazy(() => import("./features/admin/pages/ManagePostsPag
 const AddDistrictPage = lazy(() => import("./features/admin/pages/AddDistrictPage"));
 const ManageGalleryVideosPage = lazy(() => import("./features/admin/pages/ManageGalleryVideosPage"));
 const ManageGalleryPhotosPage = lazy(() => import("./features/admin/pages/ManageGalleryPhotosPage"));
+const ManageCropCategoryPage = lazy(() => import("./features/admin/pages/ManageCropCategoryPage"));
 
 function App() {
   const location = useLocation();
@@ -246,6 +247,7 @@ function App() {
           <Route path="posts/manage" element={<ManagePostsPage />} />
           <Route path="crops/add-category" element={<AddCropCategoryPage />} />
           <Route path="crops/add-details" element={<AddCropDetailsPage />} />
+          <Route path="crops/manage-category" element={<ManageCropCategoryPage />} />
           <Route path="products/add" element={<AddProductPage />} />
           <Route path="locations/add-district" element={<AddDistrictPage />} />
         </Route>

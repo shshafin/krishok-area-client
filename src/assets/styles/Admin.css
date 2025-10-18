@@ -1755,3 +1755,16 @@ table tr th,
 table td {
   color: #414141 !important;
 }
+
+.table.table-hover tbody tr {
+  transition: opacity 240ms ease, transform 240ms ease;
+}
+
+.table tbody tr.is-removing {
+  opacity: 0;
+  transform: translateX(-12px);
+}
+
+.card-bodyy {
+  padding: 1rem 0;
+}
