@@ -1,0 +1,537 @@
+import React, { useEffect, useMemo, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
+
+const fakeSubmit = (payload) =>
+  new Promise((resolve, reject) => {
+    const delay = 800 + Math.random() * 900;
+    setTimeout(() => {
+      if (Math.random() < 0.12) reject(new Error("Server took too long. Please try again."));
+      else resolve({ ok: true, id: Math.random().toString(36).slice(2) });
+    }, delay);
+  });
+
+const CATEGORY_OPTIONS = [
+  { value: "herbicide", label: "আগাছানাশক" },
+  { value: "insecticide", label: "কীটনাশক" },
+  { value: "fungicide", label: "ছত্রাকনাশক" },
+  { value: "micronutrient", label: "অনুখাদ্য" },
+];
+
+const COMPANY_OPTIONS = [
+  { value: "aci-crop-care", label: "এ সি আই ক্রপ কেয়ার" },
+  { value: "auto-crop-care", label: "অটো ক্রপ কেয়ার লিঃ" },
+  { value: "importer-list", label: "আমদানী ও পরিবেশক তালিকাসমূহ" },
+  { value: "syngenta", label: "সিনজেনটা" },
+  { value: "abcd", label: "এবিসিডি Agro" },
+  { value: "abedin", label: "আবেদিন ক্রপ কেয়ার লিঃ" },
+  { value: "bayer", label: "বায়ার কেয়ার" },
+];
+
+const STATUS_OPTIONS = [
+  { value: "published", label: "Published" },
+  { value: "draft", label: "Draft" },
+  { value: "archived", label: "Archived" },
+];
+
+const MAX_IMAGE_SIZE = 6 * 1024 * 1024;
+const EMPTY_APPLICATION = { crop: "", pest: "", dosage: "", instruction: "" };
+
+const normalizeSlug = (value) =>
+  value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-zA-Z0-9]+/g, "-")
+    .replace(/(^-|-$)+/g, "")
+    .toLowerCase();
+
+export default function AddProductPage() {
+  const [productName, setProductName] = useState("");
+  const [materialName, setMaterialName] = useState("");
+  const [category, setCategory] = useState("");
+  const [company, setCompany] = useState("");
+  const [status, setStatus] = useState("published");
+  const [benefits, setBenefits] = useState("");
+  const [productTitle, setProductTitle] = useState("");
+  const [applications, setApplications] = useState([{ ...EMPTY_APPLICATION }]);
+  const [imageFile, setImageFile] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [lastSubmitted, setLastSubmitted] = useState(null);
+
+  const slug = useMemo(
+    () =>
+      productTitle.trim() || productName.trim()
+        ? normalizeSlug(productTitle || productName)
+        : "",
+    [productName, productTitle]
+  );
+
+  const imagePreview = useMemo(
+    () => (imageFile ? URL.createObjectURL(imageFile) : ""),
+    [imageFile]
+  );
+
+  useEffect(() => {
+    return () => {
+      if (imagePreview) URL.revokeObjectURL(imagePreview);
+    };
+  }, [imagePreview]);
+
+  const payload = useMemo(() => {
+    const cleanedApplications = applications
+      .map((row) => ({
+        crop: row.crop.trim(),
+        pest: row.pest.trim(),
+        dosage: row.dosage.trim(),
+        instruction: row.instruction.trim(),
+      }))
+      .filter((row) => Object.values(row).some(Boolean));
+
+    return {
+      productName: productName.trim(),
+      materialName: materialName.trim(),
+      category,
+      company,
+      status,
+      slug,
+      benefits: benefits.trim(),
+      productTitle: productTitle.trim(),
+      applications: cleanedApplications,
+      image: imageFile
+        ? {
+            name: imageFile.name,
+            size: imageFile.size,
+            type: imageFile.type,
+          }
+        : null,
+      meta: {
+        createdBy: "admin",
+        createdAt: new Date().toISOString(),
+      },
+    };
+  }, [
+    productName,
+    materialName,
+    category,
+    company,
+    status,
+    slug,
+    benefits,
+    productTitle,
+    applications,
+    imageFile,
+  ]);
+
+  const validate = () => {
+    if (!payload.productName) return "Product name is required";
+    if (!payload.category) return "Select a product category";
+    if (!payload.company) return "Select a company";
+    if (!payload.applications.length)
+      return "Add at least one application row with details";
+    if (imageFile && imageFile.size > MAX_IMAGE_SIZE) {
+      return `Image "${imageFile.name}" is larger than ${Math.round(
+        MAX_IMAGE_SIZE / (1024 * 1024)
+      )}MB`;
+    }
+    return null;
+  };
+
+  const resetForm = () => {
+    setProductName("");
+    setMaterialName("");
+    setCategory("");
+    setCompany("");
+    setStatus("published");
+    setBenefits("");
+    setProductTitle("");
+    setApplications([{ ...EMPTY_APPLICATION }]);
+    setImageFile(null);
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (submitting) return;
+    const error = validate();
+    if (error) {
+      toast.error(error);
+      return;
+    }
+    setSubmitting(true);
+    const toastId = toast.loading("Saving product...");
+    try {
+      const response = await fakeSubmit(payload);
+      setLastSubmitted({ id: response.id, ...payload });
+      toast.success("Product saved!", { id: toastId });
+      resetForm();
+    } catch (err) {
+      toast.error(err.message || "Something went wrong", { id: toastId });
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const updateApplication = (index, key, value) => {
+    setApplications((prev) =>
+      prev.map((row, idx) =>
+        idx === index
+          ? {
+              ...row,
+              [key]: value,
+            }
+          : row
+      )
+    );
+  };
+
+  const addApplicationRow = () => {
+    setApplications((prev) => [...prev, { ...EMPTY_APPLICATION }]);
+  };
+
+  const removeApplicationRow = (index) => {
+    setApplications((prev) =>
+      prev.length === 1 ? prev : prev.filter((_, idx) => idx !== index)
+    );
+  };
+
+  return (
+    <div className="content-wrapper _scoped_admin" style={{ minHeight: "839px" }}>
+      <Toaster position="top-right" />
+      <div className="content-header">
+        <div className="container-fluid">
+          <div className="row mb-2">
+            <div className="col-sm-6">
+              <h1 className="m-0">Add Products</h1>
+            </div>
+            <div className="col-sm-6">
+              <ol className="breadcrumb float-sm-right">
+                <li className="breadcrumb-item">
+                  <a href="/admin/dashboard">Dashboard</a>
+                </li>
+                <li className="breadcrumb-item">
+                  <a href="/admin/products/manage-details">Manage Products Details</a>
+                </li>
+                <li className="breadcrumb-item active">Add Products</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <section className="content">
+        <div className="container-fluid">
+          <form onSubmit={handleSubmit}>
+            <div className="row">
+              <div className="col-lg-8">
+                <div className="card card-outline card-primary mb-3">
+                  <div className="card-header">
+                    <h3 className="card-title mb-0">Product Information</h3>
+                  </div>
+                  <div className="card-body">
+                    <div className="form-group">
+                      <label htmlFor="productName">
+                        Product Name <span className="text-danger">*</span>
+                      </label>
+                      <input
+                        id="productName"
+                        type="text"
+                        className="form-control"
+                        placeholder="Enter product name"
+                        value={productName}
+                        onChange={(event) => setProductName(event.target.value)}
+                        required
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="materialName">Product Material Name</label>
+                      <input
+                        id="materialName"
+                        type="text"
+                        className="form-control"
+                        placeholder="Enter product material name"
+                        value={materialName}
+                        onChange={(event) => setMaterialName(event.target.value)}
+                      />
+                    </div>
+                    <div className="form-row">
+                      <div className="form-group col-md-6">
+                        <label htmlFor="category">
+                          Product Category <span className="text-danger">*</span>
+                        </label>
+                        <select
+                          id="category"
+                          className="form-control"
+                          value={category}
+                          onChange={(event) => setCategory(event.target.value)}
+                          required
+                        >
+                          <option value="" hidden>
+                            Select product category
+                          </option>
+                          {CATEGORY_OPTIONS.map((option) => (
+                            <option key={option.value} value={option.value}>
+                              {option.label}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <div className="form-group col-md-6">
+                        <label htmlFor="company">
+                          Company Name <span className="text-danger">*</span>
+                        </label>
+                        <select
+                          id="company"
+                          className="form-control"
+                          value={company}
+                          onChange={(event) => setCompany(event.target.value)}
+                          required
+                        >
+                          <option value="" hidden>
+                            Select company name
+                          </option>
+                          {COMPANY_OPTIONS.map((option) => (
+                            <option key={option.value} value={option.value}>
+                              {option.label}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                    <div className="form-row">
+                      <div className="form-group col-md-6">
+                        <label htmlFor="status">Product Status</label>
+                        <select
+                          id="status"
+                          className="form-control"
+                          value={status}
+                          onChange={(event) => setStatus(event.target.value)}
+                        >
+                          {STATUS_OPTIONS.map((option) => (
+                            <option key={option.value} value={option.value}>
+                              {option.label}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <div className="form-group col-md-6">
+                        <label htmlFor="productTitle">Product Title</label>
+                        <input
+                          id="productTitle"
+                          type="text"
+                          className="form-control"
+                          placeholder="Headline for marketing copy"
+                          value={productTitle}
+                          onChange={(event) => setProductTitle(event.target.value)}
+                        />
+                      </div>
+                    </div>
+                    <div className="form-group mb-0">
+                      <label htmlFor="benefits">Benefits & Usage Overview</label>
+                      <textarea
+                        id="benefits"
+                        className="form-control"
+                        rows={4}
+                        placeholder="Describe how the product helps farmers, safety guidelines, etc."
+                        value={benefits}
+                        onChange={(event) => setBenefits(event.target.value)}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="card card-outline card-info mb-3">
+                  <div className="card-header">
+                    <h3 className="card-title mb-0">Product Image</h3>
+                  </div>
+                  <div className="card-body">
+                    <div className="custom-file">
+                      <input
+                        id="productImage"
+                        type="file"
+                        accept="image/*"
+                        className="custom-file-input"
+                        onChange={(event) => {
+                          const file = event.target.files?.[0] || null;
+                          setImageFile(file);
+                        }}
+                      />
+                      <label className="custom-file-label" htmlFor="productImage">
+                        {imageFile ? imageFile.name : "Choose product image"}
+                      </label>
+                    </div>
+                    <small className="form-text text-muted">
+                      PNG or JPG up to {Math.round(MAX_IMAGE_SIZE / (1024 * 1024))}MB.
+                    </small>
+                    {imagePreview && (
+                      <div className="mt-3">
+                        <img
+                          src={imagePreview}
+                          alt="Product preview"
+                          className="img-fluid rounded border"
+                        />
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="card card-outline card-success">
+                  <div className="card-header d-flex justify-content-between align-items-center">
+                    <h3 className="card-title mb-0">Application Details</h3>
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-outline-primary"
+                      onClick={addApplicationRow}
+                    >
+                      Add Row
+                    </button>
+                  </div>
+                  <div className="card-body">
+                    <div className="table-responsive">
+                      <table className="table table-bordered">
+                        <thead className="thead-light">
+                          <tr>
+                            <th>ফসল</th>
+                            <th>বালাই</th>
+                            <th>মাত্রা</th>
+                            <th>ব্যবহারবিধি</th>
+                            <th style={{ width: 110 }}>Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {applications.map((row, index) => (
+                            <tr key={`app-row-${index}`}>
+                              <td>
+                                <textarea
+                                  className="form-control"
+                                  rows={2}
+                                  placeholder="ফসলের নাম"
+                                  value={row.crop}
+                                  onChange={(event) =>
+                                    updateApplication(index, "crop", event.target.value)
+                                  }
+                                />
+                              </td>
+                              <td>
+                                <textarea
+                                  className="form-control"
+                                  rows={2}
+                                  placeholder="আক্রান্ত বালাই"
+                                  value={row.pest}
+                                  onChange={(event) =>
+                                    updateApplication(index, "pest", event.target.value)
+                                  }
+                                />
+                              </td>
+                              <td>
+                                <textarea
+                                  className="form-control"
+                                  rows={2}
+                                  placeholder="প্রয়োগের মাত্রা"
+                                  value={row.dosage}
+                                  onChange={(event) =>
+                                    updateApplication(index, "dosage", event.target.value)
+                                  }
+                                />
+                              </td>
+                              <td>
+                                <textarea
+                                  className="form-control"
+                                  rows={2}
+                                  placeholder="ব্যবহারবিধি"
+                                  value={row.instruction}
+                                  onChange={(event) =>
+                                    updateApplication(index, "instruction", event.target.value)
+                                  }
+                                />
+                              </td>
+                              <td className="text-center align-middle">
+                                <div className="btn-group btn-group-sm">
+                                  <button
+                                    type="button"
+                                    className="btn btn-outline-danger"
+                                    onClick={() => removeApplicationRow(index)}
+                                    disabled={applications.length === 1}
+                                  >
+                                    Remove
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-lg-4">
+                <div className="card card-outline card-secondary mb-3">
+                  <div className="card-header">
+                    <h3 className="card-title mb-0">Summary</h3>
+                  </div>
+                  <div className="card-body">
+                    <dl className="mb-0">
+                      <dt>Product Name</dt>
+                      <dd>{payload.productName || "—"}</dd>
+                      <dt>Material Name</dt>
+                      <dd>{payload.materialName || "—"}</dd>
+                      <dt>Category</dt>
+                      <dd>
+                        {CATEGORY_OPTIONS.find((opt) => opt.value === category)?.label || "—"}
+                      </dd>
+                      <dt>Company</dt>
+                      <dd>
+                        {COMPANY_OPTIONS.find((opt) => opt.value === company)?.label || "—"}
+                      </dd>
+                      <dt>Status</dt>
+                      <dd>{STATUS_OPTIONS.find((opt) => opt.value === status)?.label}</dd>
+                      <dt>Slug</dt>
+                      <dd>{slug || "Auto-generated"}</dd>
+                      <dt>Application Rows</dt>
+                      <dd>{payload.applications.length}</dd>
+                    </dl>
+                  </div>
+                </div>
+
+                <div className="card card-outline card-dark mb-3">
+                  <div className="card-header">
+                    <h3 className="card-title mb-0">Submission JSON</h3>
+                  </div>
+                  <div className="card-body" style={{ maxHeight: 320, overflowY: "auto" }}>
+                    <pre className="small mb-0">
+{JSON.stringify(lastSubmitted ?? payload, null, 2)}
+                    </pre>
+                  </div>
+                </div>
+
+                <div className="card card-outline card-success">
+                  <div className="card-body d-flex justify-content-between align-items-center">
+                    <button
+                      type="button"
+                      className="btn btn-outline-secondary"
+                      onClick={() => {
+                        resetForm();
+                        setLastSubmitted(null);
+                      }}
+                      disabled={submitting}
+                    >
+                      Reset
+                    </button>
+                    <button type="submit" className="btn btn-primary" disabled={submitting}>
+                      {submitting ? "Saving..." : "Save Product"}
+                    </button>
+                  </div>
+                </div>
+
+                <div className="text-right mt-3">
+                  <a href="/admin/products/manage-details" className="btn btn-link p-0">
+                    Manage Product Details
+                  </a>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </section>
+    </div>
+  );
+}

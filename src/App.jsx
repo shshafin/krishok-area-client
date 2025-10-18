@@ -33,6 +33,7 @@ const AddVideosPage = lazy(() => import("./features/admin/pages/AddVideosPage"))
 const AddCropCategoryPage = lazy(() => import("./features/admin/pages/AddCropCategoryPage"));
 const AddCropDetailsPage = lazy(() => import("./features/admin/pages/AddCropDetailsPage"));
 const AddCompanyCategoryPage = lazy(() => import("./features/admin/pages/AddCompanyCategoryPage"));
+const AddProductPage = lazy(() => import("./features/admin/pages/AddProductPage"));
 const AddDistrictPage = lazy(() => import("./features/admin/pages/AddDistrictPage"));
 
 function App() {
@@ -239,6 +240,7 @@ function App() {
           <Route path="companies/add-category" element={<AddCompanyCategoryPage />} />
           <Route path="crops/add-category" element={<AddCropCategoryPage />} />
           <Route path="crops/add-details" element={<AddCropDetailsPage />} />
+          <Route path="products/add" element={<AddProductPage />} />
           <Route path="locations/add-district" element={<AddDistrictPage />} />
         </Route>
       </Routes>
