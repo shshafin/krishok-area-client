@@ -29,6 +29,7 @@ const AdminLayout = lazy(() => import("./features/admin/components/AdminLayout")
 const AdminPage = lazy(() => import("./features/admin/pages/AdminPage"));
 const EditProfilePage = lazy(() => import("./features/admin/pages/EditProfilePage"));
 const AddPhotosPage = lazy(() => import("./features/admin/pages/AddPhotosPage"));
+const AddVideosPage = lazy(() => import("./features/admin/pages/AddVideosPage"));
 const AddDistrictPage = lazy(() => import("./features/admin/pages/AddDistrictPage"));
 
 function App() {
@@ -231,6 +232,7 @@ function App() {
           <Route path="dashboard" element={<AdminPage />} />
           <Route path="profile/edit" element={<EditProfilePage />} />
           <Route path="media/add-photo" element={<AddPhotosPage />} />
+          <Route path="media/add-video" element={<AddVideosPage />} />
           <Route path="locations/add-district" element={<AddDistrictPage />} />
         </Route>
       </Routes>
