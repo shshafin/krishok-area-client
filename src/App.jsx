@@ -1,4 +1,5 @@
-import { Routes, Route, useLocation } from "react-router-dom";
+import { lazy, Suspense } from "react";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Home from "@/features/home/pages/Home";
 import Gallery from "@/features/gallery/pages/Gallery";
@@ -23,11 +24,16 @@ import CompanyPage from "./features/company/pages/CompanyPage";
 import CompanyName from "./features/company/pages/CompanyName";
 import ProductDetails from "./features/company/components/ProductDetails";
 
-// Admin Pages
-import AdminPage from "./features/admin/pages/AdminPage";
+// Admin Pages (lazy-loaded)
+const AdminLayout = lazy(() => import("./features/admin/components/AdminLayout"));
+const AdminPage = lazy(() => import("./features/admin/pages/AdminPage"));
+const EditProfilePage = lazy(() => import("./features/admin/pages/EditProfilePage"));
+const AddPhotosPage = lazy(() => import("./features/admin/pages/AddPhotosPage"));
+const AddDistrictPage = lazy(() => import("./features/admin/pages/AddDistrictPage"));
 
 function App() {
   const location = useLocation();
+  const adminFallback = <div className="p-4 text-center text-muted">Loading admin…</div>;
   const hideHeader = ["/auth/login", "/auth/signup", "/admin"]; // Added admin paths
   const showHeader = !hideHeader.some((path) =>
     location.pathname.startsWith(path)
@@ -212,13 +218,21 @@ function App() {
 
         {/* Role based routes */}
         <Route
-          path="/admin"
+          path="/admin/*"
           element={
-            // <RoleBasedRoute allowedRoles={["admin"]}>
-            <AdminPage />
-            // </RoleBasedRoute>
+            <Suspense fallback={adminFallback}>
+              {/* <RoleBasedRoute allowedRoles={["admin"]}> */}
+              <AdminLayout />
+              {/* </RoleBasedRoute> */}
+            </Suspense>
           }
-        />
+        >
+          <Route index element={<Navigate to="dashboard" replace />} />
+          <Route path="dashboard" element={<AdminPage />} />
+          <Route path="profile/edit" element={<EditProfilePage />} />
+          <Route path="media/add-photo" element={<AddPhotosPage />} />
+          <Route path="locations/add-district" element={<AddDistrictPage />} />
+        </Route>
       </Routes>
     </>
   );

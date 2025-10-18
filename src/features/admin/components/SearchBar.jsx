@@ -1,15 +1,18 @@
 import React, { useEffect, useRef, useState } from "react";
 
-export default function SearchBar({ placeholder = "Search…", onChange, debounceMs = 300 }) {
+const DEFAULT_PLACEHOLDER = "\u0995\u09c0\u099f\u09a8\u09be\u09b6\u0995\u0020\u09aa\u09a3\u09cd\u09af\u0020\u0996\u09cb\u099c\u0020\u0995\u09b0\u09c1\u09a8";
+const RESULT_LABEL = "\u09aa\u09a3\u09cd\u09af\u0020\u0996\u09cb\u099c\u0020\u0995\u09b0\u09c1\u09a8";
+
+export default function SearchBar({ placeholder = DEFAULT_PLACEHOLDER, onChange, debounceMs = 300 }) {
   const [value, setValue] = useState("");
-  const tRef = useRef();
+  const timerRef = useRef();
 
   useEffect(() => {
-    clearTimeout(tRef.current);
-    tRef.current = setTimeout(() => {
+    clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(() => {
       onChange?.(value);
     }, debounceMs);
-    return () => clearTimeout(tRef.current);
+    return () => clearTimeout(timerRef.current);
   }, [value, debounceMs, onChange]);
 
   return (
@@ -25,7 +28,6 @@ export default function SearchBar({ placeholder = "Search…", onChange, debounc
         autoComplete="off"
       />
 
-      {/* Keep the container so your dropdown styling remains available */}
       <div
         className="allcompanyprosearchbox text-end rounded pb-3 paddingbox mt-5"
         id="searchcompanypro_result"
@@ -34,8 +36,8 @@ export default function SearchBar({ placeholder = "Search…", onChange, debounc
       >
         <button type="button" className="btn-close" aria-label="Close" id="closecompanypro_search"></button>
         <div id="onecompanyproduct" className="text-start">
-          <p title="পণ্য খোজ করুন" className="text-center text-white">
-            পণ্য খোজ করুন
+          <p title={RESULT_LABEL} className="text-center text-white">
+            {RESULT_LABEL}
           </p>
         </div>
       </div>

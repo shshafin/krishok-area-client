@@ -1,4 +1,3 @@
-/* Scope everything under this page wrapper so it won't leak */
 ._scoped_admin .companyprosearchbox {
   padding: 12px;
 }
@@ -9,7 +8,6 @@
   transform: translateY(-6px);
 }
 
-/* Optional: keep table visuals consistent if needed */
 ._scoped_admin .table-hover tbody tr:hover {
   background: rgba(0, 0, 0, 0.03);
 }

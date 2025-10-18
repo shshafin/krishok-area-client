@@ -1,9 +1,7 @@
 import { NavLink } from "react-router-dom";
 
-// Brand Logo
 import BrandLogo from "@/assets/images/krishok-icona.png";
 
-// All PNG icons (stored in @/assets/icons)
 import dashboardIcon from "@/assets/icons/dashboard_icon.png";
 import userIcon from "@/assets/icons/user_icon.png";
 import addIcon from "@/assets/icons/add_icon.png";
@@ -27,7 +25,6 @@ export default function Navbar() {
 
     { type: "divider" },
 
-    // --- Add / Create Section ---
     {
       type: "item",
       to: "/admin/media/add-photo",
@@ -73,7 +70,6 @@ export default function Navbar() {
 
     { type: "divider" },
 
-    // --- Manage Section ---
     {
       type: "item",
       to: "/admin/posts/manage",
@@ -137,7 +133,6 @@ export default function Navbar() {
 
     { type: "divider" },
 
-    // --- Notifications ---
     {
       type: "item",
       to: "/admin/notifications/manage",
@@ -148,7 +143,6 @@ export default function Navbar() {
 
   return (
     <aside className="main-sidebar sidebar-dark-primary elevation-4">
-      {/* Brand Logo */}
       <NavLink to="/admin/dashboard" className="brand-link">
         <img
           src={BrandLogo}
@@ -160,7 +154,6 @@ export default function Navbar() {
       </NavLink>
 
       <div className="sidebar sideheight" style={{ overflowY: "auto" }}>
-        {/* Sidebar user panel */}
         <div className="user-panel mt-3 pb-3 mb-3 d-flex">
           <div className="info">
             <NavLink to="/admin/dashboard" className="d-block">
@@ -169,7 +162,6 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Sidebar Menu */}
         <nav className="mt-2">
           <ul
             className="nav nav-pills nav-sidebar flex-column"
@@ -199,7 +191,7 @@ export default function Navbar() {
                           width: 18,
                           height: 18,
                           marginRight: 8,
-                          filter: "brightness(0) invert(1)", // white icons
+                          filter: "brightness(0) invert(1)",
                         }}
                       />
                       <p>{item.label}</p>
