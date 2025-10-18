@@ -28,6 +28,7 @@ import ProductDetails from "./features/company/components/ProductDetails";
 const AdminLayout = lazy(() => import("./features/admin/components/AdminLayout"));
 const AdminPage = lazy(() => import("./features/admin/pages/AdminPage"));
 const EditProfilePage = lazy(() => import("./features/admin/pages/EditProfilePage"));
+const AddPhotosPage = lazy(() => import("./features/admin/pages/AddPhotosPage"));
 const AddDistrictPage = lazy(() => import("./features/admin/pages/AddDistrictPage"));
 
 function App() {
@@ -229,6 +230,7 @@ function App() {
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<AdminPage />} />
           <Route path="profile/edit" element={<EditProfilePage />} />
+          <Route path="media/add-photo" element={<AddPhotosPage />} />
           <Route path="locations/add-district" element={<AddDistrictPage />} />
         </Route>
       </Routes>
