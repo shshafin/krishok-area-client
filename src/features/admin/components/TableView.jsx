@@ -1,21 +1,16 @@
 import React, { useState } from "react";
 
-/**
- * TableView renders with same AdminLTE table classes you used.
- * Delete animates height/opacity without external libs.
- */
 export default function TableView({ items = [], onDelete, onLogin }) {
-  const [removing, setRemoving] = useState({}); // id -> true while animating
+  const [removing, setRemoving] = useState({});
 
   const handleDelete = (id) => {
-    setRemoving((r) => ({ ...r, [id]: true }));
-    // match CSS duration in adminScoped.css (300ms)
+    setRemoving((prev) => ({ ...prev, [id]: true }));
     setTimeout(() => {
       onDelete?.(id);
-      setRemoving((r) => {
-        const n = { ...r };
-        delete n[id];
-        return n;
+      setRemoving((prev) => {
+        const next = { ...prev };
+        delete next[id];
+        return next;
       });
     }, 300);
   };
@@ -33,11 +28,7 @@ export default function TableView({ items = [], onDelete, onLogin }) {
 
       <tbody>
         {items.map((u) => (
-          <tr
-            key={u.id}
-            id={`deleteadminuserdiv_${u.id}`}
-            className={removing[u.id] ? "_row-removing" : ""}
-          >
+          <tr key={u.id} id={`deleteadminuserdiv_${u.id}`} className={removing[u.id] ? "_row-removing" : ""}>
             <td>
               <span className="idposition">{u.no}</span>
             </td>
@@ -51,7 +42,7 @@ export default function TableView({ items = [], onDelete, onLogin }) {
                     width="55"
                     height="55"
                     style={{ objectFit: "cover" }}
-                    alt=""
+                    alt={u.name}
                   />
                 </div>
                 <div>
@@ -73,39 +64,27 @@ export default function TableView({ items = [], onDelete, onLogin }) {
             <td>
               <div className="idposition">
                 <a
-                  href={`${window.location.origin}/user/${encodeURIComponent(
-                    u.username
-                  )}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="#"
                   className="btn btn-success btn-sm m-1"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onLogin?.(u.username);
+                  }}
                 >
                   Login User
                 </a>
 
-                {/* Show/Hide buttons as needed in your real app */}
-                <button className="m-1 btn  btn-sm">Block</button>
-                <button
-                  className="m-1 btn btn-primary btn-sm"
-                  style={{ display: "none" }}
-                >
+                <button className="m-1 btn btn-danger btn-sm block_user_btn ub">Block</button>
+                <button className="m-1 btn btn-primary btn-sm unblock_user_btn" style={{ display: "none" }}>
                   Unblock
                 </button>
 
-                <button className="m-1 btn  btn-sm">No admin</button>
-                <button
-                  className="m-1 btn btn-primary btn-sm"
-                  style={{ display: "none" }}
-                >
+                <button className="m-1 btn btn-danger btn-sm noadmin_user_btn ub">No admin</button>
+                <button className="m-1 btn btn-primary btn-sm admin_user_btn" style={{ display: "none" }}>
                   Admin
                 </button>
 
-                <button
-                  className="userdeletebtn"
-                  type="button"
-                  title="Delete User"
-                  onClick={() => handleDelete(u.id)}
-                >
+                <button className="userdeletebtn" type="button" title="Delete User" onClick={() => handleDelete(u.id)}>
                   Delete
                 </button>
               </div>

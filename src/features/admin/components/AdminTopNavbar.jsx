@@ -3,14 +3,12 @@ import { useNavigate } from "react-router-dom";
 export default function AdminTopNavbar() {
   const navigate = useNavigate();
 
-  // Logout handler
   const handleLogout = (e) => {
     e.preventDefault();
     localStorage.removeItem("adminToken");
     navigate("/admin/login");
   };
 
-  // Fullscreen toggle
   const handleFullscreen = (e) => {
     e.preventDefault();
     const doc = document.documentElement;
@@ -23,7 +21,6 @@ export default function AdminTopNavbar() {
 
   return (
     <nav className="main-header navbar navbar-expand navbar-white navbar-light">
-      {/* Left navbar links */}
       <ul className="navbar-nav">
         <li className="nav-item">
           <a className="nav-link" data-widget="pushmenu" href="#" role="button">
@@ -32,12 +29,10 @@ export default function AdminTopNavbar() {
         </li>
       </ul>
 
-      {/* Right navbar links */}
       <ul className="navbar-nav ml-auto">
-        {/* Logout */}
         <li className="nav-item">
           <a
-            className="btn"
+            className="btn btn-sm btn-danger"
             href="#"
             role="button"
             onClick={handleLogout}
@@ -46,7 +41,6 @@ export default function AdminTopNavbar() {
           </a>
         </li>
 
-        {/* Fullscreen */}
         <li className="nav-item">
           <a
             className="nav-link"

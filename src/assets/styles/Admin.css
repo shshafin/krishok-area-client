@@ -1452,3 +1452,7 @@
   height: none !important;
   position: sticky !important;
 }
+
+#root {
+  margin-top: 0 !important;
+}

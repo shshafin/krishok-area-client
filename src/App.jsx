@@ -24,7 +24,9 @@ import CompanyName from "./features/company/pages/CompanyName";
 import ProductDetails from "./features/company/components/ProductDetails";
 
 // Admin Pages
+import AdminLayout from "./features/admin/components/AdminLayout";
 import AdminPage from "./features/admin/pages/AdminPage";
+import AddDistrictPage from "./features/admin/pages/AddDistrictPage";
 
 function App() {
   const location = useLocation();
@@ -215,10 +217,13 @@ function App() {
           path="/admin"
           element={
             // <RoleBasedRoute allowedRoles={["admin"]}>
-            <AdminPage />
+            <AdminLayout />
             // </RoleBasedRoute>
           }
-        />
+        >
+          <Route index element={<AdminPage />} />
+          <Route path="locations/add-district" element={<AddDistrictPage />} />
+        </Route>
       </Routes>
     </>
   );
