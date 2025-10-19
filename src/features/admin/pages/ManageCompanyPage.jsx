@@ -15,62 +15,43 @@ const RAW_COMPANIES = [
     id: 1,
     banglaName: "এ সি আই ক্রপ কেয়ার 101",
     englishName: "ok aci ok 10 10",
-    title: "",
-    status: 0,
   },
   {
     no: 2,
     id: 2,
     banglaName: "অটো ক্রপ কেয়ার লিঃ ok",
     englishName: "pl",
-    title: "ok",
-    status: 0,
   },
   {
     no: 3,
     id: 11,
     banglaName: "আমদানী, বাজারজাতকারী ও পরিবেশক কোম্পানীর তালিকাসমূহ",
     englishName: "নাইok",
-    title: "",
-    status: 0,
   },
   {
     no: 4,
     id: 17,
     banglaName: "সিনজেনটা",
     englishName: "নাই",
-    title: "",
-    status: 0,
   },
   {
     no: 5,
     id: 19,
     banglaName: "এবিসিডি11",
     englishName: "নাই",
-    title: "",
-    status: 0,
   },
   {
     no: 6,
     id: 20,
     banglaName: "আবেদিন ক্রপ কেয়ার লিঃ",
     englishName: "অটো ক্রপ কেয়ার লিঃ এর একটি সহযোগী প্রতিষ্ঠান",
-    title: "অটো ক্রপ কেয়ার লিঃ এর একটি সহযোগী প্রতিষ্ঠান",
-    status: 0,
   },
   {
     no: 7,
     id: 21,
     banglaName: "বায়ার কেয়ার",
     englishName: "bayar cear",
-    title: "বায়ার কেয়ার বায়ার কেয়ার বায়ার কেয়ার",
-    status: 0,
   },
-];
-
-const STATUS_OPTIONS = [
-  { label: "Inactive (0)", value: 0 },
-  { label: "Active (1)", value: 1 },
 ];
 
 const normalizeCompany = (company, index) => {
@@ -80,8 +61,6 @@ const normalizeCompany = (company, index) => {
     id: company.id ?? index + 1,
     banglaName: company.banglaName ?? "",
     englishName: company.englishName ?? "",
-    title: company.title ?? "",
-    status: Number.isFinite(company.status) ? company.status : 0,
   };
 };
 
@@ -107,8 +86,6 @@ export default function ManageCompanyPage() {
   const [formState, setFormState] = useState({
     banglaName: "",
     englishName: "",
-    title: "",
-    status: 0,
   });
   const [removing, setRemoving] = useState({});
   const searchInputRef = useRef(null);
@@ -130,7 +107,6 @@ export default function ManageCompanyPage() {
       return (
         item.banglaName.toLowerCase().includes(term) ||
         item.englishName.toLowerCase().includes(term) ||
-        item.title.toLowerCase().includes(term) ||
         String(item.id).includes(term) ||
         String(item.no ?? "").includes(term)
       );
@@ -155,8 +131,6 @@ export default function ManageCompanyPage() {
     setFormState({
       banglaName: company.banglaName,
       englishName: company.englishName,
-      title: company.title,
-      status: company.status,
     });
   };
 
@@ -164,7 +138,7 @@ export default function ManageCompanyPage() {
     const { name, value } = event.target;
     setFormState((prev) => ({
       ...prev,
-      [name]: name === "status" ? Number(value) : value,
+      [name]: value,
     }));
   };
 
@@ -173,8 +147,6 @@ export default function ManageCompanyPage() {
     setFormState({
       banglaName: "",
       englishName: "",
-      title: "",
-      status: 0,
     });
   };
 
@@ -193,7 +165,6 @@ export default function ManageCompanyPage() {
   };
 
   const totalCompanies = companies.length;
-  const totalActive = companies.filter((item) => item.status === 1).length;
 
   return (
     <div className="content-wrapper _scoped_admin">
@@ -224,7 +195,6 @@ export default function ManageCompanyPage() {
             <div className="card w-100">
               <div className="card-header d-flex flex-column flex-md-row gap-3 justify-content-md-between align-items-md-center">
                 <h3 className="card-title mb-0">Total Company Category = [{totalCompanies}]</h3>
-                <span className="text-muted small">Currently active companies: {totalActive}</span>
                 <div className="input-group" style={{ maxWidth: 340 }}>
                   <div className="input-group-prepend">
                     <span className="input-group-text">
@@ -268,22 +238,6 @@ export default function ManageCompanyPage() {
                         <div className="d-flex">
                           <h5>{row.englishName || "-"}</h5>
                         </div>
-                      ),
-                    },
-                    {
-                      key: "title",
-                      label: "Company Name Title",
-                      render: (row) => (
-                        <div className="d-flex">
-                          <h5>{row.title || "-"}</h5>
-                        </div>
-                      ),
-                    },
-                    {
-                      key: "status",
-                      label: "Company Status",
-                      render: (row) => (
-                        <span className={`badge badge-${row.status === 1 ? "success" : "muted"}`}>{row.status}</span>
                       ),
                     },
                     {
@@ -355,35 +309,6 @@ export default function ManageCompanyPage() {
                   </div>
                 </div>
 
-                <div className="display-flex flex-column flex-md-row gap-3">
-                  <div className="form-group amf flex-grow-1">
-                    <label htmlFor="edit_company_title">Company Name Title</label>
-                    <textarea
-                      id="edit_company_title"
-                      name="title"
-                      className="form-control"
-                      rows={3}
-                      value={formState.title}
-                      onChange={handleFormChange}
-                    />
-                  </div>
-                  <div className="form-group amf flex-grow-1">
-                    <label htmlFor="edit_company_status">Company Status</label>
-                    <select
-                      id="edit_company_status"
-                      name="status"
-                      className="form-control"
-                      value={formState.status}
-                      onChange={handleFormChange}
-                    >
-                      {STATUS_OPTIONS.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
               </div>
 
               <div className="card-footer faa d-flex justify-content-between">

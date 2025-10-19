@@ -45,18 +45,16 @@ export default function AddProductPage() {
   const [category, setCategory] = useState("");
   const [company, setCompany] = useState("");
   const [benefits, setBenefits] = useState("");
-  const [productTitle, setProductTitle] = useState("");
   const [applications, setApplications] = useState([{ ...EMPTY_APPLICATION }]);
   const [imageFile, setImageFile] = useState(null);
   const [submitting, setSubmitting] = useState(false);
 
-  const slug = useMemo(
-    () =>
-      productTitle.trim() || productName.trim()
-        ? normalizeSlug(productTitle || productName)
-        : "",
-    [productName, productTitle]
-  );
+  const slug = useMemo(() => {
+    const primary = productName.trim();
+    const fallback = materialName.trim();
+    const source = primary || fallback;
+    return source ? normalizeSlug(source) : "";
+  }, [productName, materialName]);
 
   const imagePreview = useMemo(
     () => (imageFile ? URL.createObjectURL(imageFile) : ""),
@@ -86,7 +84,6 @@ export default function AddProductPage() {
       company,
       slug,
       benefits: benefits.trim(),
-      productTitle: productTitle.trim(),
       applications: cleanedApplications,
       image: imageFile
         ? {
@@ -100,17 +97,7 @@ export default function AddProductPage() {
         createdAt: new Date().toISOString(),
       },
     };
-  }, [
-    productName,
-    materialName,
-    category,
-    company,
-    slug,
-    benefits,
-    productTitle,
-    applications,
-    imageFile,
-  ]);
+  }, [productName, materialName, category, company, slug, benefits, applications, imageFile]);
 
   const validate = () => {
     if (!payload.productName) return "Product name is required";
@@ -132,7 +119,6 @@ export default function AddProductPage() {
     setCategory("");
     setCompany("");
     setBenefits("");
-    setProductTitle("");
     setApplications([{ ...EMPTY_APPLICATION }]);
     setImageFile(null);
   };
@@ -284,21 +270,8 @@ export default function AddProductPage() {
                         </select>
                       </div>
                     </div>
-                    <div className="form-row">
-                      <div className="form-group col-md-6">
-                        <label htmlFor="productTitle">Product Title</label>
-                        <input
-                          id="productTitle"
-                          type="text"
-                          className="form-control"
-                          placeholder="Headline for marketing copy"
-                          value={productTitle}
-                          onChange={(event) => setProductTitle(event.target.value)}
-                        />
-                      </div>
-                    </div>
                     <div className="form-group mb-0">
-                      <label htmlFor="benefits">Benefits & Usage Overview</label>
+                      <label htmlFor="benefits">উপকারিতা ও ব্যবহার সংক্ষেপ</label>
                       <textarea
                         id="benefits"
                         className="form-control"

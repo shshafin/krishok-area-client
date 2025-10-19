@@ -11,12 +11,6 @@ const fakeSubmit = (payload) =>
     }, time);
   });
 
-const STATUS_OPTIONS = [
-  { value: "published", label: "Published" },
-  { value: "draft", label: "Draft" },
-  { value: "archived", label: "Archived" },
-];
-
 const normalizeSlug = (value) =>
   value
     .normalize("NFD")
@@ -28,48 +22,38 @@ const normalizeSlug = (value) =>
 export default function AddCompanyCategoryPage() {
   const [banglaName, setBanglaName] = useState("");
   const [englishName, setEnglishName] = useState("");
-  const [title, setTitle] = useState("");
-  const [status, setStatus] = useState("published");
   const [location, setLocation] = useState("");
-  const [notes, setNotes] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
   const slug = useMemo(() => {
-    const base = title.trim() || englishName.trim() || banglaName.trim();
+    const base = englishName.trim() || banglaName.trim();
     return base ? normalizeSlug(base) : "";
-  }, [title, englishName, banglaName]);
+  }, [englishName, banglaName]);
 
   const payload = useMemo(
     () => ({
       banglaName: banglaName.trim(),
       englishName: englishName.trim(),
-      title: title.trim(),
       slug,
-      status,
       location: location.trim(),
-      notes: notes.trim(),
       meta: {
         createdBy: "admin",
         createdAt: new Date().toISOString(),
       },
     }),
-    [banglaName, englishName, title, slug, status, location, notes]
+    [banglaName, englishName, slug, location]
   );
 
   const validate = () => {
     if (!payload.banglaName) return "Company name in Bangla is required";
     if (!payload.englishName) return "Company name in English is required";
-    if (!payload.title) return "Company title is required";
     return null;
   };
 
   const resetFields = () => {
     setBanglaName("");
     setEnglishName("");
-    setTitle("");
-    setStatus("published");
     setLocation("");
-    setNotes("");
   };
 
   const handleSubmit = async (event) => {
@@ -158,35 +142,6 @@ export default function AddCompanyCategoryPage() {
                       </div>
                     </div>
                     <div className="form-group">
-                      <label htmlFor="title">
-                        Company Title <span className="text-danger">*</span>
-                      </label>
-                      <input
-                        id="title"
-                        type="text"
-                        className="form-control"
-                        placeholder="Company headline or slogan"
-                        value={title}
-                        onChange={(event) => setTitle(event.target.value)}
-                        required
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="status">Status</label>
-                      <select
-                        id="status"
-                        className="form-control"
-                        value={status}
-                        onChange={(event) => setStatus(event.target.value)}
-                      >
-                        {STATUS_OPTIONS.map((option) => (
-                          <option key={option.value} value={option.value}>
-                            {option.label}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <div className="form-group">
                       <label htmlFor="location">Location</label>
                       <input
                         id="location"
@@ -195,17 +150,6 @@ export default function AddCompanyCategoryPage() {
                         placeholder="Enter company location (e.g., Dhaka, Bangladesh)"
                         value={location}
                         onChange={(event) => setLocation(event.target.value)}
-                      />
-                    </div>
-                    <div className="form-group mb-0">
-                      <label htmlFor="notes">Notes</label>
-                      <textarea
-                        id="notes"
-                        className="form-control"
-                        rows={4}
-                        placeholder="Internal notes, partnerships, history, etc."
-                        value={notes}
-                        onChange={(event) => setNotes(event.target.value)}
                       />
                     </div>
                   </div>

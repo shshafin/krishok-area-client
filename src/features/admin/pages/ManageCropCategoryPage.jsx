@@ -16,42 +16,36 @@ const RAW_CATEGORIES = [
     banglaName: "পটল",
     englishName: "Potol",
     categoryName: "ক্ষতিকর পোকামাকড়",
-    status: 0,
   },
   {
     id: 22,
     banglaName: "পেপে",
     englishName: "Pepe",
     categoryName: "রোগবালাই",
-    status: 0,
   },
   {
     id: 23,
     banglaName: "ধান",
     englishName: "Rice",
     categoryName: "ক্ষতিকর পোকামাকড়",
-    status: 0,
   },
   {
     id: 24,
     banglaName: "টমেটো",
     englishName: "Tomato",
     categoryName: "রোগবালাই",
-    status: 1,
   },
   {
     id: 25,
     banglaName: "আলু",
     englishName: "Potato",
     categoryName: "সার প্রয়োগ",
-    status: 1,
   },
   {
     id: 26,
     banglaName: "গম",
     englishName: "Wheat",
     categoryName: "আবহাওয়া সতর্কতা",
-    status: 1,
   },
 ];
 
@@ -63,7 +57,6 @@ const normalizeCategory = (category, index) => {
     banglaName: category.banglaName ?? "",
     englishName: category.englishName ?? "",
     categoryName: category.categoryName ?? "",
-    status: Number.isFinite(category.status) ? category.status : 0,
   };
 };
 
@@ -261,15 +254,6 @@ export default function ManageCropCategoryPage() {
                       render: (row) => (
                         <div className="d-flex">
                           <h5 className={highlightClass(row.categoryName)}>{row.categoryName}</h5>
-                        </div>
-                      ),
-                    },
-                    {
-                      key: "status",
-                      label: "Crop Category Status",
-                      render: (row) => (
-                        <div className="d-flex">
-                          <h5>{row.status}</h5>
                         </div>
                       ),
                     },

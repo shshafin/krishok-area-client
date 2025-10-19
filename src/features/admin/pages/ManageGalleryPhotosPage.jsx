@@ -8,12 +8,6 @@ import DeleteBadgeIcon from "@/assets/IconComponents/DeleteBadgeIcon";
 const INITIAL_BATCH = 12;
 const LOAD_MORE_BATCH = 12;
 
-const STATUS_LABEL = {
-  published: "Published",
-  draft: "Draft",
-  archived: "Archived",
-};
-
 const DESCRIPTION_BANK = [
   "Harvest-ready shoots after 90 days of integrated pest management.",
   "Evening golden hour over the paddy fields before irrigation.",
@@ -26,8 +20,6 @@ const DESCRIPTION_BANK = [
 ];
 
 const UPLOADERS = ["Md. Mosarrof Hossain", "Rana Khan", "Konika Mk", "Shoriful Islam", "Torikul Islam"];
-const STATUS_VARIANTS = ["published", "draft", "published", "published", "archived"];
-
 const BASE_TIME = new Date("2024-10-18T07:00:00Z").getTime();
 
 const RAW_PHOTOS = Array.from({ length: 60 }, (_, index) => {
@@ -39,7 +31,6 @@ const RAW_PHOTOS = Array.from({ length: 60 }, (_, index) => {
     imageUrl: `https://picsum.photos/seed/admin-gallery-${index}/720/480`,
     createdAt: createdAt.toISOString(),
     uploadedBy: UPLOADERS[index % UPLOADERS.length],
-    status: STATUS_VARIANTS[index % STATUS_VARIANTS.length] ?? "published",
   };
 });
 
@@ -53,7 +44,6 @@ const normalizePhoto = (photo, index) => {
     imageUrl: photo.imageUrl ?? "",
     createdAt: photo.createdAt ?? new Date().toISOString(),
     uploadedBy: photo.uploadedBy ?? "",
-    status: photo.status ?? "published",
   };
 };
 
@@ -132,7 +122,6 @@ export default function ManageGalleryPhotosPage() {
       return (
         photo.description.toLowerCase().includes(term) ||
         photo.uploadedBy.toLowerCase().includes(term) ||
-        photo.status.toLowerCase().includes(term) ||
         String(photo.id).includes(term)
       );
     });
@@ -297,16 +286,9 @@ export default function ManageGalleryPhotosPage() {
                         </div>
                         <footer className="manage-gallery-footer">
                           <div className="manage-gallery-info">
-                            <span className="manage-gallery-label">Uploaded by</span>
-                            <span className="manage-gallery-uploader">{photo.uploadedBy}</span>
                             <span className="manage-gallery-time">{formatTimestamp(photo.createdAt)}</span>
                           </div>
                           <div className="manage-gallery-actions">
-                            <span
-                              className={`manage-gallery-status manage-gallery-status--${photo.status}`}
-                            >
-                              {STATUS_LABEL[photo.status] ?? photo.status}
-                            </span>
                             <button
                               type="button"
                               className="admin-icon-btn admin-icon-btn--delete manage-gallery-delete"
