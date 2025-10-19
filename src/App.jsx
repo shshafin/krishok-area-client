@@ -36,9 +36,9 @@ const AddCompanyCategoryPage = lazy(() => import("./features/admin/pages/AddComp
 const AddProductPage = lazy(() => import("./features/admin/pages/AddProductPage"));
 const ManagePostsPage = lazy(() => import("./features/admin/pages/ManagePostsPage"));
 const AddDistrictPage = lazy(() => import("./features/admin/pages/AddDistrictPage"));
-const ManageGalleryVideosPage = lazy(() => import("./features/admin/pages/ManageGalleryVideosPage"));
 const ManageGalleryPhotosPage = lazy(() => import("./features/admin/pages/ManageGalleryPhotosPage"));
 const ManageCropCategoryPage = lazy(() => import("./features/admin/pages/ManageCropCategoryPage"));
+const ManageNotificationsPage = lazy(() => import("./features/admin/pages/ManageNotificationsPage"));
 
 function App() {
   const location = useLocation();
@@ -241,7 +241,6 @@ function App() {
           <Route path="profile/edit" element={<EditProfilePage />} />
           <Route path="media/add-photo" element={<AddPhotosPage />} />
           <Route path="media/add-video" element={<AddVideosPage />} />
-          <Route path="media/manage-video" element={<ManageGalleryVideosPage />} />
           <Route path="media/manage-gallery-photo" element={<ManageGalleryPhotosPage />} />
           <Route path="companies/add-category" element={<AddCompanyCategoryPage />} />
           <Route path="posts/manage" element={<ManagePostsPage />} />
@@ -250,6 +249,7 @@ function App() {
           <Route path="crops/manage-category" element={<ManageCropCategoryPage />} />
           <Route path="products/add" element={<AddProductPage />} />
           <Route path="locations/add-district" element={<AddDistrictPage />} />
+          <Route path="notifications/manage" element={<ManageNotificationsPage />} />
         </Route>
       </Routes>
     </>
