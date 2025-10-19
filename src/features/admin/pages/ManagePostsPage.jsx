@@ -6,6 +6,7 @@ import { Video } from "yet-another-react-lightbox/plugins";
 import DeleteOutlineIcon from "@/assets/IconComponents/DeleteOutlineIcon";
 import HeartOutlineIcon from "@/assets/IconComponents/HeartOutlineIcon";
 import CommentBubbleIcon from "@/assets/IconComponents/CommentBubbleIcon";
+import "../styles/adminScoped.css";
 
 const PAGE_SIZE = 5;
 

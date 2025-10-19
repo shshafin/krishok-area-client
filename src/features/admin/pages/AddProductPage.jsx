@@ -27,12 +27,6 @@ const COMPANY_OPTIONS = [
   { value: "bayer", label: "বায়ার কেয়ার" },
 ];
 
-const STATUS_OPTIONS = [
-  { value: "published", label: "Published" },
-  { value: "draft", label: "Draft" },
-  { value: "archived", label: "Archived" },
-];
-
 const MAX_IMAGE_SIZE = 6 * 1024 * 1024;
 const EMPTY_APPLICATION = { crop: "", pest: "", dosage: "", instruction: "" };
 
@@ -49,13 +43,11 @@ export default function AddProductPage() {
   const [materialName, setMaterialName] = useState("");
   const [category, setCategory] = useState("");
   const [company, setCompany] = useState("");
-  const [status, setStatus] = useState("published");
   const [benefits, setBenefits] = useState("");
   const [productTitle, setProductTitle] = useState("");
   const [applications, setApplications] = useState([{ ...EMPTY_APPLICATION }]);
   const [imageFile, setImageFile] = useState(null);
   const [submitting, setSubmitting] = useState(false);
-  const [lastSubmitted, setLastSubmitted] = useState(null);
 
   const slug = useMemo(
     () =>
@@ -91,7 +83,6 @@ export default function AddProductPage() {
       materialName: materialName.trim(),
       category,
       company,
-      status,
       slug,
       benefits: benefits.trim(),
       productTitle: productTitle.trim(),
@@ -113,7 +104,6 @@ export default function AddProductPage() {
     materialName,
     category,
     company,
-    status,
     slug,
     benefits,
     productTitle,
@@ -140,7 +130,6 @@ export default function AddProductPage() {
     setMaterialName("");
     setCategory("");
     setCompany("");
-    setStatus("published");
     setBenefits("");
     setProductTitle("");
     setApplications([{ ...EMPTY_APPLICATION }]);
@@ -158,8 +147,7 @@ export default function AddProductPage() {
     setSubmitting(true);
     const toastId = toast.loading("Saving product...");
     try {
-      const response = await fakeSubmit(payload);
-      setLastSubmitted({ id: response.id, ...payload });
+      await fakeSubmit(payload);
       toast.success("Product saved!", { id: toastId });
       resetForm();
     } catch (err) {
@@ -219,8 +207,8 @@ export default function AddProductPage() {
       <section className="content">
         <div className="container-fluid">
           <form onSubmit={handleSubmit}>
-            <div className="row">
-              <div className="col-lg-8">
+            <div className="row justify-content-center">
+              <div className="col-lg-8 col-12">
                 <div className="card card-outline card-primary mb-3">
                   <div className="card-header">
                     <h3 className="card-title mb-0">Product Information</h3>
@@ -297,21 +285,6 @@ export default function AddProductPage() {
                     </div>
                     <div className="form-row">
                       <div className="form-group col-md-6">
-                        <label htmlFor="status">Product Status</label>
-                        <select
-                          id="status"
-                          className="form-control"
-                          value={status}
-                          onChange={(event) => setStatus(event.target.value)}
-                        >
-                          {STATUS_OPTIONS.map((option) => (
-                            <option key={option.value} value={option.value}>
-                              {option.label}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                      <div className="form-group col-md-6">
                         <label htmlFor="productTitle">Product Title</label>
                         <input
                           id="productTitle"
@@ -329,7 +302,7 @@ export default function AddProductPage() {
                         id="benefits"
                         className="form-control"
                         rows={4}
-                        placeholder="Describe how the product helps farmers, safety guidelines, etc."
+                        placeholder="ব্যবহারের সুবিধা গুলো"
                         value={benefits}
                         onChange={(event) => setBenefits(event.target.value)}
                       />
@@ -461,71 +434,19 @@ export default function AddProductPage() {
                     </div>
                   </div>
                 </div>
-              </div>
-
-              <div className="col-lg-4">
-                <div className="card card-outline card-secondary mb-3">
-                  <div className="card-header">
-                    <h3 className="card-title mb-0">Summary</h3>
-                  </div>
+                <div className="card card-outline card-success mt-3">
                   <div className="card-body">
-                    <dl className="mb-0">
-                      <dt>Product Name</dt>
-                      <dd>{payload.productName || "—"}</dd>
-                      <dt>Material Name</dt>
-                      <dd>{payload.materialName || "—"}</dd>
-                      <dt>Category</dt>
-                      <dd>
-                        {CATEGORY_OPTIONS.find((opt) => opt.value === category)?.label || "—"}
-                      </dd>
-                      <dt>Company</dt>
-                      <dd>
-                        {COMPANY_OPTIONS.find((opt) => opt.value === company)?.label || "—"}
-                      </dd>
-                      <dt>Status</dt>
-                      <dd>{STATUS_OPTIONS.find((opt) => opt.value === status)?.label}</dd>
-                      <dt>Slug</dt>
-                      <dd>{slug || "Auto-generated"}</dd>
-                      <dt>Application Rows</dt>
-                      <dd>{payload.applications.length}</dd>
-                    </dl>
-                  </div>
-                </div>
-
-                <div className="card card-outline card-dark mb-3">
-                  <div className="card-header">
-                    <h3 className="card-title mb-0">Submission JSON</h3>
-                  </div>
-                  <div className="card-body" style={{ maxHeight: 320, overflowY: "auto" }}>
-                    <pre className="small mb-0">
-{JSON.stringify(lastSubmitted ?? payload, null, 2)}
-                    </pre>
-                  </div>
-                </div>
-
-                <div className="card card-outline card-success">
-                  <div className="card-body d-flex justify-content-between align-items-center">
                     <button
-                      type="button"
-                      className="btn btn-outline-secondary"
-                      onClick={() => {
-                        resetForm();
-                        setLastSubmitted(null);
-                      }}
+                      type="submit"
+                      className="btn btn-primary btn-lg w-100 mb-2"
                       disabled={submitting}
                     >
-                      Reset
-                    </button>
-                    <button type="submit" className="btn btn-primary" disabled={submitting}>
                       {submitting ? "Saving..." : "Save Product"}
                     </button>
+                    <a href="/admin/products/manage-details" className="btn btn-outline-secondary w-100">
+                      Manage Product Details
+                    </a>
                   </div>
-                </div>
-
-                <div className="text-right mt-3">
-                  <a href="/admin/products/manage-details" className="btn btn-link p-0">
-                    Manage Product Details
-                  </a>
                 </div>
               </div>
             </div>

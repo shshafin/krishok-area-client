@@ -208,26 +208,54 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
+  padding: 0.3rem;
   border-radius: 999px;
-  border: 1px solid transparent;
-  background: rgba(15, 23, 42, 0.04);
-  padding: 0;
-  transition: background 0.2s ease, transform 0.15s ease, border-color 0.2s ease;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  background: #ffffff;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  cursor: pointer;
 }
 
 ._scoped_admin .admin-icon-btn svg {
   pointer-events: none;
+  width: 18px;
+  height: 18px;
+  display: block;
 }
 
 ._scoped_admin .admin-icon-btn:hover,
-._scoped_admin .admin-icon-btn:focus {
+._scoped_admin .admin-icon-btn:focus-visible {
   transform: translateY(-1px);
+  border-color: rgba(74, 144, 226, 0.45);
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.12);
 }
 
 ._scoped_admin .admin-icon-btn:active {
   transform: scale(0.96);
+}
+
+._scoped_admin .admin-icon-btn--edit {
+  background: rgba(74, 144, 226, 0.12) !important;
+  border-color: rgba(74, 144, 226, 0.35);
+}
+
+._scoped_admin .admin-icon-btn--edit:hover,
+._scoped_admin .admin-icon-btn--edit:focus-visible {
+  border-color: rgba(74, 144, 226, 0.5) !important;
+}
+
+._scoped_admin .admin-icon-btn--delete {
+  background: rgba(255, 0, 33, 0.1) !important;
+  border-color: rgba(255, 0, 33, 0.3);
+}
+
+._scoped_admin .admin-icon-btn--delete:hover,
+._scoped_admin .admin-icon-btn--delete:focus-visible {
+  border-color: rgba(255, 0, 33, 0.45);
+}
+
+._scoped_admin .admin-icon-btn svg path {
+  fill: none;
 }
 
 ._scoped_admin .admin-login-btn {
@@ -357,6 +385,40 @@
 ._scoped_admin .manage-post-stat svg {
   width: 18px;
   height: 18px;
+}
+
+._scoped_admin .companyprosearch {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+._scoped_admin .companyprosearch__field {
+  position: relative;
+  width: min(520px, 100%);
+  margin: 0 auto;
+}
+
+._scoped_admin .companyprosearch__input {
+  width: 100%;
+  padding-left: 2.75rem;
+}
+
+._scoped_admin .companyprosearch__icon {
+  position: absolute;
+  top: 50%;
+  left: 1rem;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+._scoped_admin .admin-icon-btn:focus-visible {
+  outline: 2px solid rgba(74, 144, 226, 0.4);
+  outline-offset: 2px;
+}
+
+._scoped_admin .admin-icon-btn + .admin-icon-btn {
+  margin-left: 0.5rem;
 }
 
 ._scoped_admin .admin-lightbox-backdrop {

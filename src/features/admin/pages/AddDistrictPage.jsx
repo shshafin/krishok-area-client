@@ -43,11 +43,9 @@ export default function AddDistrictPage() {
   const [division, setDivision] = useState("");
   const [status, setStatus] = useState("published");
   const [description, setDescription] = useState("");
-  const [tags, setTags] = useState("");
   const [photoFile, setPhotoFile] = useState(null);
   const [mapFile, setMapFile] = useState(null);
   const [submitting, setSubmitting] = useState(false);
-  const [lastSubmitted, setLastSubmitted] = useState(null);
 
   const slug = useMemo(() => {
     const base = nameEn.trim() || nameBn.trim();
@@ -77,10 +75,6 @@ export default function AddDistrictPage() {
       division,
       status,
       slug,
-      tags: tags
-        .split(",")
-        .map((item) => item.trim())
-        .filter(Boolean),
       description: description.trim(),
       media: {
         photo: photoFile
@@ -95,7 +89,7 @@ export default function AddDistrictPage() {
         createdAt: new Date().toISOString(),
       },
     }),
-    [nameBn, nameEn, division, status, slug, tags, description, photoFile, mapFile]
+    [nameBn, nameEn, division, status, slug, description, photoFile, mapFile]
   );
 
   const validate = () => {
@@ -117,7 +111,6 @@ export default function AddDistrictPage() {
     setDivision("");
     setStatus("published");
     setDescription("");
-    setTags("");
     setPhotoFile(null);
     setMapFile(null);
   };
@@ -133,8 +126,7 @@ export default function AddDistrictPage() {
     setSubmitting(true);
     const toastId = toast.loading("Saving district...");
     try {
-      const response = await fakeSubmit(payload);
-      setLastSubmitted({ id: response.id, ...payload });
+      await fakeSubmit(payload);
       toast.success("District saved!", { id: toastId });
       resetForm();
     } catch (err) {
@@ -171,8 +163,8 @@ export default function AddDistrictPage() {
       <section className="content">
         <div className="container-fluid">
           <form onSubmit={handleSubmit}>
-            <div className="row">
-              <div className="col-lg-8">
+            <div className="row justify-content-center">
+              <div className="col-lg-8 col-12">
                 <div className="card card-outline card-primary mb-3">
                   <div className="card-header">
                     <h3 className="card-title mb-0">District Information</h3>
@@ -242,17 +234,6 @@ export default function AddDistrictPage() {
                           ))}
                         </select>
                       </div>
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="tags">Tags</label>
-                      <input
-                        id="tags"
-                        type="text"
-                        className="form-control"
-                        placeholder="Comma separated tags (e.g., কৃষি, ভ্রমণ, ইতিহাস)"
-                        value={tags}
-                        onChange={(event) => setTags(event.target.value)}
-                      />
                     </div>
                     <div className="form-group mb-0">
                       <label htmlFor="description">
@@ -340,67 +321,15 @@ export default function AddDistrictPage() {
                     </div>
                   </div>
                 </div>
-              </div>
-
-              <div className="col-lg-4">
-                <div className="card card-outline card-secondary mb-3">
-                  <div className="card-header">
-                    <h3 className="card-title mb-0">Summary</h3>
-                  </div>
+                <div className="card card-outline card-success mt-3">
                   <div className="card-body">
-                    <dl className="mb-0">
-                      <dt>District</dt>
-                      <dd>{payload.nameBn || "—"}</dd>
-                      <dt>English Name</dt>
-                      <dd>{payload.nameEn || "—"}</dd>
-                      <dt>Division</dt>
-                      <dd>
-                        {DIVISION_OPTIONS.find((opt) => opt.value === division)?.label || "—"}
-                      </dd>
-                      <dt>Status</dt>
-                      <dd>{STATUS_OPTIONS.find((opt) => opt.value === status)?.label}</dd>
-                      <dt>Slug</dt>
-                      <dd>{slug || "Auto-generated"}</dd>
-                      <dt>Tags</dt>
-                      <dd>{payload.tags.length ? payload.tags.join(", ") : "—"}</dd>
-                    </dl>
-                  </div>
-                </div>
-
-                <div className="card card-outline card-dark mb-3">
-                  <div className="card-header">
-                    <h3 className="card-title mb-0">Submission JSON</h3>
-                  </div>
-                  <div className="card-body" style={{ maxHeight: 320, overflowY: "auto" }}>
-                    <pre className="small mb-0">
-{JSON.stringify(lastSubmitted ?? payload, null, 2)}
-                    </pre>
-                  </div>
-                </div>
-
-                <div className="card card-outline card-success">
-                  <div className="card-body d-flex justify-content-between align-items-center">
-                    <button
-                      type="button"
-                      className="btn btn-outline-secondary"
-                      onClick={() => {
-                        resetForm();
-                        setLastSubmitted(null);
-                      }}
-                      disabled={submitting}
-                    >
-                      Reset
-                    </button>
-                    <button type="submit" className="btn btn-primary" disabled={submitting}>
+                    <button type="submit" className="btn btn-primary btn-lg w-100 mb-2" disabled={submitting}>
                       {submitting ? "Saving..." : "Save District"}
                     </button>
+                    <a href="/admin/locations/manage-district" className="btn btn-outline-secondary w-100">
+                      Manage Districts
+                    </a>
                   </div>
-                </div>
-
-                <div className="text-right mt-3">
-                  <a href="/admin/locations/manage-district" className="btn btn-link p-0">
-                    Manage Districts
-                  </a>
                 </div>
               </div>
             </div>

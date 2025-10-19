@@ -1,5 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import "../styles/adminScoped.css";
+import EditBadgeIcon from "@/assets/IconComponents/EditBadgeIcon";
+import DeleteBadgeIcon from "@/assets/IconComponents/DeleteBadgeIcon";
+import SearchIcon from "@/assets/IconComponents/SearchIcon";
 
 const STORAGE_KEY = "admin.manageCropCategory";
 const CATEGORY_OPTIONS = ["ক্ষতিকর পোকামাকড়", "রোগবালাই", "সার প্রয়োগ", "আবহাওয়া সতর্কতা"];
@@ -207,7 +211,7 @@ export default function ManageCropCategoryPage() {
                 <div className="input-group" style={{ maxWidth: 340 }}>
                   <div className="input-group-prepend">
                     <span className="input-group-text">
-                      <i className="fas fa-search" aria-hidden="true"></i>
+                      <SearchIcon size={18} color="#64748b" />
                     </span>
                   </div>
                   <input
@@ -269,18 +273,20 @@ export default function ManageCropCategoryPage() {
                           <td className="cropandcompanydeletbtn">
                             <button
                               type="button"
-                              className="admincropctgeditbtn btn btn-primary btn-sm"
+                              className="admin-icon-btn admin-icon-btn--edit"
                               data-cid={category.id}
                               onClick={() => handleEditStart(category)}
+                              aria-label={`Edit crop category ${category.banglaName}`}
                             >
-                              Edit
+                              <EditBadgeIcon size={30} />
                             </button>
                             <button
                               type="button"
-                              className="btn btn-outline-danger btn-sm ml-2"
+                              className="admin-icon-btn admin-icon-btn--delete"
                               onClick={() => handleDelete(category)}
+                              aria-label={`Delete crop category ${category.banglaName}`}
                             >
-                              Delete
+                              <DeleteBadgeIcon size={30} />
                             </button>
                           </td>
                         </tr>

@@ -56,15 +56,6 @@ export default function EditProfilePage() {
     }, 3000);
   };
 
-  const handleReset = () => {
-    setForm(() => ({ ...PROFILE_DEFAULTS }));
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = null;
-    }
-    setStatus("idle");
-  };
-
   const socialSummary = useMemo(
     () =>
       ["facebook", "twitter", "linkedin", "youtube"].filter(
@@ -103,7 +94,7 @@ export default function EditProfilePage() {
 
       <section className="content">
         <div className="container-fluid">
-          <form onSubmit={handleSubmit} onReset={handleReset}>
+          <form onSubmit={handleSubmit}>
             <div className="row">
               <div className="col-lg-8">
                 <div className="card card-primary card-outline mb-3">
@@ -359,14 +350,9 @@ export default function EditProfilePage() {
 
                 <div className="card card-outline card-light">
                   <div className="card-body d-flex justify-content-between align-items-center">
-                    <div>
-                      <button type="reset" className="btn btn-outline-secondary mr-2">
-                        Reset
-                      </button>
-                      <button type="submit" className="btn btn-primary">
-                        Save Changes
-                      </button>
-                    </div>
+                    <button type="submit" className="btn btn-primary">
+                      Save Changes
+                    </button>
                     {status === "saved" && (
                       <span className="text-success small font-weight-bold">
                         Saved locally

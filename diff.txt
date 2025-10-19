@@ -1,0 +1,191 @@
+﻿diff --git a/src/features/admin/pages/AddProductPage.jsx b/src/features/admin/pages/AddProductPage.jsx
+index c5537d7..b704add 100644
+--- a/src/features/admin/pages/AddProductPage.jsx
++++ b/src/features/admin/pages/AddProductPage.jsx
+@@ -1,4 +1,4 @@
+-import React, { useEffect, useMemo, useState } from "react";
++∩╗┐import React, { useEffect, useMemo, useState } from "react";
+ import toast, { Toaster } from "react-hot-toast";
+ 
+ const fakeSubmit = (payload) =>
+@@ -11,20 +11,20 @@ const fakeSubmit = (payload) =>
+   });
+ 
+ const CATEGORY_OPTIONS = [
+-  { value: "herbicide", label: "αªåαªùαª╛αª¢αª╛αª¿αª╛αª╢αªò" },
+-  { value: "insecticide", label: "αªòαºÇαªƒαª¿αª╛αª╢αªò" },
+-  { value: "fungicide", label: "αª¢αªñαºìαª░αª╛αªòαª¿αª╛αª╢αªò" },
+-  { value: "micronutrient", label: "αªàαª¿αºüαªûαª╛αªªαºìαª»" },
++  { value: "herbicide", label: "╬▒┬¬├Ñ╬▒┬¬├╣╬▒┬¬Γò¢╬▒┬¬┬ó╬▒┬¬Γò¢╬▒┬¬┬┐╬▒┬¬Γò¢╬▒┬¬Γòó╬▒┬¬├▓" },
++  { value: "insecticide", label: "╬▒┬¬├▓╬▒┬║├ç╬▒┬¬╞Æ╬▒┬¬┬┐╬▒┬¬Γò¢╬▒┬¬Γòó╬▒┬¬├▓" },
++  { value: "fungicide", label: "╬▒┬¬┬ó╬▒┬¬├▒╬▒┬║├¼╬▒┬¬Γûæ╬▒┬¬Γò¢╬▒┬¬├▓╬▒┬¬┬┐╬▒┬¬Γò¢╬▒┬¬Γòó╬▒┬¬├▓" },
++  { value: "micronutrient", label: "╬▒┬¬├á╬▒┬¬┬┐╬▒┬║├╝╬▒┬¬├╗╬▒┬¬Γò¢╬▒┬¬┬¬╬▒┬║├¼╬▒┬¬┬╗" },
+ ];
+ 
+ const COMPANY_OPTIONS = [
+-  { value: "aci-crop-care", label: "αªÅ αª╕αª┐ αªåαªç αªòαºìαª░αª¬ αªòαºçαºƒαª╛αª░" },
+-  { value: "auto-crop-care", label: "αªàαªƒαºï αªòαºìαª░αª¬ αªòαºçαºƒαª╛αª░ αª▓αª┐αªâ" },
+-  { value: "importer-list", label: "αªåαª«αªªαª╛αª¿αºÇ αªô αª¬αª░αª┐αª¼αºçαª╢αªò αªñαª╛αª▓αª┐αªòαª╛αª╕αª«αºéαª╣" },
+-  { value: "syngenta", label: "αª╕αª┐αª¿αª£αºçαª¿αªƒαª╛" },
+-  { value: "abcd", label: "αªÅαª¼αª┐αª╕αª┐αªíαª┐ Agro" },
+-  { value: "abedin", label: "αªåαª¼αºçαªªαª┐αª¿ αªòαºìαª░αª¬ αªòαºçαºƒαª╛αª░ αª▓αª┐αªâ" },
+-  { value: "bayer", label: "αª¼αª╛αºƒαª╛αª░ αªòαºçαºƒαª╛αª░" },
++  { value: "aci-crop-care", label: "╬▒┬¬├à ╬▒┬¬Γòò╬▒┬¬ΓöÉ ╬▒┬¬├Ñ╬▒┬¬├º ╬▒┬¬├▓╬▒┬║├¼╬▒┬¬Γûæ╬▒┬¬┬¼ ╬▒┬¬├▓╬▒┬║├º╬▒┬║╞Æ╬▒┬¬Γò¢╬▒┬¬Γûæ" },
++  { value: "auto-crop-care", label: "╬▒┬¬├á╬▒┬¬╞Æ╬▒┬║├» ╬▒┬¬├▓╬▒┬║├¼╬▒┬¬Γûæ╬▒┬¬┬¼ ╬▒┬¬├▓╬▒┬║├º╬▒┬║╞Æ╬▒┬¬Γò¢╬▒┬¬Γûæ ╬▒┬¬Γûô╬▒┬¬ΓöÉ╬▒┬¬├ó" },
++  { value: "importer-list", label: "╬▒┬¬├Ñ╬▒┬¬┬½╬▒┬¬┬¬╬▒┬¬Γò¢╬▒┬¬┬┐╬▒┬║├ç ╬▒┬¬├┤ ╬▒┬¬┬¼╬▒┬¬Γûæ╬▒┬¬ΓöÉ╬▒┬¬┬╝╬▒┬║├º╬▒┬¬Γòó╬▒┬¬├▓ ╬▒┬¬├▒╬▒┬¬Γò¢╬▒┬¬Γûô╬▒┬¬ΓöÉ╬▒┬¬├▓╬▒┬¬Γò¢╬▒┬¬Γòò╬▒┬¬┬½╬▒┬║├⌐╬▒┬¬Γòú" },
++  { value: "syngenta", label: "╬▒┬¬Γòò╬▒┬¬ΓöÉ╬▒┬¬┬┐╬▒┬¬┬ú╬▒┬║├º╬▒┬¬┬┐╬▒┬¬╞Æ╬▒┬¬Γò¢" },
++  { value: "abcd", label: "╬▒┬¬├à╬▒┬¬┬╝╬▒┬¬ΓöÉ╬▒┬¬Γòò╬▒┬¬ΓöÉ╬▒┬¬├¡╬▒┬¬ΓöÉ Agro" },
++  { value: "abedin", label: "╬▒┬¬├Ñ╬▒┬¬┬╝╬▒┬║├º╬▒┬¬┬¬╬▒┬¬ΓöÉ╬▒┬¬┬┐ ╬▒┬¬├▓╬▒┬║├¼╬▒┬¬Γûæ╬▒┬¬┬¼ ╬▒┬¬├▓╬▒┬║├º╬▒┬║╞Æ╬▒┬¬Γò¢╬▒┬¬Γûæ ╬▒┬¬Γûô╬▒┬¬ΓöÉ╬▒┬¬├ó" },
++  { value: "bayer", label: "╬▒┬¬┬╝╬▒┬¬Γò¢╬▒┬║╞Æ╬▒┬¬Γò¢╬▒┬¬Γûæ ╬▒┬¬├▓╬▒┬║├º╬▒┬║╞Æ╬▒┬¬Γò¢╬▒┬¬Γûæ" },
+ ];
+ 
+ const STATUS_OPTIONS = [
+@@ -55,7 +55,6 @@ export default function AddProductPage() {
+   const [applications, setApplications] = useState([{ ...EMPTY_APPLICATION }]);
+   const [imageFile, setImageFile] = useState(null);
+   const [submitting, setSubmitting] = useState(false);
+-  const [lastSubmitted, setLastSubmitted] = useState(null);
+ 
+   const slug = useMemo(
+     () =>
+@@ -158,8 +157,7 @@ export default function AddProductPage() {
+     setSubmitting(true);
+     const toastId = toast.loading("Saving product...");
+     try {
+-      const response = await fakeSubmit(payload);
+-      setLastSubmitted({ id: response.id, ...payload });
++      await fakeSubmit(payload);
+       toast.success("Product saved!", { id: toastId });
+       resetForm();
+     } catch (err) {
+@@ -388,10 +386,10 @@ export default function AddProductPage() {
+                       <table className="table table-bordered">
+                         <thead className="thead-light">
+                           <tr>
+-                            <th>αª½αª╕αª▓</th>
+-                            <th>αª¼αª╛αª▓αª╛αªç</th>
+-                            <th>αª«αª╛αªñαºìαª░αª╛</th>
+-                            <th>αª¼αºìαª»αª¼αª╣αª╛αª░αª¼αª┐αªºαª┐</th>
++                            <th>╬▒┬¬┬╜╬▒┬¬Γòò╬▒┬¬Γûô</th>
++                            <th>╬▒┬¬┬╝╬▒┬¬Γò¢╬▒┬¬Γûô╬▒┬¬Γò¢╬▒┬¬├º</th>
++                            <th>╬▒┬¬┬½╬▒┬¬Γò¢╬▒┬¬├▒╬▒┬║├¼╬▒┬¬Γûæ╬▒┬¬Γò¢</th>
++                            <th>╬▒┬¬┬╝╬▒┬║├¼╬▒┬¬┬╗╬▒┬¬┬╝╬▒┬¬Γòú╬▒┬¬Γò¢╬▒┬¬Γûæ╬▒┬¬┬╝╬▒┬¬ΓöÉ╬▒┬¬┬║╬▒┬¬ΓöÉ</th>
+                             <th style={{ width: 110 }}>Actions</th>
+                           </tr>
+                         </thead>
+@@ -402,7 +400,7 @@ export default function AddProductPage() {
+                                 <textarea
+                                   className="form-control"
+                                   rows={2}
+-                                  placeholder="αª½αª╕αª▓αºçαª░ αª¿αª╛αª«"
++                                  placeholder="╬▒┬¬┬╜╬▒┬¬Γòò╬▒┬¬Γûô╬▒┬║├º╬▒┬¬Γûæ ╬▒┬¬┬┐╬▒┬¬Γò¢╬▒┬¬┬½"
+                                   value={row.crop}
+                                   onChange={(event) =>
+                                     updateApplication(index, "crop", event.target.value)
+@@ -413,7 +411,7 @@ export default function AddProductPage() {
+                                 <textarea
+                                   className="form-control"
+                                   rows={2}
+-                                  placeholder="αªåαªòαºìαª░αª╛αª¿αºìαªñ αª¼αª╛αª▓αª╛αªç"
++                                  placeholder="╬▒┬¬├Ñ╬▒┬¬├▓╬▒┬║├¼╬▒┬¬Γûæ╬▒┬¬Γò¢╬▒┬¬┬┐╬▒┬║├¼╬▒┬¬├▒ ╬▒┬¬┬╝╬▒┬¬Γò¢╬▒┬¬Γûô╬▒┬¬Γò¢╬▒┬¬├º"
+                                   value={row.pest}
+                                   onChange={(event) =>
+                                     updateApplication(index, "pest", event.target.value)
+@@ -424,7 +422,7 @@ export default function AddProductPage() {
+                                 <textarea
+                                   className="form-control"
+                                   rows={2}
+-                                  placeholder="αª¬αºìαª░αºƒαºïαªùαºçαª░ αª«αª╛αªñαºìαª░αª╛"
++                                  placeholder="╬▒┬¬┬¼╬▒┬║├¼╬▒┬¬Γûæ╬▒┬║╞Æ╬▒┬║├»╬▒┬¬├╣╬▒┬║├º╬▒┬¬Γûæ ╬▒┬¬┬½╬▒┬¬Γò¢╬▒┬¬├▒╬▒┬║├¼╬▒┬¬Γûæ╬▒┬¬Γò¢"
+                                   value={row.dosage}
+                                   onChange={(event) =>
+                                     updateApplication(index, "dosage", event.target.value)
+@@ -435,7 +433,7 @@ export default function AddProductPage() {
+                                 <textarea
+                                   className="form-control"
+                                   rows={2}
+-                                  placeholder="αª¼αºìαª»αª¼αª╣αª╛αª░αª¼αª┐αªºαª┐"
++                                  placeholder="╬▒┬¬┬╝╬▒┬║├¼╬▒┬¬┬╗╬▒┬¬┬╝╬▒┬¬Γòú╬▒┬¬Γò¢╬▒┬¬Γûæ╬▒┬¬┬╝╬▒┬¬ΓöÉ╬▒┬¬┬║╬▒┬¬ΓöÉ"
+                                   value={row.instruction}
+                                   onChange={(event) =>
+                                     updateApplication(index, "instruction", event.target.value)
+@@ -464,66 +462,28 @@ export default function AddProductPage() {
+               </div>
+ 
+               <div className="col-lg-4">
+-                <div className="card card-outline card-secondary mb-3">
+-                  <div className="card-header">
+-                    <h3 className="card-title mb-0">Summary</h3>
+-                  </div>
+-                  <div className="card-body">
+-                    <dl className="mb-0">
+-                      <dt>Product Name</dt>
+-                      <dd>{payload.productName || "ΓÇö"}</dd>
+-                      <dt>Material Name</dt>
+-                      <dd>{payload.materialName || "ΓÇö"}</dd>
+-                      <dt>Category</dt>
+-                      <dd>
+-                        {CATEGORY_OPTIONS.find((opt) => opt.value === category)?.label || "ΓÇö"}
+-                      </dd>
+-                      <dt>Company</dt>
+-                      <dd>
+-                        {COMPANY_OPTIONS.find((opt) => opt.value === company)?.label || "ΓÇö"}
+-                      </dd>
+-                      <dt>Status</dt>
+-                      <dd>{STATUS_OPTIONS.find((opt) => opt.value === status)?.label}</dd>
+-                      <dt>Slug</dt>
+-                      <dd>{slug || "Auto-generated"}</dd>
+-                      <dt>Application Rows</dt>
+-                      <dd>{payload.applications.length}</dd>
+-                    </dl>
+-                  </div>
+-                </div>
+-
+-                <div className="card card-outline card-dark mb-3">
+-                  <div className="card-header">
+-                    <h3 className="card-title mb-0">Submission JSON</h3>
+-                  </div>
+-                  <div className="card-body" style={{ maxHeight: 320, overflowY: "auto" }}>
+-                    <pre className="small mb-0">
+-{JSON.stringify(lastSubmitted ?? payload, null, 2)}
+-                    </pre>
+-                  </div>
+-                </div>
+-
+-                <div className="card card-outline card-success">
+-                  <div className="card-body d-flex justify-content-between align-items-center">
++                <div className="card card-outline card-success mb-3">
++                  <div className="card-body d-flex flex-column align-items-center gap-3">
++                    <button
++                      type="submit"
++                      className="btn btn-primary w-100"
++                      disabled={submitting}
++                    >
++                      {submitting ? "Saving..." : "Save Product"}
++                    </button>
+                     <button
+                       type="button"
+-                      className="btn btn-outline-secondary"
+-                      onClick={() => {
+-                        resetForm();
+-                        setLastSubmitted(null);
+-                      }}
++                      className="btn btn-outline-secondary px-4"
++                      onClick={resetForm}
+                       disabled={submitting}
+                     >
+                       Reset
+                     </button>
+-                    <button type="submit" className="btn btn-primary" disabled={submitting}>
+-                      {submitting ? "Saving..." : "Save Product"}
+-                    </button>
+                   </div>
+                 </div>
+ 
+-                <div className="text-right mt-3">
+-                  <a href="/admin/products/manage-details" className="btn btn-link p-0">
++                <div className="text-center">
++                  <a href="/admin/products/manage-details" className="btn btn-link">
+                     Manage Product Details
+                   </a>
+                 </div>

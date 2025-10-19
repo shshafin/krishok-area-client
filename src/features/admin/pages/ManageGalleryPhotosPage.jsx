@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import "../styles/adminScoped.css";
+import SearchIcon from "@/assets/IconComponents/SearchIcon";
 
 const INITIAL_BATCH = 10;
 const LOAD_MORE_BATCH = 10;
@@ -357,7 +359,7 @@ export default function ManageGalleryPhotosPage() {
                   <div className="input-group">
                     <div className="input-group-prepend">
                       <span className="input-group-text">
-                        <i className="fas fa-search" aria-hidden="true"></i>
+                        <SearchIcon size={18} color="#64748b" />
                       </span>
                     </div>
                     <input
