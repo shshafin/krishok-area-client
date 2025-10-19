@@ -1,7 +1,16 @@
-import PropTypes from "prop-types";
+﻿import PropTypes from "prop-types";
 
-function formatCount(label, count) {
-  return `${count} ${label}`;
+function formatCount(type, count) {
+  switch (type) {
+    case "posts":
+      return `${count} টি পোস্ট করেছেন`;
+    case "followers":
+      return `${count} জন ফলো করেছে`;
+    case "following":
+      return `${count} জনকে ফলো করেছেন`;
+    default:
+      return String(count);
+  }
 }
 
 export default function ProfileOverview({
@@ -30,13 +39,13 @@ export default function ProfileOverview({
       <div className="profile-quick-actions">
         <div className="profile-stat-buttons">
           <button type="button" onClick={onOpenAllPosts}>
-            {formatCount("টি পোস্ট করেছেন", stats.posts)}
+            {formatCount("posts", stats.posts)}
           </button>
           <button type="button" onClick={onOpenFollowers}>
-            {formatCount("জন ফলো করেছে", stats.followers)}
+            {formatCount("followers", stats.followers)}
           </button>
           <button type="button" onClick={onOpenFollowing}>
-            {formatCount("জনকে ফলো করেছেন", stats.following)}
+            {formatCount("following", stats.following)}
           </button>
         </div>
 
@@ -45,7 +54,7 @@ export default function ProfileOverview({
           className={`profile-primary-button ${isOwner ? "owner" : ""}`}
           onClick={onPrimaryAction}
         >
-          {isOwner ? "Edit profile" : "Follow"}
+          {isOwner ? "edit profile" : "ফলো করুন"}
         </button>
       </div>
     </section>

@@ -11,8 +11,6 @@ export default function ProfileSidebar({
 }) {
   const [showSeedGallery, setShowSeedGallery] = useState(true);
 
-  const toggleSeedGallery = () => setShowSeedGallery((prev) => !prev);
-
   const composerButtons = [
     { label: "পোস্ট করুন", type: "text" },
     { label: "লাইভ ভিডিও", type: "video" },
@@ -66,7 +64,7 @@ export default function ProfileSidebar({
               background: "#f1f5f9",
               color: "#1f2937",
             }}
-            onClick={toggleSeedGallery}
+            onClick={() => setShowSeedGallery((prev) => !prev)}
           >
             {showSeedGallery ? "লুকান" : "দেখুন"}
           </button>

@@ -16,13 +16,13 @@ export default function AllPostsModal({ open, onClose, posts, onSelect }) {
               {post.media?.type === "video" ? (
                 <video src={post.media?.src} muted />
               ) : (
-                <img src={post.media?.src} alt={post.content || "post media"} />
+                <img src={post.media?.src} alt={post.content || "পোস্টের ছবি"} />
               )}
             </button>
           ))}
         </div>
       ) : (
-        <div className="empty-state">এখনও কোনো পোস্ট নেই</div>
+        <div className="empty-state">এখনো কোনো পোস্ট নেই</div>
       )}
     </Modal>
   );

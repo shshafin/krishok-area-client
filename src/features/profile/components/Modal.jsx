@@ -1,9 +1,6 @@
 import { useEffect } from "react";
 import PropTypes from "prop-types";
 
-/**
- * Generic modal component with backdrop and escape handling.
- */
 export default function Modal({
   open,
   onClose,
@@ -53,7 +50,7 @@ export default function Modal({
               aria-label="Close"
               onClick={onClose}
             >
-              ×
+              x
             </button>
           </div>
         )}

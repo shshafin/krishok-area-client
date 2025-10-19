@@ -1,3 +1,4 @@
+
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -13,22 +14,24 @@ import AllPostsModal from "../components/AllPostsModal";
 
 import "@/features/profile/styles/ProfilePage.css";
 
-const IMAGE_PLACEHOLDER = (seed) => `https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=900&q=80&sat=-20&blend-mode=overlay&blend-color=${seed}`;
-const AVATAR_PLACEHOLDER = (seed) => `https://i.pravatar.cc/120?u=${seed}`;
-const VIDEO_PLACEHOLDER = "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4";
+const imageFromSeed = (seed) =>
+  `https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=900&q=80&sat=-20&blend-mode=overlay&blend-color=${seed}`;
+const avatarFromSeed = (seed) => `https://i.pravatar.cc/120?u=${seed}`;
+const sampleVideo = "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4";
 
 function buildMockProfile(usernameParam) {
-  const username = usernameParam || "krishokarea";
-  const baseAvatar = AVATAR_PLACEHOLDER(username);
+  const username = usernameParam || "guest";
+  const baseAvatar = avatarFromSeed(username);
+
   const profile = {
     id: "user-1",
     username,
     name: username,
     avatar: baseAvatar,
-    bio: "প্রকৃতি প্রেমী কৃষক, কৃষির উদ্ভাবনী ধারণা শেয়ার করতে ভালোবাসি।",
+    bio: "Passionate grower sharing innovations in agriculture.",
     email: "user@example.com",
     phone: "+8801998604895",
-    division: "রাজশাহী",
+    division: "Rajshahi",
     address: "Placeat delectus v",
   };
 
@@ -41,16 +44,16 @@ function buildMockProfile(usernameParam) {
   const posts = [
     {
       id: "166",
-      content: "New video done",
+      content: "New harvest ready to share",
       createdAt: "2025-10-19T21:58:05Z",
-      media: { type: "image", src: IMAGE_PLACEHOLDER("FFEDD5") },
+      media: { type: "image", src: imageFromSeed("FFEDD5") },
       likes: 0,
       liked: false,
       author,
       comments: [
         {
           id: "199",
-          text: "Thire can be comment able",
+          text: "Looks great!",
           createdAt: "2025-10-19T22:02:23Z",
           author,
         },
@@ -58,9 +61,9 @@ function buildMockProfile(usernameParam) {
     },
     {
       id: "165",
-      content: "Logo",
+      content: "Logo concept for the new season",
       createdAt: "2025-10-19T21:57:47Z",
-      media: { type: "image", src: IMAGE_PLACEHOLDER("E0F2FE") },
+      media: { type: "image", src: imageFromSeed("E0F2FE") },
       likes: 0,
       liked: false,
       author,
@@ -68,9 +71,9 @@ function buildMockProfile(usernameParam) {
     },
     {
       id: "159",
-      content: "Post",
+      content: "Field update video",
       createdAt: "2025-10-12T16:05:32Z",
-      media: { type: "video", src: VIDEO_PLACEHOLDER },
+      media: { type: "video", src: sampleVideo },
       likes: 1,
       liked: true,
       author,
@@ -79,17 +82,17 @@ function buildMockProfile(usernameParam) {
   ];
 
   const seedItems = [
-    { id: "seed-11", image: IMAGE_PLACEHOLDER("FDE68A"), title: "Seed 1" },
-    { id: "seed-10", image: IMAGE_PLACEHOLDER("FECDD3"), title: "Seed 2" },
-    { id: "seed-8", image: IMAGE_PLACEHOLDER("E2E8F0"), title: "Seed 3" },
+    { id: "seed-11", image: imageFromSeed("FDE68A"), title: "Seed 1" },
+    { id: "seed-10", image: imageFromSeed("FECDD3"), title: "Seed 2" },
+    { id: "seed-8", image: imageFromSeed("E2E8F0"), title: "Seed 3" },
   ];
 
   const following = [
-    { id: "100", name: "New Lima Akter", username: "newlimaakter", avatar: AVATAR_PLACEHOLDER("newlimaakter") },
-    { id: "53", name: "jokar", username: "fdffdfddsfdsfc", avatar: AVATAR_PLACEHOLDER("jokar") },
-    { id: "1", name: "Md.Mosarrof Hossain", username: "mosarrofhossain", avatar: AVATAR_PLACEHOLDER("mosarrofhossain") },
-    { id: "6", name: "KOBIR", username: "firozkobir", avatar: AVATAR_PLACEHOLDER("firozkobir") },
-    { id: "17", name: "MD Majid", username: "mdmajid", avatar: AVATAR_PLACEHOLDER("mdmajid") },
+    { id: "100", name: "New Lima Akter", username: "newlimaakter", avatar: avatarFromSeed("newlimaakter") },
+    { id: "53", name: "Jokar", username: "fdffdfddsfdsfc", avatar: avatarFromSeed("jokar") },
+    { id: "1", name: "Md. Mosarrof Hossain", username: "mosarrofhossain", avatar: avatarFromSeed("mosarrofhossain") },
+    { id: "6", name: "Kobir", username: "firozkobir", avatar: avatarFromSeed("firozkobir") },
+    { id: "17", name: "MD Majid", username: "mdmajid", avatar: avatarFromSeed("mdmajid") },
   ];
 
   const followers = [];
@@ -126,17 +129,14 @@ export default function ProfilePage() {
   const [activePostId, setActivePostId] = useState(null);
 
   useEffect(() => {
-    const bootstrap = async () => {
-      setLoading(true);
-      const mock = buildMockProfile(username);
-      setProfile(mock.profile);
-      setPosts(mock.posts);
-      setSeedItems(mock.seedItems);
-      setFollowers(mock.followers);
-      setFollowing(mock.following);
-      setLoading(false);
-    };
-    bootstrap();
+    setLoading(true);
+    const mock = buildMockProfile(username);
+    setProfile(mock.profile);
+    setPosts(mock.posts);
+    setSeedItems(mock.seedItems);
+    setFollowers(mock.followers);
+    setFollowing(mock.following);
+    setLoading(false);
   }, [username]);
 
   useEffect(() => {
@@ -156,7 +156,11 @@ export default function ProfilePage() {
 
   const currentUserId = resolveUserId(currentUser);
   const profileOwnerId = resolveUserId(profile);
-  const isOwner = Boolean(currentUserId && profileOwnerId && String(currentUserId).toLowerCase() === String(profileOwnerId).toLowerCase());
+  const isOwner = Boolean(
+    currentUserId &&
+    profileOwnerId &&
+    String(currentUserId).toLowerCase() === String(profileOwnerId).toLowerCase()
+  );
 
   const stats = useMemo(() => ({
     posts: posts.length,
@@ -164,7 +168,7 @@ export default function ProfilePage() {
     following: following.length,
   }), [posts.length, followers.length, following.length]);
 
-  const handleToggleLike = (postId) => {
+  const toggleLike = (postId) => {
     setPosts((prev) =>
       prev.map((post) =>
         post.id === postId
@@ -178,7 +182,7 @@ export default function ProfilePage() {
     );
   };
 
-  const buildCommentAuthor = () => {
+  const authorForNewComment = () => {
     if (currentUser) {
       return {
         id: resolveUserId(currentUser) ?? `current-${Date.now()}`,
@@ -186,63 +190,58 @@ export default function ProfilePage() {
         avatar:
           currentUser.profileImage ||
           currentUser.avatar ||
-          AVATAR_PLACEHOLDER(currentUser.username || "current"),
+          avatarFromSeed(currentUser.username || "current"),
       };
     }
     return {
       id: profile?.id ?? "guest",
       name: profile?.name ?? "Guest",
-      avatar: profile?.avatar ?? AVATAR_PLACEHOLDER("guest"),
+      avatar: profile?.avatar ?? avatarFromSeed("guest"),
     };
   };
 
-  const handleAddComment = (postId, text) => {
+  const addComment = (postId, text) => {
     const comment = {
       id: `comment-${Date.now()}`,
       text,
       createdAt: new Date().toISOString(),
-      author: buildCommentAuthor(),
+      author: authorForNewComment(),
     };
 
     setPosts((prev) =>
       prev.map((post) =>
         post.id === postId
-          ? {
-              ...post,
-              comments: [...post.comments, comment],
-            }
+          ? { ...post, comments: [...post.comments, comment] }
           : post
       )
     );
-    toast.success("মন্তব্য যোগ করা হয়েছে");
+    toast.success("মন্তব্য যোগ হয়েছে");
   };
 
-  const handleDeleteComment = (postId, commentId) => {
+  const deleteComment = (postId, commentId) => {
     setPosts((prev) =>
       prev.map((post) =>
         post.id === postId
-          ? {
-              ...post,
-              comments: post.comments.filter((comment) => comment.id !== commentId),
-            }
+          ? { ...post, comments: post.comments.filter((comment) => comment.id !== commentId) }
           : post
       )
     );
     toast.success("মন্তব্য মুছে ফেলা হয়েছে");
   };
 
-  const handleDeletePost = (postId) => {
+  const deletePost = (postId) => {
     setPosts((prev) => prev.filter((post) => post.id !== postId));
     if (activePostId === postId) setActivePostId(null);
     toast.success("পোস্ট মুছে ফেলা হয়েছে");
   };
 
-  const handleDeleteSeed = (seedId) => {
+  const deleteSeed = (seedId) => {
     setSeedItems((prev) => prev.filter((seed) => seed.id !== seedId));
     toast.success("বীজ আইটেমটি মুছে ফেলা হয়েছে");
   };
 
-  const handleComposerSubmit = async (payload) => {
+  const submitComposer = async (payload) => {
+    // eslint-disable-next-line no-console
     console.log("New post payload", payload);
     toast.success("পোস্টটি ড্রাফ্ট হিসাবে সংরক্ষিত হয়েছে");
   };
@@ -268,7 +267,7 @@ export default function ProfilePage() {
   if (loading || !profile) {
     return (
       <div className="profile-page">
-        <div className="empty-state">প্রোফাইল তথ্য লোড হচ্ছে...</div>
+        <div className="empty-state">???????? ???? ??? ?????...</div>
       </div>
     );
   }
@@ -290,7 +289,7 @@ export default function ProfilePage() {
           profile={profile}
           isOwner={isOwner}
           seeds={seedItems}
-          onDeleteSeed={handleDeleteSeed}
+          onDeleteSeed={deleteSeed}
           onOpenComposer={(mode) => {
             setComposerMode(mode);
             setComposerOpen(true);
@@ -303,10 +302,10 @@ export default function ProfilePage() {
               key={post.id}
               post={post}
               isOwner={isOwner}
-              onLike={handleToggleLike}
+              onLike={toggleLike}
               onOpenComments={setActivePostId}
-              onDelete={handleDeletePost}
-              onAddComment={handleAddComment}
+              onDelete={deletePost}
+              onAddComment={addComment}
             />
           ))}
         </section>
@@ -325,14 +324,14 @@ export default function ProfilePage() {
       <FollowListModal
         open={followersOpen}
         onClose={() => setFollowersOpen(false)}
-        title="যারা ফলো করেছে"
+        title="???? ??? ?????"
         users={followers}
       />
 
       <FollowListModal
         open={followingOpen}
         onClose={() => setFollowingOpen(false)}
-        title="যাদের কে ফলো করেছেন"
+        title="????? ?? ??? ??????"
         users={following}
         actionLabel={isOwner ? "Unfollow" : undefined}
         onAction={isOwner ? handleUnfollow : undefined}
@@ -342,10 +341,9 @@ export default function ProfilePage() {
         open={Boolean(activePost)}
         post={activePost}
         onClose={() => setActivePostId(null)}
-        isOwner={isOwner}
-        onToggleLike={handleToggleLike}
-        onAddComment={handleAddComment}
-        onDeleteComment={handleDeleteComment}
+        onToggleLike={toggleLike}
+        onAddComment={addComment}
+        onDeleteComment={deleteComment}
         canDeleteComment={canDeleteComment}
       />
 
@@ -353,7 +351,7 @@ export default function ProfilePage() {
         open={composerOpen}
         mode={composerMode}
         onClose={() => setComposerOpen(false)}
-        onSubmit={handleComposerSubmit}
+        onSubmit={submitComposer}
       />
     </div>
   );

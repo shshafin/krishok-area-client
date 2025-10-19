@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { format } from "timeago.js";
+import DeleteOutlineIcon from "@/assets/IconComponents/DeleteOutlineIcon";
 import Modal from "./Modal";
 
 export default function PostModal({
   open,
   post,
   onClose,
-  isOwner,
   onToggleLike,
   onAddComment,
   onDeleteComment,
@@ -60,7 +60,7 @@ export default function PostModal({
           {post.media?.type === "video" ? (
             <video src={post.media.src} controls muted loop />
           ) : (
-            <img src={post.media?.src} alt={post.content || "post media"} />
+            <img src={post.media?.src} alt={post.content || "পোস্টের ছবি"} />
           )}
         </div>
 
@@ -85,9 +85,9 @@ export default function PostModal({
               onClick={() => onToggleLike?.(post.id)}
               style={{ border: "none", background: "transparent", cursor: "pointer" }}
             >
-              {post.liked ? "Liked" : "Like"} · {post.likes}
+              {post.liked ? "লাইক করা হয়েছে" : "লাইক"} · {post.likes}
             </button>
-            <span>{post.comments.length} Comments</span>
+            <span>{post.comments.length} মন্তব্য</span>
           </div>
 
           <div className="comment-list">
@@ -109,8 +109,9 @@ export default function PostModal({
                         type="button"
                         className="comment-delete-btn"
                         onClick={() => onDeleteComment?.(post.id, comment.id)}
+                        aria-label="মন্তব্য মুছে ফেলুন"
                       >
-                        Delete
+                        <DeleteOutlineIcon width={16} />
                       </button>
                     )}
                   </div>
@@ -126,7 +127,7 @@ export default function PostModal({
               placeholder="মন্তব্য করুন..."
             />
             <button type="button" onClick={handleSubmitComment} disabled={!commentText.trim()}>
-              Comment
+              মন্তব্য
             </button>
           </div>
         </div>
@@ -165,7 +166,6 @@ PostModal.propTypes = {
     }).isRequired,
   }),
   onClose: PropTypes.func,
-  isOwner: PropTypes.bool,
   onToggleLike: PropTypes.func,
   onAddComment: PropTypes.func,
   onDeleteComment: PropTypes.func,
@@ -176,7 +176,6 @@ PostModal.defaultProps = {
   open: false,
   post: null,
   onClose: undefined,
-  isOwner: false,
   onToggleLike: undefined,
   onAddComment: undefined,
   onDeleteComment: undefined,
