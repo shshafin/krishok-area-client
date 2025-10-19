@@ -28,13 +28,7 @@ export default function Navbar() {
     {
       type: "item",
       to: "/admin/media/add-photo",
-      label: "Add Photo",
-      icon: addIcon,
-    },
-    {
-      type: "item",
-      to: "/admin/media/add-video",
-      label: "Add Video",
+      label: "Add Galleryes",
       icon: addIcon,
     },
     {

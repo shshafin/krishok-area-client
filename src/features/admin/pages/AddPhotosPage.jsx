@@ -174,7 +174,9 @@ export default function AddPhotosPage() {
                         onChange={(e) => setDescription(e.target.value)}
                       />
                     </div>
-                    <div className="custom-control custom-switch mb-3">
+
+                    {/* TODO: Commenting out Make as publick Gallery */}
+                    {/* <div className="custom-control custom-switch mb-3">
                       <input
                         type="checkbox"
                         className="custom-control-input"
@@ -185,7 +187,7 @@ export default function AddPhotosPage() {
                       <label className="custom-control-label" htmlFor="isPublic">
                         Make album public
                       </label>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
 
@@ -240,7 +242,7 @@ export default function AddPhotosPage() {
                               </div>
                               <button
                                 type="button"
-                                className="btn btn-sm btn-outline-danger mt-auto"
+                                className="btn btn-danger btn-sm btn-outline-danger mt-auto"
                                 onClick={() => removeFile(idx)}
                               >
                                 Remove
