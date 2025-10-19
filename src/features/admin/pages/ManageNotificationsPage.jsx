@@ -236,6 +236,8 @@ export default function ManageNotificationsPage() {
                     }`}
                     onClick={requestDeleteSelected}
                     title="Delete selected"
+                    aria-disabled={!selectedIds.size}
+                    disabled={!selectedIds.size}
                   >
                     <TrashIcon size={18} color="currentColor" />
                   </button>
