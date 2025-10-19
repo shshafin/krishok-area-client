@@ -19,12 +19,6 @@ const CATEGORY_OPTIONS = [
   { value: "fruit-care", label: "ফল — রোগ ও পরিচর্যা" },
 ];
 
-const STATUS_OPTIONS = [
-  { value: "published", label: "Published" },
-  { value: "draft", label: "Draft" },
-  { value: "archived", label: "Archived" },
-];
-
 const DEFAULT_SECTIONS = {
   symptoms: "",
   actions: "",
@@ -44,8 +38,6 @@ export default function AddCropDetailsPage() {
   const [category, setCategory] = useState("");
   const [cropName, setCropName] = useState("");
   const [cropTitle, setCropTitle] = useState("");
-  const [status, setStatus] = useState("published");
-  const [season, setSeason] = useState("");
   const [imageFile, setImageFile] = useState(null);
   const [sections, setSections] = useState({ ...DEFAULT_SECTIONS });
   const [submitting, setSubmitting] = useState(false);
@@ -69,8 +61,6 @@ export default function AddCropDetailsPage() {
       cropName: cropName.trim(),
       cropTitle: cropTitle.trim(),
       slug,
-      status,
-      season: season.trim(),
       image: imageFile
         ? {
             name: imageFile.name,
@@ -87,7 +77,7 @@ export default function AddCropDetailsPage() {
         createdAt: new Date().toISOString(),
       },
     }),
-    [category, cropName, cropTitle, slug, status, season, imageFile, sections]
+    [category, cropName, cropTitle, slug, imageFile, sections]
   );
 
   const validate = () => {
@@ -104,8 +94,6 @@ export default function AddCropDetailsPage() {
     setCategory("");
     setCropName("");
     setCropTitle("");
-    setStatus("published");
-    setSeason("");
     setImageFile(null);
     setSections({ ...DEFAULT_SECTIONS });
   };
@@ -219,34 +207,6 @@ export default function AddCropDetailsPage() {
                           value={cropTitle}
                           onChange={(event) => setCropTitle(event.target.value)}
                           required
-                        />
-                      </div>
-                    </div>
-                    <div className="form-row">
-                      <div className="form-group col-md-6">
-                        <label htmlFor="status">Status</label>
-                        <select
-                          id="status"
-                          className="form-control"
-                          value={status}
-                          onChange={(event) => setStatus(event.target.value)}
-                        >
-                          {STATUS_OPTIONS.map((option) => (
-                            <option key={option.value} value={option.value}>
-                              {option.label}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                      <div className="form-group col-md-6">
-                        <label htmlFor="season">Season Window</label>
-                        <input
-                          id="season"
-                          type="text"
-                          className="form-control"
-                          placeholder="e.g., Boishakh - Ashwin"
-                          value={season}
-                          onChange={(event) => setSeason(event.target.value)}
                         />
                       </div>
                     </div>

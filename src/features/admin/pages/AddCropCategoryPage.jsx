@@ -22,12 +22,6 @@ const CATEGORY_OPTIONS = [
   { value: "equipment-tools", label: "যন্ত্রপাতি ও সরঞ্জাম" },
 ];
 
-const STATUS_OPTIONS = [
-  { value: "published", label: "Published" },
-  { value: "draft", label: "Draft" },
-  { value: "archived", label: "Archived" },
-];
-
 const normalizeSlug = (value) =>
   value
     .normalize("NFD")
@@ -40,8 +34,6 @@ export default function AddCropCategoryPage() {
   const [banglaName, setBanglaName] = useState("");
   const [englishName, setEnglishName] = useState("");
   const [category, setCategory] = useState("");
-  const [status, setStatus] = useState("published");
-  const [notes, setNotes] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
   const slug = useMemo(() => {
@@ -54,15 +46,13 @@ export default function AddCropCategoryPage() {
       banglaName: banglaName.trim(),
       englishName: englishName.trim(),
       categoryType: category,
-      status,
       slug,
-      notes: notes.trim(),
       meta: {
         createdBy: "admin",
         createdAt: new Date().toISOString(),
       },
     }),
-    [banglaName, englishName, category, status, slug, notes]
+    [banglaName, englishName, category, slug]
   );
 
   const validate = () => {
@@ -76,8 +66,6 @@ export default function AddCropCategoryPage() {
     setBanglaName("");
     setEnglishName("");
     setCategory("");
-    setStatus("published");
-    setNotes("");
   };
 
   const handleSubmit = async (event) => {
@@ -187,40 +175,6 @@ export default function AddCropCategoryPage() {
                           ))}
                         </select>
                       </div>
-                      <div className="form-group col-md-6">
-                        <label htmlFor="status">Status</label>
-                        <select
-                          id="status"
-                          className="form-control"
-                          value={status}
-                          onChange={(event) => setStatus(event.target.value)}
-                        >
-                          {STATUS_OPTIONS.map((option) => (
-                            <option key={option.value} value={option.value}>
-                              {option.label}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="card card-outline card-info">
-                  <div className="card-header">
-                    <h3 className="card-title mb-0">Additional Notes</h3>
-                  </div>
-                  <div className="card-body">
-                    <div className="form-group mb-0">
-                      <label htmlFor="notes">Internal Notes</label>
-                      <textarea
-                        id="notes"
-                        className="form-control"
-                        rows={4}
-                        placeholder="Add agronomic guidance, seasonal info, or reminders for editors."
-                        value={notes}
-                        onChange={(event) => setNotes(event.target.value)}
-                      />
                     </div>
                   </div>
                 </div>
