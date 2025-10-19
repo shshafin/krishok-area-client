@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { NavLink } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 
 const fakeSubmit = (payload) =>
@@ -148,10 +149,10 @@ export default function AddDistrictPage() {
             <div className="col-sm-6">
               <ol className="breadcrumb float-sm-right">
                 <li className="breadcrumb-item">
-                  <a href="/admin/dashboard">Dashboard</a>
+                  <NavLink to="/admin/dashboard">Dashboard</NavLink>
                 </li>
                 <li className="breadcrumb-item">
-                  <a href="/admin/locations/manage-district">Manage District</a>
+                  <NavLink to="/admin/locations/manage-district">Manage District</NavLink>
                 </li>
                 <li className="breadcrumb-item active">Add District</li>
               </ol>
@@ -326,9 +327,9 @@ export default function AddDistrictPage() {
                     <button type="submit" className="btn btn-primary btn-lg w-100 mb-2" disabled={submitting}>
                       {submitting ? "Saving..." : "Save District"}
                     </button>
-                    <a href="/admin/locations/manage-district" className="btn btn-outline-secondary w-100">
+                    <NavLink to="/admin/locations/manage-district" className="btn btn-outline-secondary w-100">
                       Manage Districts
-                    </a>
+                    </NavLink>
                   </div>
                 </div>
               </div>

@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo, useRef, useState } from "react";
+import { NavLink } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 
 const fakeUpload = (payload) =>
@@ -101,10 +102,10 @@ export default function AddPhotosPage() {
             <div className="col-sm-6">
               <ol className="breadcrumb float-sm-right">
                 <li className="breadcrumb-item">
-                  <a href="/admin/dashboard">Dashboard</a>
+                  <NavLink to="/admin/dashboard">Dashboard</NavLink>
                 </li>
                 <li className="breadcrumb-item">
-                  <a href="/admin/media/manage-gallery-photo">Galleries</a>
+                  <NavLink to="/admin/media/manage-gallery-photo">Galleries</NavLink>
                 </li>
                 <li className="breadcrumb-item active">Galleries</li>
               </ol>
