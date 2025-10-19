@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { NavLink } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import "../styles/adminScoped.css";
-import TrashCircleIcon from "@/assets/IconComponents/TrashCircleIcon";
+import TrashIcon from "@/assets/IconComponents/Trash";
 
 const RAW_CROP_DETAILS = [
   {
@@ -154,6 +154,7 @@ export default function ManageCropDetailsPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [removing, setRemoving] = useState({});
+  const [confirmDetail, setConfirmDetail] = useState(null);
   const [expandedIds, setExpandedIds] = useState(() => new Set());
 
   const categories = useMemo(() => {
@@ -180,7 +181,7 @@ export default function ManageCropDetailsPage() {
     });
   }, [cropDetails, searchTerm, categoryFilter]);
 
-  const handleDelete = (detail) => {
+  const deleteDetail = (detail) => {
     setRemoving((prev) => ({ ...prev, [detail.id]: true }));
     setTimeout(() => {
       setCropDetails((prev) => prev.filter((item) => item.id !== detail.id));
@@ -191,6 +192,21 @@ export default function ManageCropDetailsPage() {
       });
       toast.success(`"${detail.cropNameBn}" সম্পর্কিত তথ্য মুছে ফেলা হয়েছে`);
     }, 280);
+  };
+
+  const handleDelete = (detail) => {
+    setConfirmDetail(detail);
+  };
+
+  const handleConfirmDelete = () => {
+    if (!confirmDetail) return;
+    const detail = confirmDetail;
+    setConfirmDetail(null);
+    deleteDetail(detail);
+  };
+
+  const handleCancelDelete = () => {
+    setConfirmDetail(null);
   };
 
   const formatStatus = (status) => STATUS_VARIANTS[status] ?? STATUS_VARIANTS.draft;
@@ -292,7 +308,7 @@ export default function ManageCropDetailsPage() {
                       title="তথ্য মুছে ফেলুন"
                       aria-label={`${detail.cropNameBn} সম্পর্কে তথ্য মুছে ফেলুন`}
                     >
-                      <TrashCircleIcon size={20} />
+                      <TrashIcon width={20} height={20} strokeWidth={1.8} />
                     </button>
                     <div className="crop-detail-media">
                       <img src={detail.heroImage} alt={`${detail.cropNameBn} ফসলের ছবি`} />
@@ -359,6 +375,39 @@ export default function ManageCropDetailsPage() {
           </div>
         </div>
       </section>
+
+      {confirmDetail && (
+        <div className="admin-modal-backdrop" role="presentation">
+          <div
+            className="admin-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="crop-delete-title"
+            aria-describedby="crop-delete-description"
+          >
+            <div className="admin-modal-header">
+              <h5 id="crop-delete-title" className="mb-0">
+                Remove crop detail?
+              </h5>
+            </div>
+            <div id="crop-delete-description" className="admin-modal-body">
+              <p className="mb-2">
+                Are you sure you want to delete the entry for{" "}
+                <strong>{confirmDetail.cropNameBn}</strong>?
+              </p>
+              <p className="text-muted mb-0">This action cannot be undone.</p>
+            </div>
+            <div className="admin-modal-footer">
+              <button type="button" className="btn btn-outline-secondary btn-sm" onClick={handleCancelDelete}>
+                Cancel
+              </button>
+              <button type="button" className="btn btn-danger btn-sm" onClick={handleConfirmDelete}>
+                Delete Detail
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
