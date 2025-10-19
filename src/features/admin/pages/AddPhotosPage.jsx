@@ -11,13 +11,10 @@ const fakeUpload = (payload) =>
   });
 
 export default function AddPhotosPage() {
-  const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [tags, setTags] = useState("");
   const [isPublic, setIsPublic] = useState(true);
   const [files, setFiles] = useState([]);
   const [submitting, setSubmitting] = useState(false);
-  const [lastSubmitted, setLastSubmitted] = useState(null);
   const fileInputRef = useRef(null);
 
   const onPickFiles = () => fileInputRef.current?.click();
@@ -51,12 +48,7 @@ export default function AddPhotosPage() {
 
   const payload = useMemo(
     () => ({
-      title: title.trim(),
       description: description.trim(),
-      tags: tags
-        .split(",")
-        .map((tag) => tag.trim())
-        .filter(Boolean),
       visibility: isPublic ? "public" : "private",
       images: files.map((f) => ({
         name: f.name,
@@ -64,11 +56,10 @@ export default function AddPhotosPage() {
         type: f.type,
       })),
     }),
-    [title, description, tags, isPublic, files]
+    [description, isPublic, files]
   );
 
   const validate = () => {
-    if (!payload.title) return "Title is required";
     if (files.length === 0) return "Please add at least one image";
     const tooBig = files.find((f) => f.size > 10 * 1024 * 1024);
     if (tooBig) return `File "${tooBig.name}" is larger than 10MB`;
@@ -87,11 +78,8 @@ export default function AddPhotosPage() {
     const toastId = toast.loading("Uploading photos...");
     try {
       const res = await fakeUpload(payload);
-      setLastSubmitted({ id: res.id, ...payload });
       toast.success("Upload complete!", { id: toastId });
-      setTitle("");
       setDescription("");
-      setTags("");
       setIsPublic(true);
       setFiles([]);
     } catch (error) {
@@ -108,7 +96,7 @@ export default function AddPhotosPage() {
         <div className="container-fluid">
           <div className="row mb-2">
             <div className="col-sm-6">
-              <h1 className="m-0">Add Photos</h1>
+              <h1 className="m-0">Galleries</h1>
             </div>
             <div className="col-sm-6">
               <ol className="breadcrumb float-sm-right">
@@ -116,9 +104,9 @@ export default function AddPhotosPage() {
                   <a href="/admin/dashboard">Dashboard</a>
                 </li>
                 <li className="breadcrumb-item">
-                  <a href="/admin/media/manage-gallery-photo">Gallery</a>
+                  <a href="/admin/media/manage-gallery-photo">Galleries</a>
                 </li>
-                <li className="breadcrumb-item active">Add Photos</li>
+                <li className="breadcrumb-item active">Galleries</li>
               </ol>
             </div>
           </div>
@@ -129,40 +117,12 @@ export default function AddPhotosPage() {
         <div className="container-fluid">
           <form onSubmit={onSubmit}>
             <div className="row">
-              <div className="col-lg-8">
+              <div className="col-lg-12">
                 <div className="card card-outline card-primary mb-3">
                   <div className="card-header">
                     <h3 className="card-title mb-0">Photo Details</h3>
                   </div>
                   <div className="card-body">
-                    <div className="form-row">
-                      <div className="form-group col-md-6">
-                        <label htmlFor="title">
-                          Title <span className="text-danger">*</span>
-                        </label>
-                        <input
-                          id="title"
-                          type="text"
-                          className="form-control"
-                          placeholder="e.g., Summer Road Trip"
-                          value={title}
-                          onChange={(e) => setTitle(e.target.value)}
-                          maxLength={120}
-                          required
-                        />
-                      </div>
-                      <div className="form-group col-md-6">
-                        <label htmlFor="tags">Tags</label>
-                        <input
-                          id="tags"
-                          type="text"
-                          className="form-control"
-                          placeholder="comma,separated,tags"
-                          value={tags}
-                          onChange={(e) => setTags(e.target.value)}
-                        />
-                      </div>
-                    </div>
                     <div className="form-group">
                       <label htmlFor="description">Description</label>
                       <textarea
@@ -254,44 +214,11 @@ export default function AddPhotosPage() {
                     )}
                   </div>
                 </div>
-              </div>
 
-              <div className="col-lg-4">
-                <div className="card card-outline card-secondary mb-3">
-                  <div className="card-header">
-                    <h3 className="card-title mb-0">Submission Preview</h3>
-                  </div>
-                  <div className="card-body" style={{ maxHeight: 380, overflowY: "auto" }}>
-                    <pre className="small mb-0">
-{JSON.stringify(lastSubmitted ?? payload, null, 2)}
-                    </pre>
-                  </div>
-                </div>
-
-                <div className="card card-outline card-success">
-                  <div className="card-body d-flex justify-content-between align-items-center">
-                    <button
-                      type="button"
-                      className="btn btn-outline-secondary"
-                      onClick={() => {
-                        setTitle("");
-                        setDescription("");
-                        setTags("");
-                        setIsPublic(true);
-                        setFiles([]);
-                      }}
-                      disabled={submitting}
-                    >
-                      Reset
-                    </button>
-                    <button
-                      type="submit"
-                      className="btn btn-primary"
-                      disabled={submitting}
-                    >
-                      {submitting ? "Submitting..." : "Submit"}
-                    </button>
-                  </div>
+                <div className="text-center mb-3">
+                  <button type="submit" className="btn btn-primary" disabled={submitting}>
+                    {submitting ? "Submitting..." : "Submit"}
+                  </button>
                 </div>
               </div>
             </div>
