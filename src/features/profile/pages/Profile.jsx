@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ProfileHeader from "../components/ProfileDetails";
 import ProfileTabs from "../components/ProfileTabs";
 import Post from "@/components/layout/Post"; // don't edit your Post.jsx
-import styles from "../styles/Profile.module.css";
+import styles from "../styles/profile.module.css";
 
 /* ---------------------- DUMMY DATA GENERATORS ---------------------- */
 function rand(min, max) {

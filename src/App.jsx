@@ -4,6 +4,7 @@ import Header from "@/components/layout/Header";
 import Home from "@/features/home/pages/Home";
 import Gallery from "@/features/gallery/pages/Gallery";
 import Auth from "@/features/auth/pages/Auth";
+import AdminLogin from "@/features/auth/components/AdminLogin";
 import TableViewPage from "@/features/guidelines/pages/TableViewPage";
 import DiscoverPage from "@/features/discover/page/DiscoverPage";
 import PrivateRoute from "./components/privateRoute/PrivateRoute";
@@ -12,6 +13,7 @@ import RoleBasedRoute from "./components/privateRoute/RoleBasedRoute";
 import SettingsPage from "@/features/settings/pages/SettingsPage";
 import ProfilePage from "@/features/profile/pages/Profile";
 import FollowPage from "@/features/follow/pages/Follow";
+import NewProfile from "@/features/NewProfile/pages/NewProfile";
 
 import GalleryPost from "./features/gallery/pages/GalleryPost";
 import GuidlinesCard from "./features/gallery/pages/GuidlinesCard";
@@ -43,7 +45,7 @@ const ManageNotificationsPage = lazy(() => import("./features/admin/pages/Manage
 function App() {
   const location = useLocation();
   const adminFallback = <div className="p-4 text-center text-muted">Loading admin…</div>;
-  const hideHeader = ["/auth/login", "/auth/signup", "/admin"]; // Added admin paths
+  const hideHeader = ["/auth/login", "/auth/signup", "/auth/admin", "/admin"]; // Added admin paths
   const showHeader = !hideHeader.some((path) =>
     location.pathname.startsWith(path)
   ); // Use startsWith for admin paths
@@ -54,6 +56,7 @@ function App() {
 
       <Routes>
         {/* Public routes */}
+        <Route path="/auth/admin" element={<AdminLogin />} />
         <Route
           path="/auth/*"
           element={
@@ -114,6 +117,15 @@ function App() {
           element={
             <PrivateRoute>
               <MarcketPricePage />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/user/:username"
+          element={
+            <PrivateRoute>
+              <NewProfile />
             </PrivateRoute>
           }
         />
@@ -257,3 +269,4 @@ function App() {
 }
 
 export default App;
+

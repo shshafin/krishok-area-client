@@ -9,7 +9,7 @@ import CloudIcon from "@/assets/IconComponents/CloudIcon";
 import MessageCircleIcon from "@/assets/IconComponents/MessageCircleIcon";
 import MarcketIcon from "@/assets/IconComponents/MarcketIcon";
 import UserPlusIcon from "@/assets/IconComponents/UserPlusIcon";
-import LogoutIcon from "@/assets/IconComponents/LogoutIcon";
+import LogOutIcon from "@/assets/IconComponents/LogOutIcon";
 import LocationIcon from "@/assets/IconComponents/LocationIcon";
 import SeedIcon from "@/assets/IconComponents/SeedIcon";
 
@@ -62,7 +62,7 @@ export default function SideMenu({
         { to: "/market", label: "বাজার দর", Icon: MarcketIcon },
         { to: "/seed-market", label: "বিজ বাজার", Icon: SeedIcon },
         { to: "/follow", label: "অনুসরণ করুন", Icon: UserPlusIcon },
-        { to: "/logout", label: "লগ আউট", Icon: LogoutIcon },
+        { to: "/logout", label: "লগ আউট", Icon: LogOutIcon },
       ],
     [itemsProp]
   );

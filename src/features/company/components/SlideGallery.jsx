@@ -4,7 +4,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures"; // ← named import
 import "../styles/Slide.css";
-import NextBtn from "@/assets/icons/NextBtn.png";
+import nextBtn from "@/assets/icons/nextBtn.png";
 import PrevBtn from "@/assets/icons/backBtn.png";
 
 export default function SlideGallery({ items = [] }) {
@@ -85,7 +85,7 @@ export default function SlideGallery({ items = [] }) {
         onClick={onNext}
         className="pro-back right absolute top-1/2 -translate-y-1/2 z-10"
       >
-        <img src={NextBtn} alt="Next" />
+        <img src={nextBtn} alt="Next" />
       </button>
     </div>
   );

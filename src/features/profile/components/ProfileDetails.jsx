@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import CameraIcon from "@/assets/IconComponents/CameraIcon";
 import MapPinIcon from "@/assets/IconComponents/MapPinIcon";
 import CalendarIcon from "@/assets/IconComponents/Calendar";
-import styles from "../styles/Profile.module.css";
+import styles from "../styles/profile.module.css";
 
 /**
  * Props:

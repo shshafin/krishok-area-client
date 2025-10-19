@@ -4,7 +4,7 @@ import CameraIcon from "@/assets/IconComponents/CameraIcon";
 import Lightbox from "yet-another-react-lightbox";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import "yet-another-react-lightbox/styles.css";
-import styles from "../styles/Profile.module.css";
+import styles from "../styles/profile.module.css";
 
 /**
  * Props:

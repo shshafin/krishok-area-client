@@ -17,6 +17,14 @@ export const loginUser = (data) => {
   });
 };
 
+// Login admin
+export const loginAdmin = (data) => {
+  return request("/admin/login", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+};
+
 // Get me
 export const fetchMe = () => request("/users/me", { method: "GET" });
 
