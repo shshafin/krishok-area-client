@@ -29,10 +29,9 @@ export default function AddCompanyCategoryPage() {
   const [englishName, setEnglishName] = useState("");
   const [title, setTitle] = useState("");
   const [status, setStatus] = useState("published");
-  const [tags, setTags] = useState("");
+  const [location, setLocation] = useState("");
   const [notes, setNotes] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [lastSubmitted, setLastSubmitted] = useState(null);
 
   const slug = useMemo(() => {
     const base = title.trim() || englishName.trim() || banglaName.trim();
@@ -46,17 +45,14 @@ export default function AddCompanyCategoryPage() {
       title: title.trim(),
       slug,
       status,
-      tags: tags
-        .split(",")
-        .map((item) => item.trim())
-        .filter(Boolean),
+      location: location.trim(),
       notes: notes.trim(),
       meta: {
         createdBy: "admin",
         createdAt: new Date().toISOString(),
       },
     }),
-    [banglaName, englishName, title, slug, status, tags, notes]
+    [banglaName, englishName, title, slug, status, location, notes]
   );
 
   const validate = () => {
@@ -71,7 +67,7 @@ export default function AddCompanyCategoryPage() {
     setEnglishName("");
     setTitle("");
     setStatus("published");
-    setTags("");
+    setLocation("");
     setNotes("");
   };
 
@@ -86,8 +82,7 @@ export default function AddCompanyCategoryPage() {
     setSubmitting(true);
     const toastId = toast.loading("Saving company...");
     try {
-      const response = await fakeSubmit(payload);
-      setLastSubmitted({ id: response.id, ...payload });
+      await fakeSubmit(payload);
       toast.success("Company saved!", { id: toastId });
       resetFields();
     } catch (err) {
@@ -124,8 +119,8 @@ export default function AddCompanyCategoryPage() {
       <section className="content">
         <div className="container-fluid">
           <form onSubmit={handleSubmit}>
-            <div className="row">
-              <div className="col-lg-8">
+            <div className="row justify-content-center">
+              <div className="col-lg-8 col-12">
                 <div className="card card-outline card-primary mb-3">
                   <div className="card-header">
                     <h3 className="card-title mb-0">Company Information</h3>
@@ -191,14 +186,14 @@ export default function AddCompanyCategoryPage() {
                       </select>
                     </div>
                     <div className="form-group">
-                      <label htmlFor="tags">Tags</label>
+                      <label htmlFor="location">Location</label>
                       <input
-                        id="tags"
+                        id="location"
                         type="text"
                         className="form-control"
-                        placeholder="Comma separated tags (e.g., fertilizer, seeds)"
-                        value={tags}
-                        onChange={(event) => setTags(event.target.value)}
+                        placeholder="Enter company location (e.g., Dhaka, Bangladesh)"
+                        value={location}
+                        onChange={(event) => setLocation(event.target.value)}
                       />
                     </div>
                     <div className="form-group mb-0">
@@ -214,63 +209,15 @@ export default function AddCompanyCategoryPage() {
                     </div>
                   </div>
                 </div>
-              </div>
-
-              <div className="col-lg-4">
-                <div className="card card-outline card-secondary mb-3">
-                  <div className="card-header">
-                    <h3 className="card-title mb-0">Summary</h3>
-                  </div>
+                <div className="card card-outline card-success mt-3">
                   <div className="card-body">
-                    <dl className="mb-0">
-                      <dt>Bangla Name</dt>
-                      <dd>{payload.banglaName || "—"}</dd>
-                      <dt>English Name</dt>
-                      <dd>{payload.englishName || "—"}</dd>
-                      <dt>Title</dt>
-                      <dd>{payload.title || "—"}</dd>
-                      <dt>Slug</dt>
-                      <dd>{slug || "Auto-generated"}</dd>
-                      <dt>Status</dt>
-                      <dd>{STATUS_OPTIONS.find((opt) => opt.value === status)?.label}</dd>
-                    </dl>
-                  </div>
-                </div>
-
-                <div className="card card-outline card-dark mb-3">
-                  <div className="card-header">
-                    <h3 className="card-title mb-0">Submission JSON</h3>
-                  </div>
-                  <div className="card-body" style={{ maxHeight: 320, overflowY: "auto" }}>
-                    <pre className="small mb-0">
-{JSON.stringify(lastSubmitted ?? payload, null, 2)}
-                    </pre>
-                  </div>
-                </div>
-
-                <div className="card card-outline card-success">
-                  <div className="card-body d-flex justify-content-between align-items-center">
-                    <button
-                      type="button"
-                      className="btn btn-outline-secondary"
-                      onClick={() => {
-                        resetFields();
-                        setLastSubmitted(null);
-                      }}
-                      disabled={submitting}
-                    >
-                      Reset
-                    </button>
-                    <button type="submit" className="btn btn-primary" disabled={submitting}>
+                    <button type="submit" className="btn btn-primary btn-lg w-100 mb-2" disabled={submitting}>
                       {submitting ? "Saving..." : "Save Company"}
                     </button>
+                    <a href="/admin/companies/manage" className="btn btn-outline-secondary w-100">
+                      Manage Company
+                    </a>
                   </div>
-                </div>
-
-                <div className="text-right mt-3">
-                  <a href="/admin/companies/manage" className="btn btn-link p-0">
-                    Manage Company
-                  </a>
                 </div>
               </div>
             </div>

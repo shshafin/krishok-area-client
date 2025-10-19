@@ -40,10 +40,8 @@ export default function AddCropCategoryPage() {
   const [englishName, setEnglishName] = useState("");
   const [category, setCategory] = useState("");
   const [status, setStatus] = useState("published");
-  const [tags, setTags] = useState("");
   const [notes, setNotes] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [lastSubmitted, setLastSubmitted] = useState(null);
 
   const slug = useMemo(() => {
     const base = englishName.trim() || banglaName.trim();
@@ -57,17 +55,13 @@ export default function AddCropCategoryPage() {
       categoryType: category,
       status,
       slug,
-      tags: tags
-        .split(",")
-        .map((item) => item.trim())
-        .filter(Boolean),
       notes: notes.trim(),
       meta: {
         createdBy: "admin",
         createdAt: new Date().toISOString(),
       },
     }),
-    [banglaName, englishName, category, status, slug, tags, notes]
+    [banglaName, englishName, category, status, slug, notes]
   );
 
   const validate = () => {
@@ -82,7 +76,6 @@ export default function AddCropCategoryPage() {
     setEnglishName("");
     setCategory("");
     setStatus("published");
-    setTags("");
     setNotes("");
   };
 
@@ -97,8 +90,7 @@ export default function AddCropCategoryPage() {
     setSubmitting(true);
     const toastId = toast.loading("Saving crop category...");
     try {
-      const response = await fakeSubmit(payload);
-      setLastSubmitted({ id: response.id, ...payload });
+      await fakeSubmit(payload);
       toast.success("Crop category saved!", { id: toastId });
       resetFields();
     } catch (err) {
@@ -135,8 +127,8 @@ export default function AddCropCategoryPage() {
       <section className="content">
         <div className="container-fluid">
           <form onSubmit={handleSubmit}>
-            <div className="row">
-              <div className="col-lg-8">
+            <div className="row justify-content-center">
+              <div className="col-lg-8 col-12">
                 <div className="card card-outline card-primary mb-3">
                   <div className="card-header">
                     <h3 className="card-title mb-0">Category Information</h3>
@@ -210,20 +202,6 @@ export default function AddCropCategoryPage() {
                         </select>
                       </div>
                     </div>
-                    <div className="form-group mb-0">
-                      <label htmlFor="tags">Tags</label>
-                      <input
-                        id="tags"
-                        type="text"
-                        className="form-control"
-                        placeholder="Comma separated tags"
-                        value={tags}
-                        onChange={(event) => setTags(event.target.value)}
-                      />
-                      <small className="form-text text-muted">
-                        Helps users find related content, e.g. গম, pest-control, nutrition.
-                      </small>
-                    </div>
                   </div>
                 </div>
 
@@ -245,65 +223,15 @@ export default function AddCropCategoryPage() {
                     </div>
                   </div>
                 </div>
-              </div>
-
-              <div className="col-lg-4">
-                <div className="card card-outline card-secondary mb-3">
-                  <div className="card-header">
-                    <h3 className="card-title mb-0">Summary</h3>
-                  </div>
+                <div className="card card-outline card-success mt-3">
                   <div className="card-body">
-                    <dl className="mb-0">
-                      <dt>Bangla</dt>
-                      <dd>{payload.banglaName || "—"}</dd>
-                      <dt>English</dt>
-                      <dd>{payload.englishName || "—"}</dd>
-                      <dt>Slug</dt>
-                      <dd>{slug || "Auto-generated"}</dd>
-                      <dt>Category</dt>
-                      <dd>
-                        {CATEGORY_OPTIONS.find((opt) => opt.value === category)?.label || "—"}
-                      </dd>
-                      <dt>Status</dt>
-                      <dd>{STATUS_OPTIONS.find((opt) => opt.value === status)?.label}</dd>
-                    </dl>
-                  </div>
-                </div>
-
-                <div className="card card-outline card-dark mb-3">
-                  <div className="card-header">
-                    <h3 className="card-title mb-0">Submission JSON</h3>
-                  </div>
-                  <div className="card-body" style={{ maxHeight: 300, overflowY: "auto" }}>
-                    <pre className="small mb-0">
-{JSON.stringify(lastSubmitted ?? payload, null, 2)}
-                    </pre>
-                  </div>
-                </div>
-
-                <div className="card card-outline card-success">
-                  <div className="card-body d-flex justify-content-between align-items-center">
-                    <button
-                      type="button"
-                      className="btn btn-outline-secondary"
-                      onClick={() => {
-                        resetFields();
-                        setLastSubmitted(null);
-                      }}
-                      disabled={submitting}
-                    >
-                      Reset
-                    </button>
-                    <button type="submit" className="btn btn-primary" disabled={submitting}>
+                    <button type="submit" className="btn btn-primary btn-lg w-100 mb-2" disabled={submitting}>
                       {submitting ? "Saving..." : "Save Category"}
                     </button>
+                    <a href="/admin/crops/manage-category" className="btn btn-outline-secondary w-100">
+                      Manage Crop Categories
+                    </a>
                   </div>
-                </div>
-
-                <div className="text-right mt-3">
-                  <a href="/admin/crops/manage-category" className="btn btn-link p-0">
-                    Manage Crop Categories
-                  </a>
                 </div>
               </div>
             </div>

@@ -208,26 +208,62 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
+  padding: 0.3rem;
   border-radius: 999px;
-  border: 1px solid transparent;
-  background: rgba(15, 23, 42, 0.04);
-  padding: 0;
-  transition: background 0.2s ease, transform 0.15s ease, border-color 0.2s ease;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  background: #ffffff;
+  transition: transform 0.15s ease, box-shadow 0.15s ease,
+    border-color 0.15s ease;
+  cursor: pointer;
 }
 
 ._scoped_admin .admin-icon-btn svg {
   pointer-events: none;
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  min-height: 18px;
+  display: block;
+}
+
+._scoped_admin .input-group-prepend,
+._scoped_admin .form-control {
+  height: 2.5rem;
 }
 
 ._scoped_admin .admin-icon-btn:hover,
-._scoped_admin .admin-icon-btn:focus {
+._scoped_admin .admin-icon-btn:focus-visible {
   transform: translateY(-1px);
+  border-color: rgba(74, 144, 226, 0.45);
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.12);
 }
 
 ._scoped_admin .admin-icon-btn:active {
   transform: scale(0.96);
+}
+
+._scoped_admin .admin-icon-btn--edit {
+  background: rgba(74, 144, 226, 0.12) !important;
+  border-color: rgba(74, 144, 226, 0.35);
+}
+
+._scoped_admin .admin-icon-btn--edit:hover,
+._scoped_admin .admin-icon-btn--edit:focus-visible {
+  border-color: rgba(74, 144, 226, 0.5) !important;
+}
+
+._scoped_admin .admin-icon-btn--delete {
+  background: rgba(255, 0, 33, 0.1) !important;
+  border-color: rgba(255, 0, 33, 0.3);
+}
+
+._scoped_admin .admin-icon-btn--delete:hover,
+._scoped_admin .admin-icon-btn--delete:focus-visible {
+  border-color: rgba(255, 0, 33, 0.45);
+}
+
+._scoped_admin .admin-icon-btn svg path {
+  fill: none;
 }
 
 ._scoped_admin .admin-login-btn {
@@ -359,6 +395,247 @@
   height: 18px;
 }
 
+._scoped_admin .companyprosearch {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+._scoped_admin .companyprosearch__field {
+  position: relative;
+  width: min(520px, 100%);
+  margin: 0 auto;
+}
+
+._scoped_admin .companyprosearch__input {
+  width: 100%;
+  padding-left: 2.75rem;
+}
+
+._scoped_admin .companyprosearch__icon {
+  position: absolute;
+  top: 50%;
+  left: 1rem;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+._scoped_admin .admin-icon-btn:focus-visible {
+  outline: 2px solid rgba(74, 144, 226, 0.4);
+  outline-offset: 2px;
+}
+
+._scoped_admin .admin-icon-btn + .admin-icon-btn {
+  margin-left: 0.5rem;
+}
+
+._scoped_admin .manage-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+
+._scoped_admin .manage-gallery-card {
+  position: relative;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
+}
+
+._scoped_admin .manage-gallery-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
+}
+
+._scoped_admin .manage-gallery-card.is-removing {
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+}
+
+._scoped_admin .manage-gallery-thumb {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  background: #f8fafc;
+  overflow: hidden;
+}
+
+._scoped_admin .manage-gallery-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+._scoped_admin .manage-gallery-body {
+  padding: 1rem 1.1rem 0.75rem;
+}
+
+._scoped_admin .manage-gallery-description {
+  margin: 0;
+  color: #1e293b;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  max-height: 4.4rem;
+  overflow: hidden;
+}
+
+._scoped_admin .manage-gallery-footer {
+  margin-top: auto;
+  padding: 0.85rem 1.1rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 0.75rem;
+}
+
+._scoped_admin .manage-gallery-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  max-width: 60%;
+}
+
+._scoped_admin .manage-gallery-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #94a3b8;
+}
+
+._scoped_admin .manage-gallery-uploader {
+  font-weight: 600;
+  color: #0f172a;
+  font-size: 0.9rem;
+}
+
+._scoped_admin .manage-gallery-time {
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+._scoped_admin .manage-gallery-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+._scoped_admin .manage-gallery-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0.3rem 0.85rem;
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: capitalize;
+}
+
+._scoped_admin .manage-gallery-status--published {
+  background: rgba(34, 197, 94, 0.12);
+  color: #15803d;
+}
+
+._scoped_admin .manage-gallery-status--draft {
+  background: rgba(234, 179, 8, 0.16);
+  color: #b45309;
+}
+
+._scoped_admin .manage-gallery-status--archived {
+  background: rgba(148, 163, 184, 0.16);
+  color: #475569;
+}
+
+._scoped_admin .manage-gallery-delete {
+  margin-left: 0.5rem;
+}
+
+._scoped_admin .manage-gallery-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  padding: 0.65rem 0.9rem;
+  border-radius: 4px;
+  background: rgba(59, 130, 246, 0.08);
+  border: 1px solid rgba(59, 130, 246, 0.15);
+  gap: 0.5rem;
+}
+
+._scoped_admin .manage-gallery-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.24rem 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border-radius: 4px;
+  background: rgba(148, 163, 184, 0.12);
+  color: #475569;
+}
+
+._scoped_admin .manage-gallery-chip--visible {
+  background: rgba(59, 130, 246, 0.15);
+  color: #1d4ed8;
+}
+
+._scoped_admin .manage-gallery-chip--total {
+  background: rgba(15, 23, 42, 0.05);
+  color: #0f172a;
+}
+
+._scoped_admin .manage-gallery-chip--remaining {
+  background: rgba(244, 63, 94, 0.15);
+  color: #b91c1c;
+}
+
+._scoped_admin .manage-gallery-search {
+  align-self: stretch;
+  margin-left: 1rem;
+  display: flex;
+  min-width: 240px;
+}
+
+._scoped_admin .manage-gallery-search .input-group-prepend .input-group-text {
+  border-radius: 4px 0 0 4px;
+}
+
+._scoped_admin .manage-gallery-search .form-control {
+  border-radius: 0 4px 4px 0;
+}
+
+._scoped_admin .input-group-text {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4rem 0.7rem;
+  background: #f8fafc;
+  border-color: rgba(148, 163, 184, 0.4);
+}
+
+._scoped_admin .input-group-text svg {
+  width: 18px;
+  height: 18px;
+}
+
+._scoped_admin .input-group .form-control {
+  padding: 0.4rem 0.8rem;
+}
+
+@media (max-width: 991.98px) {
+  ._scoped_admin .manage-gallery-search {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 0.5rem;
+  }
+}
+
 ._scoped_admin .admin-lightbox-backdrop {
   position: fixed;
   inset: 0;
@@ -439,4 +716,31 @@
   font-size: 0.92rem;
   line-height: 1.5;
   color: #cbd5f5;
+}
+
+._scoped_admin .btn {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+._scoped_admin .gallery-status {
+  flex-direction: row !important;
+  align-items: center;
+  gap: 1rem;
+}
+
+@media screen and (max-width: 1115px) {
+  ._scoped_admin .card-header,
+  ._scoped_admin .gallery-status {
+    display: flex;
+    flex-direction: column !important;
+    align-items: center;
+    justify-content: center;
+  }
+
+  ._scoped_admin .manage-gallery-search {
+    margin: auto;
+    margin-top: .5rem;
+  }
 }

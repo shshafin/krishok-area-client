@@ -25,9 +25,6 @@ const STATUS_OPTIONS = [
 ];
 
 const DEFAULT_SECTIONS = {
-  introduction: "",
-  damageExtent: "",
-  precautions: "",
   symptoms: "",
   actions: "",
 };
@@ -48,16 +45,9 @@ export default function AddCropDetailsPage() {
   const [cropTitle, setCropTitle] = useState("");
   const [status, setStatus] = useState("published");
   const [season, setSeason] = useState("");
-  const [tags, setTags] = useState("");
   const [imageFile, setImageFile] = useState(null);
   const [sections, setSections] = useState({ ...DEFAULT_SECTIONS });
-  const [markAsNone, setMarkAsNone] = useState({
-    introduction: false,
-    damageExtent: false,
-    precautions: false,
-  });
   const [submitting, setSubmitting] = useState(false);
-  const [lastSubmitted, setLastSubmitted] = useState(null);
 
   const slug = useMemo(
     () => (cropTitle.trim() || cropName.trim() ? normalizeSlug(cropTitle || cropName) : ""),
@@ -72,28 +62,14 @@ export default function AddCropDetailsPage() {
     };
   }, [imagePreview]);
 
-  const payload = useMemo(() => {
-    const tagsArray = tags
-      .split(",")
-      .map((tag) => tag.trim())
-      .filter(Boolean);
-
-    const detailSections = {
-      introduction: markAsNone.introduction ? "নাই" : sections.introduction.trim(),
-      damageExtent: markAsNone.damageExtent ? "নাই" : sections.damageExtent.trim(),
-      precautions: markAsNone.precautions ? "নাই" : sections.precautions.trim(),
-      symptoms: sections.symptoms.trim(),
-      actions: sections.actions.trim(),
-    };
-
-    return {
+  const payload = useMemo(
+    () => ({
       category,
       cropName: cropName.trim(),
       cropTitle: cropTitle.trim(),
       slug,
       status,
       season: season.trim(),
-      tags: tagsArray,
       image: imageFile
         ? {
             name: imageFile.name,
@@ -101,13 +77,17 @@ export default function AddCropDetailsPage() {
             type: imageFile.type,
           }
         : null,
-      details: detailSections,
+      details: {
+        symptoms: sections.symptoms.trim(),
+        actions: sections.actions.trim(),
+      },
       meta: {
         createdBy: "admin",
         createdAt: new Date().toISOString(),
       },
-    };
-  }, [category, cropName, cropTitle, slug, status, season, tags, imageFile, sections, markAsNone]);
+    }),
+    [category, cropName, cropTitle, slug, status, season, imageFile, sections]
+  );
 
   const validate = () => {
     if (!payload.category) return "Please select a crop category";
@@ -125,14 +105,8 @@ export default function AddCropDetailsPage() {
     setCropTitle("");
     setStatus("published");
     setSeason("");
-    setTags("");
     setImageFile(null);
     setSections({ ...DEFAULT_SECTIONS });
-    setMarkAsNone({
-      introduction: false,
-      damageExtent: false,
-      precautions: false,
-    });
   };
 
   const handleSubmit = async (event) => {
@@ -146,8 +120,7 @@ export default function AddCropDetailsPage() {
     setSubmitting(true);
     const toastId = toast.loading("Saving crop details...");
     try {
-      const response = await fakeSubmit(payload);
-      setLastSubmitted({ id: response.id, ...payload });
+      await fakeSubmit(payload);
       toast.success("Crop details saved!", { id: toastId });
       resetForm();
     } catch (err) {
@@ -162,17 +135,6 @@ export default function AddCropDetailsPage() {
       ...prev,
       [key]: value,
     }));
-
-  const toggleNone = (key) =>
-    setMarkAsNone((prev) => {
-      const next = { ...prev, [key]: !prev[key] };
-      if (!next[key]) return next;
-      setSections((prevSections) => ({
-        ...prevSections,
-        [key]: "",
-      }));
-      return next;
-    });
 
   return (
     <div className="content-wrapper _scoped_admin" style={{ minHeight: "839px" }}>
@@ -201,8 +163,8 @@ export default function AddCropDetailsPage() {
       <section className="content">
         <div className="container-fluid">
           <form onSubmit={handleSubmit}>
-            <div className="row">
-              <div className="col-lg-8">
+            <div className="row justify-content-center">
+              <div className="col-lg-8 col-12">
                 <div className="card card-outline card-primary mb-3">
                   <div className="card-header">
                     <h3 className="card-title mb-0">Primary Information</h3>
@@ -287,18 +249,6 @@ export default function AddCropDetailsPage() {
                         />
                       </div>
                     </div>
-                    <div className="form-group mb-0">
-                      <label htmlFor="tags">Tags</label>
-                      <input
-                        id="tags"
-                        type="text"
-                        className="form-control"
-                        placeholder="Comma separated tags"
-                        value={tags}
-                        onChange={(event) => setTags(event.target.value)}
-                      />
-                      <small className="form-text text-muted">Helps group similar crop issues.</small>
-                    </div>
                   </div>
                 </div>
 
@@ -339,75 +289,6 @@ export default function AddCropDetailsPage() {
                   </div>
                   <div className="card-body">
                     <div className="form-group">
-                      <div className="d-flex justify-content-between align-items-center">
-                        <label className="mb-0" htmlFor="introduction">
-                          পরিচিতি (Introduction)
-                        </label>
-                        <button
-                          type="button"
-                          className="btn btn-link btn-sm p-0"
-                          onClick={() => toggleNone("introduction")}
-                        >
-                          {markAsNone.introduction ? "Undo 'নাই'" : "Mark as 'নাই'"}
-                        </button>
-                      </div>
-                      <textarea
-                        id="introduction"
-                        className="form-control"
-                        rows={3}
-                        placeholder="ফসলের রোগ/পোকার পরিচিতি লিখুন"
-                        value={markAsNone.introduction ? "" : sections.introduction}
-                        onChange={(event) => updateSection("introduction", event.target.value)}
-                        disabled={markAsNone.introduction}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <div className="d-flex justify-content-between align-items-center">
-                        <label className="mb-0" htmlFor="damageExtent">
-                          ক্ষতির ব্যপ্তি (Damage extent)
-                        </label>
-                        <button
-                          type="button"
-                          className="btn btn-link btn-sm p-0"
-                          onClick={() => toggleNone("damageExtent")}
-                        >
-                          {markAsNone.damageExtent ? "Undo 'নাই'" : "Mark as 'নাই'"}
-                        </button>
-                      </div>
-                      <textarea
-                        id="damageExtent"
-                        className="form-control"
-                        rows={3}
-                        placeholder="ক্ষতির বিস্তার/প্রভাব"
-                        value={markAsNone.damageExtent ? "" : sections.damageExtent}
-                        onChange={(event) => updateSection("damageExtent", event.target.value)}
-                        disabled={markAsNone.damageExtent}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <div className="d-flex justify-content-between align-items-center">
-                        <label className="mb-0" htmlFor="precautions">
-                          সাবধানতা (Precautions)
-                        </label>
-                        <button
-                          type="button"
-                          className="btn btn-link btn-sm p-0"
-                          onClick={() => toggleNone("precautions")}
-                        >
-                          {markAsNone.precautions ? "Undo 'নাই'" : "Mark as 'নাই'"}
-                        </button>
-                      </div>
-                      <textarea
-                        id="precautions"
-                        className="form-control"
-                        rows={3}
-                        placeholder="প্রাথমিক সাবধানতা বা প্রতিরোধ ব্যবস্থা"
-                        value={markAsNone.precautions ? "" : sections.precautions}
-                        onChange={(event) => updateSection("precautions", event.target.value)}
-                        disabled={markAsNone.precautions}
-                      />
-                    </div>
-                    <div className="form-group">
                       <label htmlFor="symptoms">রোগের লক্ষণ</label>
                       <textarea
                         id="symptoms"
@@ -431,67 +312,15 @@ export default function AddCropDetailsPage() {
                     </div>
                   </div>
                 </div>
-              </div>
-
-              <div className="col-lg-4">
-                <div className="card card-outline card-secondary mb-3">
-                  <div className="card-header">
-                    <h3 className="card-title mb-0">Summary</h3>
-                  </div>
+                <div className="card card-outline card-success mt-3">
                   <div className="card-body">
-                    <dl className="mb-0">
-                      <dt>Category</dt>
-                      <dd>{CATEGORY_OPTIONS.find((opt) => opt.value === category)?.label || "—"}</dd>
-                      <dt>Crop Name</dt>
-                      <dd>{payload.cropName || "—"}</dd>
-                      <dt>Title</dt>
-                      <dd>{payload.cropTitle || "—"}</dd>
-                      <dt>Slug</dt>
-                      <dd>{slug || "Auto-generated"}</dd>
-                      <dt>Status</dt>
-                      <dd>{STATUS_OPTIONS.find((opt) => opt.value === status)?.label}</dd>
-                      <dt>Season</dt>
-                      <dd>{payload.season || "—"}</dd>
-                      <dt>Tags</dt>
-                      <dd>{payload.tags.length ? payload.tags.join(", ") : "—"}</dd>
-                    </dl>
-                  </div>
-                </div>
-
-                <div className="card card-outline card-dark mb-3">
-                  <div className="card-header">
-                    <h3 className="card-title mb-0">Submission JSON</h3>
-                  </div>
-                  <div className="card-body" style={{ maxHeight: 320, overflowY: "auto" }}>
-                    <pre className="small mb-0">
-{JSON.stringify(lastSubmitted ?? payload, null, 2)}
-                    </pre>
-                  </div>
-                </div>
-
-                <div className="card card-outline card-success">
-                  <div className="card-body d-flex justify-content-between align-items-center">
-                    <button
-                      type="button"
-                      className="btn btn-outline-secondary"
-                      onClick={() => {
-                        resetForm();
-                        setLastSubmitted(null);
-                      }}
-                      disabled={submitting}
-                    >
-                      Reset
-                    </button>
-                    <button type="submit" className="btn btn-primary" disabled={submitting}>
+                    <button type="submit" className="btn btn-primary btn-lg w-100 mb-2" disabled={submitting}>
                       {submitting ? "Saving..." : "Save Details"}
                     </button>
+                    <a href="/admin/crops/manage-details" className="btn btn-outline-secondary w-100">
+                      Manage Crop Details
+                    </a>
                   </div>
-                </div>
-
-                <div className="text-right mt-3">
-                  <a href="/admin/crops/manage-details" className="btn btn-link p-0">
-                    Manage Crop Details
-                  </a>
                 </div>
               </div>
             </div>
