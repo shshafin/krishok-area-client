@@ -10,7 +10,6 @@ import MessageCircleIcon from "@/assets/IconComponents/MessageCircleIcon";
 import MarcketIcon from "@/assets/IconComponents/MarcketIcon";
 import UserPlusIcon from "@/assets/IconComponents/UserPlusIcon";
 import LogOutIcon from "@/assets/IconComponents/LogOutIcon";
-import LocationIcon from "@/assets/IconComponents/LocationIcon";
 import SeedIcon from "@/assets/IconComponents/SeedIcon";
 
 import { logoutUser } from "../../api/authApi";
@@ -53,7 +52,6 @@ export default function SideMenu({
     () =>
       itemsProp ?? [
         { to: "/weather", label: "প্রতিদিনের আবহাওয়া", Icon: CloudIcon },
-        { to: "/districts", label: "বিভাগ ও জেলাসমূহ", Icon: LocationIcon },
         {
           to: "/companyes",
           label: "কীটনাশক ও কোম্পানি",

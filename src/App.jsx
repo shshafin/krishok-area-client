@@ -18,7 +18,6 @@ import GalleryPost from "./features/gallery/pages/GalleryPost";
 import GuidlinesCard from "./features/gallery/pages/GuidlinesCard";
 import BlogPage from "./features/blog/pages/BlogPage";
 import Weather from "./features/weather/page/WeatherPage";
-import AllDistrict from "./components/ui/AllDistrict";
 import SeedMarketPage from "./features/Marcket/pages/SeedMarketPage";
 import MarcketPricePage from "./features/Marcket/pages/MarcketPricePage";
 import CompanyPage from "./features/company/pages/CompanyPage";
@@ -36,7 +35,6 @@ const AddCropDetailsPage = lazy(() => import("./features/admin/pages/AddCropDeta
 const AddCompanyCategoryPage = lazy(() => import("./features/admin/pages/AddCompanyCategoryPage"));
 const AddProductPage = lazy(() => import("./features/admin/pages/AddProductPage"));
 const ManagePostsPage = lazy(() => import("./features/admin/pages/ManagePostsPage"));
-const AddDistrictPage = lazy(() => import("./features/admin/pages/AddDistrictPage"));
 const ManageGalleryPhotosPage = lazy(() => import("./features/admin/pages/ManageGalleryPhotosPage"));
 const ManageCropCategoryPage = lazy(() => import("./features/admin/pages/ManageCropCategoryPage"));
 const ManageNotificationsPage = lazy(() => import("./features/admin/pages/ManageNotificationsPage"));
@@ -193,15 +191,6 @@ function App() {
         />
 
         <Route
-          path="/districts"
-          element={
-            <PrivateRoute>
-              <AllDistrict />
-            </PrivateRoute>
-          }
-        />
-
-        <Route
           path="/companyes"
           element={
             <PrivateRoute>
@@ -250,7 +239,6 @@ function App() {
           <Route path="crops/add-details" element={<AddCropDetailsPage />} />
           <Route path="crops/manage-category" element={<ManageCropCategoryPage />} />
           <Route path="products/add" element={<AddProductPage />} />
-          <Route path="locations/add-district" element={<AddDistrictPage />} />
           <Route path="notifications/manage" element={<ManageNotificationsPage />} />
         </Route>
       </Routes>

@@ -195,27 +195,3 @@
   color: #9ca3af;
 }
 
-.cardFooter {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.rating,
-.location {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-.star,
-.pin {
-  width: 16px;
-  height: 16px;
-}
-.ratingText {
-  font-weight: 600;
-  color: #fff;
-}
-.locationText {
-  font-size: 0.9rem;
-  color: #d1d5db;
-}

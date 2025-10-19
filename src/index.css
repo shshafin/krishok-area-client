@@ -55,11 +55,11 @@
 /* global layout */
 body {
   font-family: 'Inter', system-ui, sans-serif;
-  background: var(--background);
+  background: #090c14;
 }
 
 #root {
-  margin-top: 4rem;
+  margin-top: 4rem !important;
 }
 
 /* global utilities */

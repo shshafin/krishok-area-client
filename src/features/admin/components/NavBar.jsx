@@ -55,12 +55,6 @@ export default function Navbar() {
       label: "Add Product",
       icon: addIcon,
     },
-    {
-      type: "item",
-      to: "/admin/locations/add-district",
-      label: "Add District",
-      icon: addIcon,
-    },
 
     { type: "divider" },
 
@@ -98,12 +92,6 @@ export default function Navbar() {
       type: "item",
       to: "/admin/products/manage-details",
       label: "Manage Products Details",
-      icon: manageIcon,
-    },
-    {
-      type: "item",
-      to: "/admin/locations/manage-district",
-      label: "Manage District",
       icon: manageIcon,
     },
     {
