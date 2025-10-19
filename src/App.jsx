@@ -35,10 +35,10 @@ const AddCropDetailsPage = lazy(() => import("./features/admin/pages/AddCropDeta
 const AddCompanyCategoryPage = lazy(() => import("./features/admin/pages/AddCompanyCategoryPage"));
 const AddProductPage = lazy(() => import("./features/admin/pages/AddProductPage"));
 const ManagePostsPage = lazy(() => import("./features/admin/pages/ManagePostsPage"));
-const AddDistrictPage = lazy(() => import("./features/admin/pages/AddDistrictPage"));
 const ManageGalleryPhotosPage = lazy(() => import("./features/admin/pages/ManageGalleryPhotosPage"));
 const ManageCropCategoryPage = lazy(() => import("./features/admin/pages/ManageCropCategoryPage"));
 const ManageCropDetailsPage = lazy(() => import("./features/admin/pages/ManageCropDetailsPage"));
+const ManageCompanyPage = lazy(() => import("./features/admin/pages/ManageCompanyPage"));
 const ManageNotificationsPage = lazy(() => import("./features/admin/pages/ManageNotificationsPage"));
 
 function App() {
@@ -249,8 +249,8 @@ function App() {
           <Route path="crops/add-details" element={<AddCropDetailsPage />} />
           <Route path="crops/manage-category" element={<ManageCropCategoryPage />} />
           <Route path="crops/manage-details" element={<ManageCropDetailsPage />} />
+          <Route path="companies/manage" element={<ManageCompanyPage />} />
           <Route path="products/add" element={<AddProductPage />} />
-          <Route path="locations/add-district" element={<AddDistrictPage />} />
           <Route path="notifications/manage" element={<ManageNotificationsPage />} />
         </Route>
       </Routes>
