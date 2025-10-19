@@ -1229,6 +1229,7 @@
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1.35rem;
   justify-content: stretch;
+  align-items: start;
 }
 
 ._scoped_admin .crop-detail-card {
@@ -1294,16 +1295,31 @@
 }
 
 ._scoped_admin .crop-detail-category.badge-danger {
-  color: #fecaca;
+  color: #ffffff;
+  background: #dc2626;
+  border-color: #dc2626;
+  box-shadow: 0 16px 32px rgba(220, 38, 38, 0.35);
 }
 
 ._scoped_admin .crop-detail-category.badge-info {
-  color: #c7d2fe;
+  color: #ffffff;
+  background: #2563eb;
+  border-color: #2563eb;
+  box-shadow: 0 16px 32px rgba(37, 99, 235, 0.35);
 }
 
-._scoped_admin .crop-detail-category.badge-warning,
+._scoped_admin .crop-detail-category.badge-warning {
+  color: #0f172a;
+  background: #fbbf24;
+  border-color: #f59e0b;
+  box-shadow: 0 16px 32px rgba(251, 191, 36, 0.35);
+}
+
 ._scoped_admin .crop-detail-category.badge-muted {
-  color: #fde68a;
+  color: #ffffff;
+  background: #475569;
+  border-color: #475569;
+  box-shadow: 0 16px 32px rgba(71, 85, 105, 0.35);
 }
 
 ._scoped_admin .crop-detail-delete-icon {
@@ -1538,6 +1554,8 @@
   ._scoped_admin .crop-details-grid {
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     justify-content: stretch;
+    align-items: start;
+    gap: 1rem;
   }
 
   ._scoped_admin .crop-detail-header {
