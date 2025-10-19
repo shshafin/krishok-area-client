@@ -13,7 +13,6 @@ import RoleBasedRoute from "./components/privateRoute/RoleBasedRoute";
 import SettingsPage from "@/features/settings/pages/SettingsPage";
 import ProfilePage from "@/features/profile/pages/Profile";
 import FollowPage from "@/features/follow/pages/Follow";
-import NewProfile from "@/features/NewProfile/pages/NewProfile";
 
 import GalleryPost from "./features/gallery/pages/GalleryPost";
 import GuidlinesCard from "./features/gallery/pages/GuidlinesCard";
@@ -123,15 +122,6 @@ function App() {
 
         <Route
           path="/user/:username"
-          element={
-            <PrivateRoute>
-              <NewProfile />
-            </PrivateRoute>
-          }
-        />
-
-        <Route
-          path="/user?"
           element={
             <PrivateRoute>
               <ProfilePage />

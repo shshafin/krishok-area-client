@@ -204,62 +204,6 @@ export default function Post({
 
         {/* Comments */}
         <section className="comment-section">
-          {comments.length > 0 && (
-            <div
-              style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-              {comments.map((c, i) => (
-                <div
-                  key={i}
-                  style={{
-                    display: "flex",
-                    gap: "12px",
-                    alignItems: "flex-start",
-                    marginTop: "8px",
-                    padding: "12px",
-                    background: "#222B3A",
-                    borderRadius: "10px",
-                    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-                    transition: "box-shadow 0.2s ease-in-out",
-                  }}>
-                  <img
-                    src={
-                      c.user?.profileImage
-                        ? c.user.profileImage.startsWith("http")
-                          ? c.user.profileImage
-                          : `${baseApi}${c.user.profileImage}`
-                        : "https://i.postimg.cc/fRVdFSbg/e1ef6545-86db-4c0b-af84-36a726924e74.png"
-                    }
-                    alt={c.user?.username || "User"}
-                    style={{
-                      width: "40px",
-                      height: "40px",
-                      borderRadius: "50%",
-                      objectFit: "cover",
-                      border: "2px solid #e5e7eb",
-                    }}
-                  />
-                  <div
-                    style={{
-                      background: "#222B3A",
-                      borderRadius: "8px",
-                      padding: "10px 14px",
-                      flex: 1,
-                      lineHeight: "1.5",
-                    }}>
-                    <span
-                      style={{
-                        fontWeight: "600",
-                        color: "#9C9888",
-                        marginRight: "8px",
-                      }}>
-                      {c.user?.username || "Anonymous"}
-                    </span>
-                    <span style={{ color: "#9C9888" }}>{c.text}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
           <CommentBox
             onSubmit={handleCommentSubmit}
             profileSrc={user.profileImage}
