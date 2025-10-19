@@ -73,7 +73,7 @@
 .btn-danger {
   border-color: var(--danger, #ef4444);
   color: var(--danger, #ef4444);
-  background: transparent;
+  background: red !important;
 }
 .btn-danger:hover {
   background: var(--danger, #ef4444);

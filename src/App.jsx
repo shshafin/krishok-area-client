@@ -29,7 +29,16 @@ const AdminLayout = lazy(() => import("./features/admin/components/AdminLayout")
 const AdminPage = lazy(() => import("./features/admin/pages/AdminPage"));
 const EditProfilePage = lazy(() => import("./features/admin/pages/EditProfilePage"));
 const AddPhotosPage = lazy(() => import("./features/admin/pages/AddPhotosPage"));
+const AddVideosPage = lazy(() => import("./features/admin/pages/AddVideosPage"));
+const AddCropCategoryPage = lazy(() => import("./features/admin/pages/AddCropCategoryPage"));
+const AddCropDetailsPage = lazy(() => import("./features/admin/pages/AddCropDetailsPage"));
+const AddCompanyCategoryPage = lazy(() => import("./features/admin/pages/AddCompanyCategoryPage"));
+const AddProductPage = lazy(() => import("./features/admin/pages/AddProductPage"));
+const ManagePostsPage = lazy(() => import("./features/admin/pages/ManagePostsPage"));
 const AddDistrictPage = lazy(() => import("./features/admin/pages/AddDistrictPage"));
+const ManageGalleryVideosPage = lazy(() => import("./features/admin/pages/ManageGalleryVideosPage"));
+const ManageGalleryPhotosPage = lazy(() => import("./features/admin/pages/ManageGalleryPhotosPage"));
+const ManageCropCategoryPage = lazy(() => import("./features/admin/pages/ManageCropCategoryPage"));
 
 function App() {
   const location = useLocation();
@@ -231,6 +240,15 @@ function App() {
           <Route path="dashboard" element={<AdminPage />} />
           <Route path="profile/edit" element={<EditProfilePage />} />
           <Route path="media/add-photo" element={<AddPhotosPage />} />
+          <Route path="media/add-video" element={<AddVideosPage />} />
+          <Route path="media/manage-video" element={<ManageGalleryVideosPage />} />
+          <Route path="media/manage-gallery-photo" element={<ManageGalleryPhotosPage />} />
+          <Route path="companies/add-category" element={<AddCompanyCategoryPage />} />
+          <Route path="posts/manage" element={<ManagePostsPage />} />
+          <Route path="crops/add-category" element={<AddCropCategoryPage />} />
+          <Route path="crops/add-details" element={<AddCropDetailsPage />} />
+          <Route path="crops/manage-category" element={<ManageCropCategoryPage />} />
+          <Route path="products/add" element={<AddProductPage />} />
           <Route path="locations/add-district" element={<AddDistrictPage />} />
         </Route>
       </Routes>
