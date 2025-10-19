@@ -4,7 +4,18 @@ import CameraIcon from "@/assets/IconComponents/CameraIcon";
 import Lightbox from "yet-another-react-lightbox";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import "yet-another-react-lightbox/styles.css";
+import { baseApi } from "@/api";
 import styles from "../styles/Profile.module.css";
+
+const VIDEO_PATTERN = /\.(mp4|webm|ogg)$/i;
+const isAbsoluteUrl = (url) =>
+  typeof url === "string" &&
+  (url.startsWith("http") || url.startsWith("blob:") || url.startsWith("data:"));
+
+const withBaseUrl = (url) => {
+  if (!url || typeof url !== "string") return url;
+  return isAbsoluteUrl(url) ? url : `${baseApi}${url}`;
+};
 
 /**
  * Props:
@@ -19,9 +30,18 @@ export default function ProfileTabs({ posts = [], renderPost }) {
 
   // build photo list from visible posts (images only)
   const photos = useMemo(() => {
-    return posts
-      .flatMap((p) => (p.media || []).map((m) => ({ postId: p.postId, url: m })))
-      .filter((m) => !/\.(mp4|webm|ogg)$/i.test(m.url));
+    return posts.flatMap((p) => {
+      const postId = p._id ?? p.postId ?? p.id ?? "post";
+      const fromImages = Array.isArray(p.images) ? p.images : [];
+      const fromMedia = Array.isArray(p.media)
+        ? p.media.filter((src) => !VIDEO_PATTERN.test(src))
+        : [];
+      const sources = [...fromImages, ...fromMedia];
+      return sources.map((url) => ({
+        postId: String(postId),
+        url: withBaseUrl(url),
+      }));
+    });
   }, [posts]);
 
   // Lightbox state for Photos tab
@@ -52,8 +72,11 @@ export default function ProfileTabs({ posts = [], renderPost }) {
           {posts.length === 0 ? (
             <span className={styles["empty-hint"]}>no post</span>
           ) : (
-            posts.map((p) => (
-              <div className={styles["post-wrap"]} key={p.postId}>
+            posts.map((p, index) => (
+              <div
+                className={styles["post-wrap"]}
+                key={p._id ?? p.postId ?? p.id ?? `post-${index}`}
+              >
                 {renderPost(p)}
               </div>
             ))

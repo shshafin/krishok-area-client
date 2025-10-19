@@ -123,7 +123,7 @@ function App() {
         />
 
         <Route
-          path="/user?"
+          path="/user"
           element={
             <PrivateRoute>
               <ProfilePage />

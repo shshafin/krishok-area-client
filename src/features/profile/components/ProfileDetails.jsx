@@ -82,7 +82,7 @@ export default function ProfileHeader({ user, isOwner }) {
           <div className={styles["meta-row"]}>
             <div className={`${styles["meta-item"]} flex FY-center gap-1`}>
               <MapPinIcon />
-              <span className="muted">{user?.location || "—"}</span>
+              <span className="muted">{user?.location || "Unknown"}</span>
             </div>
             <div className={`${styles["meta-item"]} flex FY-center gap-1`}>
               <CalendarIcon />
