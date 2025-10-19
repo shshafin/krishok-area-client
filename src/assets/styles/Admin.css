@@ -1728,19 +1728,20 @@
 
 .wrapper.sidebar-collapsed .main-sidebar:hover ~ .content-wrapper,
 .wrapper.sidebar-collapsed .main-sidebar:focus-within ~ .content-wrapper {
-  margin-left: var(--admin-sidebar-width) !important;
+  margin-left: var(--admin-sidebar-collapsed-width) !important;
+  width: calc(100% - var(--admin-sidebar-collapsed-width)) !important;
 }
 
 .wrapper.sidebar-collapsed .main-sidebar:hover ~ .admin-top-navbar,
 .wrapper.sidebar-collapsed .main-sidebar:focus-within ~ .admin-top-navbar {
-  margin-left: var(--admin-sidebar-width) !important;
-  width: calc(100% - var(--admin-sidebar-width)) !important;
+  margin-left: var(--admin-sidebar-collapsed-width) !important;
+  width: calc(100% - var(--admin-sidebar-collapsed-width)) !important;
 }
 
 .wrapper.sidebar-collapsed .main-sidebar:hover ~ .main-footer,
 .wrapper.sidebar-collapsed .main-sidebar:focus-within ~ .main-footer {
-  margin-left: var(--admin-sidebar-width) !important;
-  width: calc(100% - var(--admin-sidebar-width)) !important;
+  margin-left: var(--admin-sidebar-collapsed-width) !important;
+  width: calc(100% - var(--admin-sidebar-collapsed-width)) !important;
 }
 
 .user-details {
