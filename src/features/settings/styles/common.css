@@ -173,3 +173,21 @@
   line-height: 1.25rem;
   color: var(--darkGray);
 }
+
+.settings-page {
+  width: min(1200px, 100%);
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem 3.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.settings-form-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.settings-form-wrapper > section {
+  width: 100%;
+}

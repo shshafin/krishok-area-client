@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
-import { fetchMe, updateProfile, changePassword } from "@/api/authApi";
+import { fetchMe, updateProfile } from "@/api/authApi";
 
 import "../styles/common.css";
 import ProfileCard from "../components/ProfileCard";
 import ProfileForm from "../components/ProfileForm";
-import PasswordForm from "../components/PasswordForm";
 import { logoutUser } from "../../../api/authApi";
 import { baseApi } from "../../../api";
 
@@ -149,32 +148,6 @@ export default function SettingsPage() {
   };
 
   // ======================
-  // Password change handler
-  // ======================
-  const handleChangePassword = async (e) => {
-    e.preventDefault();
-    const form = e.target;
-    const oldPassword = form.oldPassword.value;
-    const newPassword = form.newPassword.value;
-    const confirmPassword = form.confirmPassword.value;
-
-    if (newPassword !== confirmPassword) {
-      alert("New password and confirm password do not match!");
-      return;
-    }
-
-    try {
-      const res = await changePassword({ oldPassword, newPassword });
-      console.log("Password changed:", res);
-      alert("Password changed successfully!");
-      form.reset();
-    } catch (err) {
-      console.error("Password change failed:", err);
-      alert(err?.message || "Password change failed!");
-    }
-  };
-
-  // ======================
   // logout handler
   // ======================
   const handleSignOut = async () => {
@@ -195,14 +168,14 @@ export default function SettingsPage() {
   if (loading) return <h1>Loading Profile...</h1>;
 
   return (
-    <div className="container">
+    <div className="settings-page">
       <ProfileCard
         data={profile}
         onChangePhoto={handleProfilePhotoChange}
         onChangeCover={handleCoverPhotoChange}
       />
 
-      <div className="grid-2 mt-24">
+      <div className="settings-form-wrapper mt-24">
         <ProfileForm
           values={formValues}
           onChange={(e) =>
@@ -210,7 +183,6 @@ export default function SettingsPage() {
           }
           onSubmit={handleProfileSubmit}
         />
-        <PasswordForm onSubmit={handleChangePassword} />
       </div>
     </div>
   );
