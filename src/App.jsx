@@ -39,6 +39,9 @@ const ManageGalleryPhotosPage = lazy(() => import("./features/admin/pages/Manage
 const ManageCropCategoryPage = lazy(() => import("./features/admin/pages/ManageCropCategoryPage"));
 const ManageCropDetailsPage = lazy(() => import("./features/admin/pages/ManageCropDetailsPage"));
 const ManageCompanyPage = lazy(() => import("./features/admin/pages/ManageCompanyPage"));
+const ManageProductDetailsPage = lazy(() => import("./features/admin/pages/ManageProductDetailsPage"));
+const ManageBazarPricePage = lazy(() => import("./features/admin/pages/ManageBazarPricePage"));
+const ManageSeedBazarPage = lazy(() => import("./features/admin/pages/ManageSeedBazarPage"));
 const ManageNotificationsPage = lazy(() => import("./features/admin/pages/ManageNotificationsPage"));
 
 function App() {
@@ -251,6 +254,9 @@ function App() {
           <Route path="crops/manage-details" element={<ManageCropDetailsPage />} />
           <Route path="companies/manage" element={<ManageCompanyPage />} />
           <Route path="products/add" element={<AddProductPage />} />
+          <Route path="products/manage-details" element={<ManageProductDetailsPage />} />
+          <Route path="bazar/manage-price" element={<ManageBazarPricePage />} />
+          <Route path="bazar/manage-seed" element={<ManageSeedBazarPage />} />
           <Route path="notifications/manage" element={<ManageNotificationsPage />} />
         </Route>
       </Routes>
@@ -259,3 +265,4 @@ function App() {
 }
 
 export default App;
+

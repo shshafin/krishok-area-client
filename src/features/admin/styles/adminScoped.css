@@ -502,6 +502,30 @@
   max-width: 60%;
 }
 
+._scoped_admin .manage-gallery-metadata {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  color: #1e293b;
+}
+
+._scoped_admin .manage-gallery-metadata--location {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+._scoped_admin .manage-gallery-location-icon {
+  width: 16px;
+  height: 16px;
+  color: #dc2626;
+  flex-shrink: 0;
+}
+
+._scoped_admin .manage-gallery-location-text {
+  font-size: 0.9rem;
+}
+
 ._scoped_admin .manage-gallery-label {
   font-size: 0.75rem;
   text-transform: uppercase;
@@ -1521,3 +1545,4 @@
   }
 
 }
+
