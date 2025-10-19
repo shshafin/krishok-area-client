@@ -78,12 +78,6 @@ export default function Navbar() {
     },
     {
       type: "item",
-      to: "/admin/media/manage-video",
-      label: "Manage All Video",
-      icon: manageIcon,
-    },
-    {
-      type: "item",
       to: "/admin/crops/manage-category",
       label: "Manage Crop Category",
       icon: manageIcon,

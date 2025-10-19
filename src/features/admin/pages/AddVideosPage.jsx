@@ -128,9 +128,6 @@ export default function AddVideosPage() {
                 <li className="breadcrumb-item">
                   <a href="/admin/dashboard">Dashboard</a>
                 </li>
-                <li className="breadcrumb-item">
-                  <a href="/admin/media/manage-video">Manage Video</a>
-                </li>
                 <li className="breadcrumb-item active">Add Videos</li>
               </ol>
             </div>
@@ -302,11 +299,6 @@ export default function AddVideosPage() {
                   </div>
                 </div>
 
-                <div className="text-right mt-3">
-                  <a href="/admin/media/manage-video" className="btn btn-link p-0">
-                    Manage All Video
-                  </a>
-                </div>
               </div>
             </div>
           </form>
