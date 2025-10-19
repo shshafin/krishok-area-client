@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { NavLink } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import "../styles/adminScoped.css";
 import SearchIcon from "@/assets/IconComponents/SearchIcon";
@@ -235,7 +236,7 @@ export default function ManageGalleryPhotosPage() {
             <div className="col-sm-6">
               <ol className="breadcrumb float-sm-right">
                 <li className="breadcrumb-item">
-                  <a href="/admin/dashboard">Dashboard</a>
+                  <NavLink to="/admin/dashboard">Dashboard</NavLink>
                 </li>
                 <li className="breadcrumb-item active">Gallery</li>
               </ol>

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { NavLink } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import "../styles/adminScoped.css";
 import EditBadgeIcon from "@/assets/IconComponents/EditBadgeIcon";
@@ -189,10 +190,10 @@ export default function ManageCropCategoryPage() {
             <div className="col-sm-6">
               <ol className="breadcrumb float-sm-right">
                 <li className="breadcrumb-item">
-                  <a href="/admin/dashboard">Dashboard</a>
+                  <NavLink to="/admin/dashboard">Dashboard</NavLink>
                 </li>
                 <li className="breadcrumb-item">
-                  <a href="/admin/crops/manage-category">Crops</a>
+                  <NavLink to="/admin/crops/manage-category">Crops</NavLink>
                 </li>
                 <li className="breadcrumb-item active">Manage Category</li>
               </ol>

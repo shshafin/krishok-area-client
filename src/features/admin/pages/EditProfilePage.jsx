@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { NavLink } from "react-router-dom";
 
 const PROFILE_DEFAULTS = {
   fullName: "Krishok Mosarrof",
@@ -83,7 +84,7 @@ export default function EditProfilePage() {
             <div className="col-sm-6">
               <ol className="breadcrumb float-sm-right">
                 <li className="breadcrumb-item">
-                  <a href="/admin/dashboard">Dashboard</a>
+                  <NavLink to="/admin/dashboard">Dashboard</NavLink>
                 </li>
                 <li className="breadcrumb-item active">Edit Profile</li>
               </ol>

@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { NavLink } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 
 const fakeSubmit = (payload) =>
@@ -148,10 +149,10 @@ export default function AddCropDetailsPage() {
             <div className="col-sm-6">
               <ol className="breadcrumb float-sm-right">
                 <li className="breadcrumb-item">
-                  <a href="/admin/dashboard">Dashboard</a>
+                  <NavLink to="/admin/dashboard">Dashboard</NavLink>
                 </li>
                 <li className="breadcrumb-item">
-                  <a href="/admin/crops/manage-details">Manage Crop Details</a>
+                  <NavLink to="/admin/crops/manage-details">Manage Crop Details</NavLink>
                 </li>
                 <li className="breadcrumb-item active">Add Crop Details</li>
               </ol>
@@ -317,9 +318,9 @@ export default function AddCropDetailsPage() {
                     <button type="submit" className="btn btn-primary btn-lg w-100 mb-2" disabled={submitting}>
                       {submitting ? "Saving..." : "Save Details"}
                     </button>
-                    <a href="/admin/crops/manage-details" className="btn btn-outline-secondary w-100">
+                    <NavLink to="/admin/crops/manage-details" className="btn btn-outline-secondary w-100">
                       Manage Crop Details
-                    </a>
+                    </NavLink>
                   </div>
                 </div>
               </div>
