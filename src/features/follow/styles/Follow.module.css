@@ -27,18 +27,8 @@
 /* grid */
 .grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
-}
-@media (min-width: 768px) {
-  .grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-@media (min-width: 1024px) {
-  .grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
+  gap: .5rem;
+  align-items: stretch;
 }
 
 /* card */
@@ -117,9 +107,6 @@
 .follow {
   background: #2563eb;
   color: #fff;
-}
-.follow:hover {
-  background: #1d4ed8;
 }
 .following {
   background: #0b1220;
