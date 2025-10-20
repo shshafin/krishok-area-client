@@ -1,4 +1,5 @@
 .user-card {
+  width: 100%;
   padding: 16px;
   border-bottom: 1px solid #374151;
   display: grid;
@@ -41,6 +42,8 @@
 }
 
 .user-card__body {
+  width: fit-content;
+  max-width: 50%;
   min-width: 0;
 }
 .name-row {
@@ -102,9 +105,15 @@
 }
 
 .user-card__right {
+  width: 100%;
+  min-width: 160px;
   display: flex;
   flex-direction: column;
   gap: 6px;
+}
+
+.user-card__right button  {
+  width: 100%;
 }
 
 .btn {

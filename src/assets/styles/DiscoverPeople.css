@@ -43,7 +43,10 @@
 
 /* Discover People Section */
 .discover-people {
+  width: 90%;
   padding: 12px 16px;
+  max-width: 1800px;
+  margin: 0 auto;
 }
 
 .discover-controls {
