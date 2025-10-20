@@ -1,11 +1,27 @@
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import AdminTopNavbar from "./AdminTopNavbar";
 import Navbar from "./NavBar";
-import "@/assets/styles/Admin.css";
-import "@/assets/styles/Admin.Main.css";
 
 export default function AdminLayout() {
+  useEffect(() => {
+    const stylesheets = [
+      new URL("../../../assets/styles/Admin.Main.css", import.meta.url).href,
+      new URL("../../../assets/styles/Admin.css", import.meta.url).href,
+    ].map((href) => {
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = href;
+      link.dataset.adminStylesheet = "true";
+      document.head.appendChild(link);
+      return link;
+    });
+
+    return () => {
+      stylesheets.forEach((link) => link.parentNode?.removeChild(link));
+    };
+  }, []);
+
   return (
     <div className="wrapper">
       <Navbar />

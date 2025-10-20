@@ -3,9 +3,6 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 import adminImage from "@/assets/images/krishok-image.png";
-import "@/assets/styles/Admin.Main.css";
-import "@/assets/styles/Admin.css";
-
 import { loginAdmin } from "@/api/authApi";
 
 const initialFormState = Object.freeze({
@@ -25,6 +22,18 @@ export default function AdminLogin() {
   );
 
   useEffect(() => {
+    const stylesheets = [
+      new URL("../../../assets/styles/Admin.Main.css", import.meta.url).href,
+      new URL("../../../assets/styles/Admin.css", import.meta.url).href,
+    ].map((href) => {
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = href;
+      link.dataset.adminStylesheet = "true";
+      document.head.appendChild(link);
+      return link;
+    });
+
     const { classList, style } = document.body;
     const previousMinHeight = style.minHeight;
 
@@ -32,6 +41,7 @@ export default function AdminLogin() {
     style.minHeight = "230px";
 
     return () => {
+      stylesheets.forEach((link) => link.parentNode?.removeChild(link));
       classList.remove("login-page");
       style.minHeight = previousMinHeight;
     };

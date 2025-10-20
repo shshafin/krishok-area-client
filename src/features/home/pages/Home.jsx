@@ -7,6 +7,7 @@ import FollowerSuggest from "@/components/layout/FollowerSuggest";
 import CreatePost from "@/components/layout/CreatePost";
 import InfiniteFeed from "../../feed/pages/InfiniteFeed";
 import Posting from "@/components/layout/PostModel";
+import BizzShortsCarousel from "@/features/bizzShorts/components/BizzShortsCarousel";
 
 export default function Home() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -52,6 +53,8 @@ export default function Home() {
             onPhotoVideoClick={() => openModal("post")}
             onFellingClick={() => openModal("feelings")}
           />
+
+          <BizzShortsCarousel />
 
           <InfiniteFeed />
         </section>
