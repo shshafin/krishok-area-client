@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { format } from "timeago.js";
 
@@ -38,6 +38,10 @@ export default function Post({
   const [likesCount, setLikesCount] = useState(likes.length);
   const [comments, setComments] = useState(initialComments);
   const [openIndex, setOpenIndex] = useState(-1);
+
+  useEffect(() => {
+    setComments(initialComments);
+  }, [initialComments]);
 
   const formattedTime = useMemo(
     () => (createdAt ? format(new Date(createdAt)) : "just now"),

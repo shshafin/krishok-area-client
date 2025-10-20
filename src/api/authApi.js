@@ -114,3 +114,10 @@ export const commentOnPost = (postId, comment) => {
     credentials: "include",
   });
 };
+
+export const deleteComment = (postId, commentId) => {
+  return request(`/posts/${postId}/comment/${commentId}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+};

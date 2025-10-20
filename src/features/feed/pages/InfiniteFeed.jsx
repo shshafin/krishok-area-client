@@ -2,8 +2,9 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { NavLink } from "react-router-dom";
 import Post from "@/components/layout/Post";
 import ModelView from "@/components/layout/ModelView";
-import { fetchPosts } from "@/api/authApi";
+import { fetchPosts, fetchMe, deleteComment } from "@/api/authApi";
 import { toast } from "react-hot-toast";
+import TrashIcon from "@/assets/IconComponents/Trash";
 import { baseApi } from "../../../api";
 
 const PAGE_SIZE = 10;
@@ -16,15 +17,14 @@ export default function InfiniteFeed() {
   const [hasMore, setHasMore] = useState(true);
   const loaderRef = useRef(null);
 
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalTitle, setModalTitle] = useState("");
-  const [modalContent, setModalContent] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [modalState, setModalState] = useState({ type: null, postId: null });
+  const [deletingCommentId, setDeletingCommentId] = useState(null);
 
-  // Fetch posts from backend
   const loadPosts = useCallback(async () => {
     try {
       const res = await fetchPosts();
-      const allPosts = res?.posts || []; // use res.posts
+      const allPosts = res?.posts || [];
       const start = (page - 1) * PAGE_SIZE;
       const end = start + PAGE_SIZE;
       const newPosts = allPosts.slice(start, end);
@@ -45,7 +45,6 @@ export default function InfiniteFeed() {
     if (hasMore) loadPosts();
   }, [loadPosts, hasMore]);
 
-  // Intersection observer for infinite scrolling
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -62,34 +61,124 @@ export default function InfiniteFeed() {
     return () => current && observer.unobserve(current);
   }, [hasMore]);
 
-  const handleLikesView = (postId) => {
-    const post = posts.find((p) => p._id === postId);
-    if (!post) return;
+  useEffect(() => {
+    let ignore = false;
 
-    setModalTitle("Liked by");
-    setModalContent(
-      <div className="modal-list">
-        {post.likes.length > 0 ? (
-          post.likes.map((user, index) => {
+    const loadCurrentUser = async () => {
+      try {
+        const response = await fetchMe();
+        if (ignore) return;
+        setCurrentUser(response?.data ?? response ?? null);
+      } catch (err) {
+        console.error("Failed to load current user", err);
+      }
+    };
+
+    loadCurrentUser();
+
+    return () => {
+      ignore = true;
+    };
+  }, []);
+
+  const resolveId = (entity) =>
+    entity?._id ?? entity?.id ?? entity?.userId ?? entity?.username ?? null;
+
+  const sameId = (a, b) =>
+    a != null && b != null && String(a) === String(b);
+
+  const handleLikesView = (postId) => {
+    const post = posts.find((p) => sameId(resolveId(p), postId));
+    if (!post) return;
+    setModalState({ type: "likes", postId });
+  };
+
+  const handleCommentsView = (postId) => {
+    const post = posts.find((p) => sameId(resolveId(p), postId));
+    if (!post) return;
+    setModalState({ type: "comments", postId });
+  };
+
+  const handleLikeClick = (postId, newIsLiked) => {
+    console.log(`Post ${postId} was ${newIsLiked ? "liked" : "unliked"}`);
+    // API call to like/unlike post
+  };
+
+  const handleCloseModal = () => {
+    setModalState({ type: null, postId: null });
+  };
+
+  const handleCommentDelete = async (postId, commentId) => {
+    if (!postId || !commentId) return;
+    setDeletingCommentId(commentId);
+    try {
+      await deleteComment(postId, commentId);
+      setPosts((prev) =>
+        prev.map((post) => {
+          if (!sameId(resolveId(post), postId)) return post;
+          return {
+            ...post,
+            comments: (post.comments || []).filter((comment) => {
+              const existingId =
+                resolveId(comment) ?? comment._id ?? comment.id ?? comment.commentId;
+              if (existingId == null) return true;
+              return !sameId(existingId, commentId);
+            }),
+          };
+        })
+      );
+      toast.success("Comment removed");
+    } catch (err) {
+      console.error("Failed to delete comment", err);
+      toast.error("Failed to delete comment");
+    } finally {
+      setDeletingCommentId(null);
+    }
+  };
+
+  const isModalOpen = Boolean(modalState.type && modalState.postId);
+  const modalTitle =
+    modalState.type === "likes"
+      ? "Liked by"
+      : modalState.type === "comments"
+      ? "Comments"
+      : "";
+
+  const renderModalContent = () => {
+    if (!modalState.type || !modalState.postId) return null;
+
+    const post = posts.find((p) => sameId(resolveId(p), modalState.postId));
+    if (!post) {
+      return <p className="modal-empty">Post not available</p>;
+    }
+
+    if (modalState.type === "likes") {
+      if (!post.likes?.length) {
+        return <p className="modal-empty">No likes yet</p>;
+      }
+
+      return (
+        <div className="modal-list">
+          {post.likes.map((user, index) => {
             const likeUser = user || {};
-            const hasProfileLink = Boolean(likeUser._id);
+            const likeUserId = resolveId(likeUser);
             const profileImage = likeUser.profileImage
               ? likeUser.profileImage.startsWith("http") ||
                 likeUser.profileImage.startsWith("blob:")
                 ? likeUser.profileImage
                 : `${baseApi}${likeUser.profileImage}`
               : FALLBACK_AVATAR;
-            const Wrapper = hasProfileLink ? NavLink : "div";
-            const wrapperProps = hasProfileLink
+            const Wrapper = likeUserId ? NavLink : "div";
+            const wrapperProps = likeUserId
               ? {
-                  to: `/user/${likeUser._id}`,
+                  to: `/user?id=${likeUserId}`,
                   className: "modal-list-item modal-list-item--link",
                 }
               : { className: "modal-list-item modal-list-item--static" };
 
             return (
               <Wrapper
-                key={likeUser._id || `like-${index}`}
+                key={likeUserId || `like-${index}`}
                 {...wrapperProps}>
                 <img
                   src={profileImage}
@@ -101,88 +190,105 @@ export default function InfiniteFeed() {
                 </span>
               </Wrapper>
             );
-          })
-        ) : (
-          <p className="modal-empty">No likes yet</p>
-        )}
-      </div>
-    );
-    setModalOpen(true);
-  };
+          })}
+        </div>
+      );
+    }
 
-  const handleCommentsView = (postId) => {
-    const post = posts.find((p) => p._id === postId);
-    if (!post) return;
+    const comments = post.comments || [];
+    const postIdentifier = resolveId(post);
+    if (!comments.length) {
+      return <p className="modal-empty">No comments yet</p>;
+    }
 
-    setModalTitle("Comments");
-    setModalContent(
+    const currentUserId = resolveId(currentUser);
+
+    return (
       <div className="modal-list">
-        {post.comments.length > 0 ? (
-          post.comments.map((comment, index) => {
-            const commentUser = comment.user || {};
-            const hasProfileLink = Boolean(commentUser._id);
-            const avatar = commentUser.profileImage
-              ? commentUser.profileImage.startsWith("http") ||
-                commentUser.profileImage.startsWith("blob:")
-                ? commentUser.profileImage
-                : `${baseApi}${commentUser.profileImage}`
-              : FALLBACK_AVATAR;
-            const Wrapper = hasProfileLink ? NavLink : "div";
-            const wrapperProps = hasProfileLink
-              ? {
-                  to: `/user/${commentUser._id}`,
-                  className:
-                    "modal-list-item modal-list-item--link modal-list-item--comment",
-                }
-              : {
-                  className:
-                    "modal-list-item modal-list-item--static modal-list-item--comment",
-                };
+        {comments.map((comment, index) => {
+          const rawCommentId = comment._id || comment.id || comment.commentId || null;
+          const commentKey = rawCommentId || `comment-${index}`;
+          const commentUser = comment.user || {};
+          const commentUserId = resolveId(commentUser);
+          const avatar = commentUser.profileImage
+            ? commentUser.profileImage.startsWith("http") ||
+              commentUser.profileImage.startsWith("blob:")
+              ? commentUser.profileImage
+              : `${baseApi}${commentUser.profileImage}`
+            : FALLBACK_AVATAR;
+          const canDelete =
+            currentUserId &&
+            postIdentifier &&
+            rawCommentId &&
+            commentUserId &&
+            sameId(currentUserId, commentUserId);
+          const Wrapper = commentUserId ? NavLink : "div";
+          const wrapperProps = commentUserId
+            ? {
+                to: `/user?id=${commentUserId}`,
+                className:
+                  "modal-list-item modal-list-item--link modal-list-item--comment",
+              }
+            : {
+                className:
+                  "modal-list-item modal-list-item--static modal-list-item--comment",
+              };
 
-            return (
-              <Wrapper
-                key={comment._id || commentUser._id || `comment-${index}`}
-                {...wrapperProps}>
-                <img
-                  src={avatar}
-                  alt={commentUser.username || "User avatar"}
-                  className="modal-avatar"
-                />
+          return (
+            <Wrapper
+              key={commentKey}
+              {...wrapperProps}>
+              <img
+                src={avatar}
+                alt={commentUser.username || "User avatar"}
+                className="modal-avatar"
+              />
+              <div className="modal-body modal-body--comment">
                 <div className="modal-text">
                   <span className="modal-username">
                     {commentUser.username || "User"}
                   </span>
                   <span className="modal-subtext">{comment.text}</span>
                 </div>
-              </Wrapper>
-            );
-          })
-        ) : (
-          <p className="modal-empty">No comments yet</p>
-        )}
+                {canDelete && (
+                  <button
+                    type="button"
+                    className="modal-action-button"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      event.stopPropagation();
+                      handleCommentDelete(postIdentifier, rawCommentId);
+                    }}
+                    disabled={
+                      deletingCommentId != null &&
+                      sameId(deletingCommentId, rawCommentId)
+                    }>
+                    <TrashIcon className="modal-action-icon" />
+                  </button>
+                )}
+              </div>
+            </Wrapper>
+          );
+        })}
       </div>
     );
-    setModalOpen(true);
-  };
-
-  const handleLikeClick = (postId, newIsLiked) => {
-    console.log(`Post ${postId} was ${newIsLiked ? "liked" : "unliked"}`);
-    // API call to like/unlike post
   };
 
   return (
     <div className="feed">
-      {posts.map((p, index) => (
-        <Post
-          key={`${p._id}-${index}`}
-          post={p} // ✅ pass entire post object
-          onLikeClick={handleLikeClick}
-          onLikesView={handleLikesView}
-          onCommentsView={handleCommentsView}
-        />
-      ))}
+      {posts.map((post, index) => {
+        const postId = resolveId(post);
+        return (
+          <Post
+            key={`${postId}-${index}`}
+            post={post}
+            onLikeClick={handleLikeClick}
+            onLikesView={handleLikesView}
+            onCommentsView={handleCommentsView}
+          />
+        );
+      })}
 
-      {/* Sentinel element to trigger loading more */}
       {hasMore && (
         <div
           ref={loaderRef}
@@ -190,11 +296,11 @@ export default function InfiniteFeed() {
         />
       )}
 
-      {modalOpen && (
+      {isModalOpen && (
         <ModelView
           title={modalTitle}
-          onClose={() => setModalOpen(false)}>
-          {modalContent}
+          onClose={handleCloseModal}>
+          {renderModalContent()}
         </ModelView>
       )}
     </div>

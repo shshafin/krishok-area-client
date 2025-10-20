@@ -49,8 +49,8 @@
 }
 
 .model.post-modal {
-  width: min(100%, 520px);
-  max-height: calc(100vh - 2rem);
+  width: 100% !important;
+  max-width: 650px;
 }
 
 .model.model-view {
@@ -68,7 +68,6 @@
 
 .post-modal .post-body {
   padding-right: 0.5rem;
-  max-height: calc(100vh - 12rem);
 }
 
 .post-modal .post-footer {
@@ -131,6 +130,17 @@
   cursor: default;
 }
 
+.modal-body {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.modal-body--comment {
+  align-items: flex-start;
+}
+
 .modal-avatar {
   width: 40px;
   height: 40px;
@@ -144,6 +154,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+  flex: 1;
 }
 
 .modal-username {
@@ -156,6 +167,36 @@
   font-size: 0.84rem;
   color: #9ca3af;
   line-height: 1.35;
+}
+
+.modal-action-button {
+  margin-left: auto;
+  padding: 0.4rem;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #f87171;
+  background: rgba(239, 68, 68, 0.08);
+  transition: background-color 180ms ease, color 180ms ease, transform 180ms ease;
+  border: none;
+}
+
+.modal-action-button:hover:not(:disabled) {
+  background: rgba(239, 68, 68, 0.18);
+  color: #fca5a5;
+  transform: translateY(-1px);
+}
+
+.modal-action-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.modal-action-icon {
+  width: 18px;
+  height: 18px;
 }
 
 .modal-empty,
@@ -208,6 +249,7 @@
 }
 
 .user {
+  overflow: visible;
   padding: 1.25rem 1.5rem;
   gap: 1rem;
 }
@@ -329,6 +371,10 @@
   padding: 0.25rem;
   opacity: 0;
   transition: opacity 200ms;
+}
+
+.media-close-button svg path {
+  stroke: #ffffff;
 }
 
 .media-item:hover .media-close-button {
