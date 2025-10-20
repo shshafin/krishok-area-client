@@ -168,10 +168,11 @@
 }
 
 .username {
+  width: fit-content;
     margin: .5rem 0;
   font-size: 0.875rem;
   line-height: 1.25rem;
-  color: var(--darkGray);
+  color: #fff;
 }
 
 .settings-page {
