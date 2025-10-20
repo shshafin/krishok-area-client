@@ -1,20 +1,3 @@
-.model-view {
-  top: 0;
-  left: 0;
-  width: 100%;
-  max-width: 446px;
-  border: solid 1px rgb(55 65 81 / 1);
-  background: var(--layout);
-  border-radius: calc(var(--radius) + 2px);
-  position: fixed;
-  margin-right: auto auto;
-}
-
-.model-view .title {
-  padding: 1rem 1.5rem;
-  font-size: 1.125rem;
-}
-
 .Model {
   top: 0;
   left: 0;
@@ -55,16 +38,53 @@
 }
 
 .model {
-  top: 50%;
-  left: 50%;
-  width: 100%;
+  width: min(100%, 422px);
+  max-height: calc(100vh - 3rem);
   display: flex;
-  max-width: 422px;
   overflow: hidden;
   flex-direction: column;
   background: var(--layoutContrast);
   border-radius: calc(var(--radius) + 2px);
-  transform: translate(-50%, -50%);
+  box-shadow: 0 24px 48px -28px rgba(15, 23, 42, 0.45);
+}
+
+.model.post-modal {
+  width: min(100%, 520px);
+  max-height: calc(100vh - 2rem);
+}
+
+.model.model-view {
+  width: min(100%, 446px);
+  max-height: calc(100vh - 4rem);
+  background: var(--layout);
+  border: solid 1px rgb(55 65 81 / 1);
+  box-shadow: 0 18px 36px -20px rgba(15, 23, 42, 0.45);
+}
+
+.model.model-view .title {
+  padding: 1rem 1.5rem;
+  font-size: 1.125rem;
+}
+
+.post-modal .post-body {
+  padding-right: 0.5rem;
+  max-height: calc(100vh - 12rem);
+}
+
+.post-modal .post-footer {
+  position: sticky;
+  bottom: 0;
+  background: var(--layoutSecondary);
+}
+
+@media (max-width: 662px) {
+  .model {
+    width: calc(100% - 2rem);
+  }
+
+  .post-modal .post-body {
+    max-height: calc(100vh - 10rem);
+  }
 }
 
 .post-body {
