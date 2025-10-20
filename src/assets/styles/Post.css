@@ -58,7 +58,7 @@
 }
 
 .post-main {
-    padding: 1.5rem;
+    padding: 1.5rem 0;
 }
 
 .post-main .content {
@@ -81,6 +81,10 @@
     min-height: 250px;
     max-height: 390px;
     border-radius: calc(var(--radius) + 2px);
+}
+
+.comment-section {
+    padding: 0 1.7rem !important;
 }
 
 .media-item img,

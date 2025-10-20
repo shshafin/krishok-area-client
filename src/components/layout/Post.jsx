@@ -101,7 +101,7 @@ export default function Post({
       {/* Header */}
       <header className="post-header flex FY-center F-space">
         <NavLink
-          to={`/user?id=${user._id}`}
+          to={`/user/${user._id}`}
           className="flex profile-container">
           <div className="profile">
             <img

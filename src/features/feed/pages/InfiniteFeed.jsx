@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from "react";
+import { NavLink } from "react-router-dom";
 import Post from "@/components/layout/Post";
 import ModelView from "@/components/layout/ModelView";
 import { fetchPosts } from "@/api/authApi";
@@ -6,6 +7,8 @@ import { toast } from "react-hot-toast";
 import { baseApi } from "../../../api";
 
 const PAGE_SIZE = 10;
+const FALLBACK_AVATAR =
+  "https://i.postimg.cc/fRVdFSbg/e1ef6545-86db-4c0b-af84-36a726924e74.png";
 
 export default function InfiniteFeed() {
   const [posts, setPosts] = useState([]);
@@ -65,41 +68,42 @@ export default function InfiniteFeed() {
 
     setModalTitle("Liked by");
     setModalContent(
-      <div>
+      <div className="modal-list">
         {post.likes.length > 0 ? (
-          post.likes.map((user) => (
-            <div
-              key={user._id}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                marginBottom: "12px",
-              }}>
-              <img
-                src={
-                  user.profileImage
-                    ? user.profileImage.startsWith("http")
-                      ? user.profileImage
-                      : `${baseApi}${user.profileImage}`
-                    : "https://i.postimg.cc/fRVdFSbg/e1ef6545-86db-4c0b-af84-36a726924e74.png"
+          post.likes.map((user, index) => {
+            const likeUser = user || {};
+            const hasProfileLink = Boolean(likeUser._id);
+            const profileImage = likeUser.profileImage
+              ? likeUser.profileImage.startsWith("http") ||
+                likeUser.profileImage.startsWith("blob:")
+                ? likeUser.profileImage
+                : `${baseApi}${likeUser.profileImage}`
+              : FALLBACK_AVATAR;
+            const Wrapper = hasProfileLink ? NavLink : "div";
+            const wrapperProps = hasProfileLink
+              ? {
+                  to: `/user/${likeUser._id}`,
+                  className: "modal-list-item modal-list-item--link",
                 }
-                alt={user.username}
-                style={{
-                  width: "32px",
-                  height: "32px",
-                  borderRadius: "50%",
-                  objectFit: "cover",
-                }}
-              />
-              <span
-                style={{ fontWeight: "600", fontSize: "14px", color: "white" }}>
-                {user.username}
-              </span>
-            </div>
-          ))
+              : { className: "modal-list-item modal-list-item--static" };
+
+            return (
+              <Wrapper
+                key={likeUser._id || `like-${index}`}
+                {...wrapperProps}>
+                <img
+                  src={profileImage}
+                  alt={likeUser.username || "User avatar"}
+                  className="modal-avatar"
+                />
+                <span className="modal-username">
+                  {likeUser.username || "Unknown user"}
+                </span>
+              </Wrapper>
+            );
+          })
         ) : (
-          <p>No likes yet</p>
+          <p className="modal-empty">No likes yet</p>
         )}
       </div>
     );
@@ -112,56 +116,49 @@ export default function InfiniteFeed() {
 
     setModalTitle("Comments");
     setModalContent(
-      <div>
+      <div className="modal-list">
         {post.comments.length > 0 ? (
-          post.comments.map((c, idx) => (
-            <div
-              key={idx}
-              style={{
-                display: "flex",
-                gap: "8px",
-                marginBottom: "12px",
-                alignItems: "flex-start",
-              }}>
-              <img
-                src={
-                  c.user?.profileImage
-                    ? c.user.profileImage.startsWith("http")
-                      ? c.user.profileImage
-                      : `${baseApi}${c.user.profileImage}`
-                    : "https://i.postimg.cc/fRVdFSbg/e1ef6545-86db-4c0b-af84-36a726924e74.png"
+          post.comments.map((comment, index) => {
+            const commentUser = comment.user || {};
+            const hasProfileLink = Boolean(commentUser._id);
+            const avatar = commentUser.profileImage
+              ? commentUser.profileImage.startsWith("http") ||
+                commentUser.profileImage.startsWith("blob:")
+                ? commentUser.profileImage
+                : `${baseApi}${commentUser.profileImage}`
+              : FALLBACK_AVATAR;
+            const Wrapper = hasProfileLink ? NavLink : "div";
+            const wrapperProps = hasProfileLink
+              ? {
+                  to: `/user/${commentUser._id}`,
+                  className:
+                    "modal-list-item modal-list-item--link modal-list-item--comment",
                 }
-                alt={c.user?.username || "User"}
-                style={{
-                  width: "32px",
-                  height: "32px",
-                  borderRadius: "50%",
-                  objectFit: "cover",
-                }}
-              />
-              <div>
-                <p
-                  style={{
-                    fontWeight: "600",
-                    margin: 0,
-                    fontSize: "14px",
-                    color: "white",
-                  }}>
-                  {c.user?.username || "User"}
-                </p>
-                <p
-                  style={{
-                    margin: "2px 0 0",
-                    fontSize: "13px",
-                    color: "gray",
-                  }}>
-                  {c.text}
-                </p>
-              </div>
-            </div>
-          ))
+              : {
+                  className:
+                    "modal-list-item modal-list-item--static modal-list-item--comment",
+                };
+
+            return (
+              <Wrapper
+                key={comment._id || commentUser._id || `comment-${index}`}
+                {...wrapperProps}>
+                <img
+                  src={avatar}
+                  alt={commentUser.username || "User avatar"}
+                  className="modal-avatar"
+                />
+                <div className="modal-text">
+                  <span className="modal-username">
+                    {commentUser.username || "User"}
+                  </span>
+                  <span className="modal-subtext">{comment.text}</span>
+                </div>
+              </Wrapper>
+            );
+          })
         ) : (
-          <p>No comments yet</p>
+          <p className="modal-empty">No comments yet</p>
         )}
       </div>
     );

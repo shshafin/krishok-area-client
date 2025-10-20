@@ -21,7 +21,7 @@ function Follower({
 
   return (
     <Link
-      to={`/user?id=${userid}`}
+      to={`/user/${userid}`}
       className="follower">
       <section>
         <div className="profile">
