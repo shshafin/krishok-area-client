@@ -5,7 +5,6 @@ import { format } from "timeago.js";
 import "@/assets/styles/Post.css";
 import "@/assets/styles/ZoomInOutOff.css";
 
-import CommentIcon from "@/assets/IconComponents/Comment";
 import MoreIcon from "@/assets/IconComponents/More";
 
 import Lightbox from "yet-another-react-lightbox";
@@ -218,8 +217,7 @@ export default function Post({
           <button
             type="button"
             className="comment-btn flex F-center">
-            <CommentIcon />
-            <span>Comment</span>
+            <span>Comments</span>
             {comments.length > 0 && (
               <span
                 className="comments-count"

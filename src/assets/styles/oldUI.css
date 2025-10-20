@@ -4911,21 +4911,6 @@ user-icon
   /* margin: 5px; */
 }
 
-.liked {
-  font-weight: bold !important;
-  padding: 5px 85px !important;
-  background: none;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  border: none;
-  outline: none;
-  border-radius: 5px;
-  font-size: 15px;
-  color: wheat;
-  cursor: pointer;
-  /* color:red !important; */
-  background: #326ca7 !important;
-}
 
 .lcs {
   font-weight: bold !important;
@@ -5627,10 +5612,6 @@ h4 {
   }
   .lcs {
     padding: 8px 7% !important;
-  }
-
-  .liked {
-    padding: 8px 10% !important;
   }
 
   .left-i {
@@ -8922,21 +8903,7 @@ h4 {
   /* margin: 5px; */
 }
 
-.liked {
-  font-weight: bold !important;
-  padding: 5px 70px !important;
-  background: none;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  border: none;
-  outline: none;
-  border-radius: 5px;
-  font-size: 15px;
-  color: wheat;
-  cursor: pointer;
-  /* color:red !important; */
-  background: #326ca7 !important;
-}
+
 .lcs {
   font-weight: bold !important;
   padding: 5px 70px !important;
