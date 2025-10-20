@@ -136,6 +136,8 @@ export default function InfiniteFeed() {
     }
   };
 
+  const currentUserId = resolveId(currentUser);
+
   const isModalOpen = Boolean(modalState.type && modalState.postId);
   const modalTitle =
     modalState.type === "likes"
@@ -171,7 +173,7 @@ export default function InfiniteFeed() {
             const Wrapper = likeUserId ? NavLink : "div";
             const wrapperProps = likeUserId
               ? {
-                  to: `/user?id=${likeUserId}`,
+                  to: `/user/${likeUserId}`,
                   className: "modal-list-item modal-list-item--link",
                 }
               : { className: "modal-list-item modal-list-item--static" };
@@ -201,8 +203,6 @@ export default function InfiniteFeed() {
       return <p className="modal-empty">No comments yet</p>;
     }
 
-    const currentUserId = resolveId(currentUser);
-
     return (
       <div className="modal-list">
         {comments.map((comment, index) => {
@@ -225,7 +225,7 @@ export default function InfiniteFeed() {
           const Wrapper = commentUserId ? NavLink : "div";
           const wrapperProps = commentUserId
             ? {
-                to: `/user?id=${commentUserId}`,
+                to: `/user/${commentUserId}`,
                 className:
                   "modal-list-item modal-list-item--link modal-list-item--comment",
               }
@@ -282,6 +282,7 @@ export default function InfiniteFeed() {
           <Post
             key={`${postId}-${index}`}
             post={post}
+            currentUserId={currentUserId}
             onLikeClick={handleLikeClick}
             onLikesView={handleLikesView}
             onCommentsView={handleCommentsView}

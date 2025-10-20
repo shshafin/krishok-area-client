@@ -64,6 +64,7 @@
 .post-main .content {
     margin-bottom: 1rem;
     color: var(--text);
+    padding: 0 2rem;
 }
 
 .media-content {

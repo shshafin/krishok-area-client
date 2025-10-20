@@ -5,7 +5,6 @@ import { format } from "timeago.js";
 import "@/assets/styles/Post.css";
 import "@/assets/styles/ZoomInOutOff.css";
 
-import HeartIcon from "@/assets/IconComponents/Love";
 import CommentIcon from "@/assets/IconComponents/Comment";
 import MoreIcon from "@/assets/IconComponents/More";
 
@@ -19,6 +18,7 @@ import { Video, Zoom } from "yet-another-react-lightbox/plugins";
 
 export default function Post({
   post,
+  currentUserId = null,
   onLikeClick = () => {},
   onLikesView = () => {},
   onCommentsView = () => {},
@@ -34,7 +34,21 @@ export default function Post({
     createdAt,
   } = post;
 
-  const [isLiked, setIsLiked] = useState(likes.includes(user._id));
+  const resolveId = (entity) =>
+    entity?._id ?? entity?.id ?? entity?.userId ?? entity?.username ?? null;
+
+  const hasUserLiked = useMemo(() => {
+    if (!currentUserId) return false;
+    return likes.some((like) => {
+      if (typeof like === "string" || typeof like === "number") {
+        return String(like) === String(currentUserId);
+      }
+      const likeId = resolveId(like);
+      return likeId && String(likeId) === String(currentUserId);
+    });
+  }, [likes, currentUserId]);
+
+  const [isLiked, setIsLiked] = useState(hasUserLiked);
   const [likesCount, setLikesCount] = useState(likes.length);
   const [comments, setComments] = useState(initialComments);
   const [openIndex, setOpenIndex] = useState(-1);
@@ -42,6 +56,14 @@ export default function Post({
   useEffect(() => {
     setComments(initialComments);
   }, [initialComments]);
+
+  useEffect(() => {
+    setLikesCount(likes.length);
+  }, [likes]);
+
+  useEffect(() => {
+    setIsLiked(hasUserLiked);
+  }, [hasUserLiked]);
 
   const formattedTime = useMemo(
     () => (createdAt ? format(new Date(createdAt)) : "just now"),
@@ -73,13 +95,19 @@ export default function Post({
     try {
       const newIsLiked = !isLiked;
       setIsLiked(newIsLiked);
-      setLikesCount((prev) => (newIsLiked ? prev + 1 : prev - 1));
+      setLikesCount((prev) => {
+        const next = newIsLiked ? prev + 1 : prev - 1;
+        return next < 0 ? 0 : next;
+      });
       await likePost(_id);
       onLikeClick(_id, newIsLiked);
     } catch (error) {
       console.error("Failed to like/unlike post:", error);
       setIsLiked((prev) => !prev);
-      setLikesCount((prev) => (isLiked ? prev + 1 : prev - 1));
+      setLikesCount((prev) => {
+        const next = isLiked ? prev + 1 : prev - 1;
+        return next < 0 ? 0 : next;
+      });
     }
   };
 
@@ -174,8 +202,7 @@ export default function Post({
             type="button"
             onClick={handleLikeToggle}
             className={`like-btn flex F-center ${isLiked ? "liked" : ""}`}>
-            <HeartIcon />
-            <span>Like</span>
+            <span>{isLiked ? "Unlike" : "Like"}</span>
             {likesCount > 0 && (
               <span
                 className="likes-count"
