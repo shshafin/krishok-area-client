@@ -249,9 +249,15 @@
 }
 
 .user {
+  width: 100% !important;
+  height: fit-content !important;
   overflow: visible;
   padding: 1.25rem 1.5rem;
   gap: 1rem;
+}
+
+.user .user-info {
+  margin: 0 !important;
 }
 
 .profile {
