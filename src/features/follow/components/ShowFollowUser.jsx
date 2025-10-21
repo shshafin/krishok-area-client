@@ -5,6 +5,7 @@ import { fetchAllUsers } from "@/api/authApi";
 import { baseApi } from "../../../api";
 import { followUser, unfollowUser } from "../../../api/authApi";
 import toast from "react-hot-toast";
+import { LiquedLoader } from "@/components/loaders";
 
 export default function ShowFollowUsers() {
   const [items, setItems] = useState([]);
@@ -44,7 +45,14 @@ export default function ShowFollowUsers() {
     };
   }, []);
 
-  if (loading) return <h2>Loading users...</h2>;
+  if (loading) {
+    return (
+      <div className="page-loader">
+        <LiquedLoader label="????????????? ??? ?????..." />
+      </div>
+    );
+  }
+
 
   const handleFollow = async (user) => {
     try {

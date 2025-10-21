@@ -21,6 +21,13 @@
   color: #e2e8f0;
 }
 
+.profile-page--loading {
+  min-height: 60vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .profile-overview {
   background: rgba(15, 23, 42, 0.92);
   border-radius: 16px;
@@ -542,6 +549,13 @@
   align-items: center;
   padding: 2rem 1rem;
   z-index: 1000;
+}
+
+.modal-loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 220px;
 }
 
 .ka-modal {

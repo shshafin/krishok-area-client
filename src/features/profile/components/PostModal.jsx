@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { format } from "timeago.js";
 import DeleteOutlineIcon from "@/assets/IconComponents/DeleteOutlineIcon";
 import Modal from "./Modal";
+import { LiquedLoader } from "@/components/loaders";
 
 export default function PostModal({
   open,
@@ -19,7 +20,20 @@ export default function PostModal({
     if (open) setCommentText("");
   }, [open, post?.id]);
 
-  if (!post) return null;
+  if (!post) {
+    return (
+      <Modal
+        open={open}
+        onClose={onClose}
+        size="md"
+        className="post-modal"
+      >
+        <div className="modal-loader-container">
+          <LiquedLoader label="পোস্ট লোড হচ্ছে..." />
+        </div>
+      </Modal>
+    );
+  }
 
   const handleSubmitComment = () => {
     const value = commentText.trim();

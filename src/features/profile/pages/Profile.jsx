@@ -11,6 +11,7 @@ import PostModal from "../components/PostModal";
 import PostComposerModal from "../components/PostComposerModal";
 import FollowListModal from "../components/FollowListModal";
 import AllPostsModal from "../components/AllPostsModal";
+import { LiquedLoader } from "@/components/loaders";
 
 import "@/features/profile/styles/ProfilePage.css";
 
@@ -469,8 +470,8 @@ export default function ProfilePage() {
 
   if (loading || !profile) {
     return (
-      <div className="profile-page">
-        <div className="empty-state">প্রোফাইল লোড হচ্ছে...</div>
+      <div className="profile-page profile-page--loading">
+        <LiquedLoader label="প্রোফাইল লোড হচ্ছে..." />
       </div>
     );
   }

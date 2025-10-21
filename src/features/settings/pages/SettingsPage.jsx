@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { fetchMe, updateProfile } from "@/api/authApi";
+import { LiquedLoader } from "@/components/loaders";
 
 import "../styles/common.css";
 import ProfileCard from "../components/ProfileCard";
@@ -165,7 +166,14 @@ export default function SettingsPage() {
     }
   };
 
-  if (loading) return <h1>Loading Profile...</h1>;
+  if (loading) {
+  return (
+    <div className="page-loader">
+      <LiquedLoader label="???????? ???? ??? ?????..." />
+    </div>
+  );
+}
+
 
   return (
     <div className="settings-page">

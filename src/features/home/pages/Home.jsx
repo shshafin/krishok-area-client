@@ -8,6 +8,7 @@ import CreatePost from "@/components/layout/CreatePost";
 import InfiniteFeed from "../../feed/pages/InfiniteFeed";
 import Posting from "@/components/layout/PostModel";
 import BizzShortsCarousel from "@/features/bizzShorts/components/BizzShortsCarousel";
+import { LiquedLoader } from "@/components/loaders";
 
 export default function Home() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -37,7 +38,13 @@ export default function Home() {
 
   const user = users?.data;
 
-  if (loading) return <div>লোড হচ্ছে...</div>;
+  if (loading) {
+    return (
+      <div className="page-loader">
+        <LiquedLoader label="হোম ফিড লোড হচছে..." />
+      </div>
+    );
+  }
 
   return (
     <>

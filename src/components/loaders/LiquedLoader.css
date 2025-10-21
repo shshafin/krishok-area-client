@@ -1,0 +1,57 @@
+.liqued-loader-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  min-height: 160px;
+  width: 100%;
+  height: 95vh;
+  color: #dbeafe;
+  text-align: center;
+}
+
+.liqued-loader {
+  width: 80px;
+  aspect-ratio: 1;
+  border: 10px solid rgba(15, 23, 42, 0.85);
+  box-sizing: border-box;
+   background: 
+    radial-gradient(farthest-side,#fff 98%,#0000) 50%/20px 20px,
+    radial-gradient(farthest-side,#fff 98%,#0000) 50%/20px 20px,
+    radial-gradient(farthest-side,#fff 98%,#0000) 50%/20px 20px,
+    radial-gradient(farthest-side,#fff 98%,#0000) 50%/20px 20px,
+    radial-gradient(farthest-side,#fff 98%,#0000) 50%/20px 20px,
+    linear-gradient(#fff 0 0) 50%/100% 10px,
+    linear-gradient(#fff 0 0) 50%/10px 100%,
+    #000;
+  background-repeat: no-repeat;
+  filter: blur(4px) contrast(10);
+  animation: liqued-loader-spin 0.8s infinite;
+}
+
+.liqued-loader-label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.page-loader {
+  min-height: 60vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@keyframes liqued-loader-spin {
+  100% {
+    background-position:
+      50% -20px,
+      -20px 50%,
+      60px 50%,
+      50% 60px,
+      50%,
+      50%,
+      50%;
+  }
+}

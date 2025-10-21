@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
+import { LiquedLoader } from "@/components/loaders";
 
 async function fetchPostById(id) {
   const normalizedId = String(id);
@@ -84,7 +85,11 @@ export default function GallerySection({
   }, [id]);
 
   if ((status === "loading" || status === "idle") && !post) {
-    return <div className="p-4">Loading gallery post...</div>;
+    return (
+      <div className="page-loader">
+        <LiquedLoader label="???????? ????? ??? ?????..." />
+      </div>
+    );
   }
 
   if (status === "error" || !post) {

@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import DiscoverPeople from "../components/DiscoverPeople";
 import { fetchAllUsers } from "@/api/authApi";
 import "@/assets/styles/DiscoverPeople.css";
+import { LiquedLoader } from "@/components/loaders";
 
 export default function DiscoverPage() {
   const [users, setUsers] = useState([]);
@@ -36,7 +37,13 @@ export default function DiscoverPage() {
         <div className="user-count-badge">{users.length} users</div>
       </header>
 
-      {loading ? <p>Loading users...</p> : <DiscoverPeople users={users} />}
+      {loading ? (
+        <div className="page-loader">
+          <LiquedLoader label="ব্যবহারকারীরা লোড হচ্ছে..." />
+        </div>
+      ) : (
+        <DiscoverPeople users={users} />
+      )}
 
       <footer className="discover-footer">
         <Link
