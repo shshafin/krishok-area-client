@@ -9,7 +9,7 @@ export default function SeedGallery({ seeds, onDelete }) {
     <div className="seed-gallery">
       {seeds.map((seed) => (
         <div className="seed-gallery-item" key={seed.id}>
-          <img src={seed.image} alt={seed.title || "Seed item"} />
+          <img src={seed.image || seed.mediaUrl} alt={seed.title || "Seed item"} />
           {onDelete && (
             <button
               type="button"
@@ -30,7 +30,8 @@ SeedGallery.propTypes = {
   seeds: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-      image: PropTypes.string.isRequired,
+      image: PropTypes.string,
+      mediaUrl: PropTypes.string,
       title: PropTypes.string,
     })
   ),

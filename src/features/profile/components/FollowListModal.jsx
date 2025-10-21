@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { NavLink } from "react-router-dom";
 import Modal from "./Modal";
 
 export default function FollowListModal({
@@ -8,33 +9,69 @@ export default function FollowListModal({
   onClose,
   actionLabel,
   onAction,
+  onToggleFollow,
+  isFollowing,
 }) {
+  const resolveActionLabel = (user) => {
+    if (typeof actionLabel === "function") return actionLabel(user);
+    return actionLabel;
+  };
+
   return (
     <Modal open={open} onClose={onClose} title={title}>
       {users?.length ? (
         <div className="follow-list">
-          {users.map((user) => (
-            <div className="follow-item" key={user.id}>
-              <div className="follow-item-info">
-                <img src={user.avatar} alt={user.name} />
-                <div>
-                  <h5>{user.name}</h5>
-                  <div style={{ color: "#64748b", fontSize: "0.85rem" }}>@{user.username}</div>
+          {users.map((user) => {
+            const dynamicLabel = resolveActionLabel(user);
+            const following = isFollowing?.(user) ?? false;
+
+            return (
+              <div className="follow-item" key={user.id}>
+                <NavLink
+                  className="follow-item-info"
+                  to={`/user/${user.username}`}
+                  onClick={() => onClose?.()}
+                >
+                  <img src={user.avatar} alt={user.name} />
+                  <div>
+                    <h5>{user.name}</h5>
+                    <div style={{ color: "#94a3b8", fontSize: "0.85rem" }}>@{user.username}</div>
+                  </div>
+                </NavLink>
+
+                <div className="follow-item-actions">
+                  {onToggleFollow && (
+                    <button
+                      type="button"
+                      className={`follow-toggle ${following ? "following" : ""}`}
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        onToggleFollow(user, following);
+                      }}
+                    >
+                      {following ? "আনফলো" : "ফলো"}
+                    </button>
+                  )}
+
+                  {dynamicLabel && (
+                    <button
+                      type="button"
+                      className="follow-secondary-action"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        onAction?.(user);
+                      }}
+                    >
+                      {dynamicLabel}
+                    </button>
+                  )}
                 </div>
               </div>
-              {actionLabel && (
-                <button
-                  type="button"
-                  onClick={() => onAction?.(user)}
-                >
-                  {actionLabel}
-                </button>
-              )}
-            </div>
-          ))}
+            );
+          })}
         </div>
       ) : (
-        <div className="empty-state">দুঃখিত, কোনো ব্যবহারকারী পাওয়া যায়নি</div>
+        <div className="empty-state">কোনো ব্যবহারকারী খুঁজে পাওয়া যায়নি</div>
       )}
     </Modal>
   );
@@ -52,8 +89,10 @@ FollowListModal.propTypes = {
     })
   ),
   onClose: PropTypes.func,
-  actionLabel: PropTypes.string,
+  actionLabel: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
   onAction: PropTypes.func,
+  onToggleFollow: PropTypes.func,
+  isFollowing: PropTypes.func,
 };
 
 FollowListModal.defaultProps = {
@@ -63,4 +102,6 @@ FollowListModal.defaultProps = {
   onClose: undefined,
   actionLabel: undefined,
   onAction: undefined,
+  onToggleFollow: undefined,
+  isFollowing: undefined,
 };

@@ -17,11 +17,22 @@ export default function ProfileOverview({
   profile,
   stats,
   isOwner,
+  isFollowing,
   onPrimaryAction,
   onOpenAllPosts,
   onOpenFollowers,
   onOpenFollowing,
 }) {
+  const primaryButtonClasses = [
+    "profile-primary-button",
+    isOwner ? "owner" : "",
+    !isOwner && isFollowing ? "following" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  const primaryButtonLabel = isOwner ? "প্রোফাইল সম্পাদনা" : isFollowing ? "আনফলো" : "ফলো";
+
   return (
     <section className="profile-overview">
       <img
@@ -33,7 +44,7 @@ export default function ProfileOverview({
       <div className="profile-overview-main">
         <h1 className="profile-overview-name">{profile.name}</h1>
         <div className="profile-overview-username">@{profile.username}</div>
-        {profile.bio && <p style={{ marginTop: "0.5rem", color: "#334155" }}>{profile.bio}</p>}
+        {profile.bio && <p style={{ marginTop: "0.5rem", color: "#cbd5f5" }}>{profile.bio}</p>}
       </div>
 
       <div className="profile-quick-actions">
@@ -51,10 +62,11 @@ export default function ProfileOverview({
 
         <button
           type="button"
-          className={`profile-primary-button ${isOwner ? "owner" : ""}`}
+          className={primaryButtonClasses}
           onClick={onPrimaryAction}
+          aria-pressed={isOwner ? undefined : isFollowing}
         >
-          {isOwner ? "edit profile" : "ফলো করুন"}
+          {primaryButtonLabel}
         </button>
       </div>
     </section>
@@ -74,6 +86,7 @@ ProfileOverview.propTypes = {
     following: PropTypes.number,
   }),
   isOwner: PropTypes.bool,
+  isFollowing: PropTypes.bool,
   onPrimaryAction: PropTypes.func,
   onOpenAllPosts: PropTypes.func,
   onOpenFollowers: PropTypes.func,
@@ -83,6 +96,7 @@ ProfileOverview.propTypes = {
 ProfileOverview.defaultProps = {
   stats: { posts: 0, followers: 0, following: 0 },
   isOwner: false,
+  isFollowing: false,
   onPrimaryAction: undefined,
   onOpenAllPosts: undefined,
   onOpenFollowers: undefined,

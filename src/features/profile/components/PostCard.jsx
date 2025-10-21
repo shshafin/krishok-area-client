@@ -6,7 +6,6 @@ import DeleteOutlineIcon from "@/assets/IconComponents/DeleteOutlineIcon";
 const mediaStyles = {
   width: "100%",
   display: "block",
-  borderRadius: "16px",
   objectFit: "cover",
 };
 

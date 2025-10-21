@@ -1,11 +1,23 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import PropTypes from "prop-types";
 import useEmblaCarousel from "embla-carousel-react";
 
 import "@/features/bizzShorts/styles/BizzShorts.css";
 import { dummyShorts } from "../data/dummyShorts";
 
-export default function BizzShortsCarousel() {
-  const [shorts, setShorts] = useState(dummyShorts);
+export default function BizzShortsCarousel({
+  items,
+  initialItems = dummyShorts,
+  title = "বীজ বাজার হাইলাইটস",
+  description = "সর্বশেষ বীজ তালিকা দেখতে সোয়াইপ করুন",
+  allowDelete = true,
+  onDelete,
+  loadMore,
+  hasMore = false,
+  loadMoreOffset = 2,
+  className = "",
+}) {
+  const [localShorts, setLocalShorts] = useState(initialItems);
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: "start",
     skipSnaps: false,
@@ -14,6 +26,22 @@ export default function BizzShortsCarousel() {
 
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(false);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+
+  const usingControlledItems = Array.isArray(items);
+
+  useEffect(() => {
+    if (!usingControlledItems) {
+      setLocalShorts(initialItems);
+    }
+  }, [initialItems, usingControlledItems]);
+
+  const displayedShorts = useMemo(
+    () => (usingControlledItems ? items ?? [] : localShorts ?? []),
+    [items, localShorts, usingControlledItems]
+  );
+
+  const displayedShortsLength = displayedShorts.length;
 
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
@@ -24,34 +52,89 @@ export default function BizzShortsCarousel() {
     setCanScrollNext(emblaApi.canScrollNext());
   }, [emblaApi]);
 
+  const requestMore = useCallback(async () => {
+    if (!loadMore || isLoadingMore || !hasMore) return;
+
+    setIsLoadingMore(true);
+    try {
+      await Promise.resolve(loadMore());
+    } finally {
+      setIsLoadingMore(false);
+    }
+  }, [hasMore, isLoadingMore, loadMore]);
+
+  const maybeLoadMore = useCallback(() => {
+    if (!emblaApi || !loadMore || !hasMore || isLoadingMore) return;
+    if (!displayedShortsLength) return;
+
+    const selectedIndex = emblaApi.selectedScrollSnap();
+    const threshold = Math.max(0, displayedShortsLength - Math.max(1, loadMoreOffset));
+
+    if (selectedIndex >= threshold) {
+      requestMore();
+    }
+  }, [
+    emblaApi,
+    displayedShortsLength,
+    hasMore,
+    isLoadingMore,
+    loadMore,
+    loadMoreOffset,
+    requestMore,
+  ]);
+
   useEffect(() => {
     if (!emblaApi) return;
     updateScrollState();
-    emblaApi.on("select", updateScrollState);
-    emblaApi.on("reInit", updateScrollState);
-    return () => {
-      emblaApi.off("select", updateScrollState);
-      emblaApi.off("reInit", updateScrollState);
-    };
-  }, [emblaApi, updateScrollState]);
+    maybeLoadMore();
 
-  const handleDelete = useCallback((id) => {
-    setShorts((prev) => prev.filter((item) => item.id !== id));
-  }, []);
+    const handleSelect = () => {
+      updateScrollState();
+      maybeLoadMore();
+    };
+
+    emblaApi.on("select", handleSelect);
+    emblaApi.on("reInit", handleSelect);
+
+    return () => {
+      emblaApi.off("select", handleSelect);
+      emblaApi.off("reInit", handleSelect);
+    };
+  }, [emblaApi, maybeLoadMore, updateScrollState]);
 
   useEffect(() => {
     emblaApi?.reInit();
     updateScrollState();
-  }, [shorts, emblaApi, updateScrollState]);
+  }, [displayedShortsLength, emblaApi, updateScrollState]);
 
-  if (!shorts.length) return null;
+  useEffect(() => {
+    maybeLoadMore();
+  }, [maybeLoadMore, displayedShortsLength]);
+
+  const handleDelete = useCallback(
+    (id) => {
+      if (!allowDelete) return;
+      if (onDelete) {
+        onDelete(id);
+        return;
+      }
+      if (!usingControlledItems) {
+        setLocalShorts((prev) => prev.filter((item) => item.id !== id));
+      }
+    },
+    [allowDelete, onDelete, usingControlledItems]
+  );
+
+  if (!displayedShortsLength) return null;
+
+  const composedClassName = ["bizz-shorts", className].filter(Boolean).join(" ");
 
   return (
-    <section className="bizz-shorts">
+    <section className={composedClassName}>
       <header className="bizz-shorts__header">
         <div>
-          <h2>বিজ শোর্টস</h2>
-          <p>কৃষির দ্রুত হাইলাইটগুলো এক নজরে দেখুন</p>
+          <h2>{title}</h2>
+          <p>{description}</p>
         </div>
         <div className="bizz-shorts__controls">
           <button
@@ -91,7 +174,7 @@ export default function BizzShortsCarousel() {
 
       <div className="bizz-shorts__viewport" ref={emblaRef}>
         <div className="bizz-shorts__container">
-          {shorts.map((short) => (
+          {displayedShorts.map((short) => (
             <article key={short.id} className="bizz-shorts__slide">
               <div className="bizz-shorts__card">
                 <img
@@ -104,56 +187,96 @@ export default function BizzShortsCarousel() {
                   <span className="bizz-shorts__title">{short.title}</span>
                   <span className="bizz-shorts__credit">{short.photographer}</span>
                 </div>
-                <button
-                  type="button"
-                  className="bizz-shorts__delete"
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    handleDelete(short.id);
-                  }}
-                  aria-label={`Remove ${short.title}`}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
-                    <polyline
-                      points="3 6 5 6 21 6"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <line
-                      x1="10"
-                      y1="11"
-                      x2="10"
-                      y2="17"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                    />
-                    <line
-                      x1="14"
-                      y1="11"
-                      x2="14"
-                      y2="17"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                    />
-                  </svg>
-                </button>
+                {allowDelete && (
+                  <button
+                    type="button"
+                    className="bizz-shorts__delete"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      handleDelete(short.id);
+                    }}
+                    aria-label={`Remove ${short.title}`}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+                      <polyline
+                        points="3 6 5 6 21 6"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <line
+                        x1="10"
+                        y1="11"
+                        x2="10"
+                        y2="17"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                      />
+                      <line
+                        x1="14"
+                        y1="11"
+                        x2="14"
+                        y2="17"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                      />
+                    </svg>
+                  </button>
+                )}
               </div>
             </article>
           ))}
         </div>
       </div>
+      {isLoadingMore && (
+        <div className="bizz-shorts__loading" aria-live="polite">
+          আরও বীজ লোড হচ্ছে...
+        </div>
+      )}
     </section>
   );
 }
+
+BizzShortsCarousel.propTypes = {
+  items: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+      title: PropTypes.string.isRequired,
+      mediaUrl: PropTypes.string.isRequired,
+      photographer: PropTypes.string,
+    })
+  ),
+  initialItems: PropTypes.array,
+  title: PropTypes.string,
+  description: PropTypes.string,
+  allowDelete: PropTypes.bool,
+  onDelete: PropTypes.func,
+  loadMore: PropTypes.func,
+  hasMore: PropTypes.bool,
+  loadMoreOffset: PropTypes.number,
+  className: PropTypes.string,
+};
+
+BizzShortsCarousel.defaultProps = {
+  items: undefined,
+  initialItems: dummyShorts,
+  title: "বীজ বাজার হাইলাইটস",
+  description: "সর্বশেষ বীজ তালিকা দেখতে সোয়াইপ করুন",
+  allowDelete: true,
+  onDelete: undefined,
+  loadMore: undefined,
+  hasMore: false,
+  loadMoreOffset: 2,
+  className: "",
+};

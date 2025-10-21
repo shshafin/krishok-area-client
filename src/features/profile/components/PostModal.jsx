@@ -37,7 +37,7 @@ export default function PostModal({
           style={{ width: 48, height: 48, borderRadius: "50%", objectFit: "cover" }}
         />
         <div>
-          <div style={{ fontWeight: 600, color: "#0f172a" }}>{post.author.name}</div>
+          <div style={{ fontWeight: 600, color: "#ffffffff" }}>{post.author.name}</div>
           <div style={{ fontSize: "0.85rem", color: "#64748b" }}>{format(post.createdAt)}</div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { fetchMe } from "@/api/authApi";
@@ -18,6 +18,7 @@ const imageFromSeed = (seed) =>
   `https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=900&q=80&sat=-20&blend-mode=overlay&blend-color=${seed}`;
 const avatarFromSeed = (seed) => `https://i.pravatar.cc/120?u=${seed}`;
 const sampleVideo = "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4";
+const SEED_BATCH_SIZE = 4;
 
 function buildMockProfile(usernameParam) {
   const username = usernameParam || "guest";
@@ -82,9 +83,78 @@ function buildMockProfile(usernameParam) {
   ];
 
   const seedItems = [
-    { id: "seed-11", image: imageFromSeed("FDE68A"), title: "Seed 1" },
-    { id: "seed-10", image: imageFromSeed("FECDD3"), title: "Seed 2" },
-    { id: "seed-8", image: imageFromSeed("E2E8F0"), title: "Seed 3" },
+    {
+      id: "seed-11",
+      title: "হাইব্রিড ধান BR-89",
+      mediaUrl: imageFromSeed("FDE68A"),
+      photographer: "Green Harvest Co.",
+    },
+    {
+      id: "seed-10",
+      title: "দেশি সবুজ লাউ",
+      mediaUrl: imageFromSeed("FECDD3"),
+      photographer: "Agro Roots",
+    },
+    {
+      id: "seed-9",
+      title: "মিষ্টি কুমড়া বীজ",
+      mediaUrl: imageFromSeed("E2E8F0"),
+      photographer: "Farm Fresh Seeds",
+    },
+    {
+      id: "seed-8",
+      title: "টমেটো গোল্ডেন সিডস",
+      mediaUrl: imageFromSeed("F5F3FF"),
+      photographer: "Urban Grower",
+    },
+    {
+      id: "seed-7",
+      title: "মরিচ হাইব্রিড F1",
+      mediaUrl: imageFromSeed("DBEAFE"),
+      photographer: "Spice Valley",
+    },
+    {
+      id: "seed-6",
+      title: "চাল কুমড়ো সংগ্রহ",
+      mediaUrl: imageFromSeed("F1F5F9"),
+      photographer: "Harvest Partner",
+    },
+    {
+      id: "seed-5",
+      title: "জৈব শসা বীজ",
+      mediaUrl: imageFromSeed("FECACA"),
+      photographer: "Eco Seeds Ltd.",
+    },
+    {
+      id: "seed-4",
+      title: "অর্গানিক ধনিয়া",
+      mediaUrl: imageFromSeed("BBF7D0"),
+      photographer: "Green Dales",
+    },
+    {
+      id: "seed-3",
+      title: "সূর্যমুখী প্রিমিয়াম",
+      mediaUrl: imageFromSeed("FEE2E2"),
+      photographer: "Sunline Agro",
+    },
+    {
+      id: "seed-2",
+      title: "গম উৎপাদন ১২০",
+      mediaUrl: imageFromSeed("FEF3C7"),
+      photographer: "Golden Field",
+    },
+    {
+      id: "seed-1",
+      title: "পেঁয়াজ মৌসুমি",
+      mediaUrl: imageFromSeed("E0E7FF"),
+      photographer: "Farm to Seed",
+    },
+    {
+      id: "seed-0",
+      title: "বেগুন মিশ্রণ",
+      mediaUrl: imageFromSeed("FBCFE8"),
+      photographer: "Purple Roots",
+    },
   ];
 
   const following = [
@@ -117,9 +187,46 @@ export default function ProfilePage() {
   const [profile, setProfile] = useState(null);
   const [posts, setPosts] = useState([]);
   const [seedItems, setSeedItems] = useState([]);
+  const [remainingSeeds, setRemainingSeeds] = useState([]);
   const [followers, setFollowers] = useState([]);
   const [following, setFollowing] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
+  const [isFollowingProfile, setIsFollowingProfile] = useState(false);
+
+  const viewerIdentity = useMemo(() => {
+    if (currentUser) {
+      const fallbackSeed = currentUser.username || currentUser.name || "viewer";
+      return {
+        id: resolveUserId(currentUser) ?? `viewer-${fallbackSeed}`,
+        name: currentUser.name || currentUser.username || "You",
+        username: currentUser.username || fallbackSeed,
+        avatar:
+          currentUser.profileImage ||
+          currentUser.avatar ||
+          avatarFromSeed(fallbackSeed),
+      };
+    }
+    return {
+      id: "viewer-guest",
+      name: "You",
+      username: "guest",
+      avatar: avatarFromSeed("guest"),
+    };
+  }, [currentUser]);
+
+  const viewerIdKey = viewerIdentity?.id ? String(viewerIdentity.id).toLowerCase() : null;
+
+  const followerExists = useMemo(() => {
+    if (!viewerIdKey) return false;
+    return followers.some((follower) => {
+      const followerId = resolveUserId(follower);
+      return followerId && String(followerId).toLowerCase() === viewerIdKey;
+    });
+  }, [followers, viewerIdKey]);
+
+  useEffect(() => {
+    setIsFollowingProfile((prev) => (prev === followerExists ? prev : followerExists));
+  }, [followerExists, profile?.id]);
 
   const [composerOpen, setComposerOpen] = useState(false);
   const [composerMode, setComposerMode] = useState("text");
@@ -133,7 +240,9 @@ export default function ProfilePage() {
     const mock = buildMockProfile(username);
     setProfile(mock.profile);
     setPosts(mock.posts);
-    setSeedItems(mock.seedItems);
+    const seeds = mock.seedItems ?? [];
+    setSeedItems(seeds.slice(0, SEED_BATCH_SIZE));
+    setRemainingSeeds(seeds.slice(SEED_BATCH_SIZE));
     setFollowers(mock.followers);
     setFollowing(mock.following);
     setLoading(false);
@@ -167,6 +276,84 @@ export default function ProfilePage() {
     followers: followers.length,
     following: following.length,
   }), [posts.length, followers.length, following.length]);
+
+  const hasMoreSeeds = remainingSeeds.length > 0;
+
+  const loadMoreSeeds = useCallback(() => {
+    if (!remainingSeeds.length) {
+      return Promise.resolve([]);
+    }
+
+    let nextChunk = [];
+    setRemainingSeeds((prev) => {
+      if (!prev.length) return prev;
+      nextChunk = prev.slice(0, SEED_BATCH_SIZE);
+      return prev.slice(SEED_BATCH_SIZE);
+    });
+
+    if (!nextChunk.length) {
+      return Promise.resolve([]);
+    }
+
+    setSeedItems((prev) => [...prev, ...nextChunk]);
+    return Promise.resolve(nextChunk);
+  }, [remainingSeeds.length]);
+
+  const followingLookup = useMemo(() => {
+    const identifiers = new Set();
+    following.forEach((item) => {
+      const id = resolveUserId(item) ?? item?.username ?? item?.id;
+      if (id !== undefined && id !== null) {
+        identifiers.add(String(id).toLowerCase());
+      }
+    });
+    return identifiers;
+  }, [following]);
+
+  const isUserInFollowing = useCallback(
+    (user) => {
+      const identifier = resolveUserId(user) ?? user?.username ?? user?.id;
+      if (identifier === undefined || identifier === null) return false;
+      return followingLookup.has(String(identifier).toLowerCase());
+    },
+    [followingLookup]
+  );
+
+  const toggleFollowUser = useCallback(
+    (user, currentlyFollowing) => {
+      const identifier = resolveUserId(user) ?? user?.username ?? user?.id;
+      if (identifier === undefined || identifier === null) return;
+      const targetId = String(identifier).toLowerCase();
+      const displayName = user?.name || user?.username || "এই ব্যবহারকারী";
+
+      setFollowing((prev) => {
+        const filtered = prev.filter((item) => {
+          const itemId = resolveUserId(item) ?? item?.username ?? item?.id;
+          return !itemId || String(itemId).toLowerCase() !== targetId;
+        });
+
+        if (currentlyFollowing) {
+          return filtered;
+        }
+
+        const normalizedUser = {
+          id: resolveUserId(user) ?? user?.id ?? user?.username ?? targetId,
+          name: user?.name ?? user?.username ?? "User",
+          username: user?.username ?? String(identifier),
+          avatar: user?.avatar ?? avatarFromSeed(user?.username ?? "follower"),
+        };
+
+        return [...filtered, normalizedUser];
+      });
+
+      toast.success(
+        currentlyFollowing
+          ? `${displayName} কে আনফলো করা হয়েছে`
+          : `${displayName} কে ফলো করা হয়েছে`
+      );
+    },
+    []
+  );
 
   const toggleLike = (postId) => {
     setPosts((prev) =>
@@ -215,7 +402,7 @@ export default function ProfilePage() {
           : post
       )
     );
-    toast.success("মন্তব্য যোগ হয়েছে");
+    toast.success("মন্তব্য যোগ হয়ছে");
   };
 
   const deleteComment = (postId, commentId) => {
@@ -226,29 +413,30 @@ export default function ProfilePage() {
           : post
       )
     );
-    toast.success("মন্তব্য মুছে ফেলা হয়েছে");
+    toast.success("মন্তব্য মুছে ফেলা হয়ছে");
   };
 
   const deletePost = (postId) => {
     setPosts((prev) => prev.filter((post) => post.id !== postId));
     if (activePostId === postId) setActivePostId(null);
-    toast.success("পোস্ট মুছে ফেলা হয়েছে");
+    toast.success("পোস্ট মুছে ফেলা হয়ছে");
   };
 
   const deleteSeed = (seedId) => {
     setSeedItems((prev) => prev.filter((seed) => seed.id !== seedId));
-    toast.success("বীজ আইটেমটি মুছে ফেলা হয়েছে");
+    setRemainingSeeds((prev) => prev.filter((seed) => seed.id !== seedId));
+    toast.success("বীজ আইটেমটি মুছে ফেলা হয়ছে");
   };
 
   const submitComposer = async (payload) => {
     // eslint-disable-next-line no-console
     console.log("New post payload", payload);
-    toast.success("পোস্টটি ড্রাফ্ট হিসাবে সংরক্ষিত হয়েছে");
+    toast.success("পোস্টটি ড্রাফটে সফলভাবে সংরক্ষিত হয়ছে");
   };
 
   const handleUnfollow = (user) => {
     setFollowing((prev) => prev.filter((item) => item.id !== user.id));
-    toast.success(`${user.name} তালিকা থেকে সরানো হয়েছে`);
+    toast.success(`${user.name} অনুসরণ তালিকা থেকে সরানো হয়ছে`);
   };
 
   const canDeleteComment = (comment) => {
@@ -258,16 +446,31 @@ export default function ProfilePage() {
 
   const handlePrimaryAction = () => {
     if (isOwner) {
-      toast.success("প্রোফাইল সম্পাদনা পৃষ্ঠাটি শীঘ্রই যুক্ত হবে");
+      toast.success("প্রোফাইল সম্পাদনার সুবিধা শীঘ্রই যোগ হবে");
     } else {
-      toast.success("ফলো করা হয়েছে");
+      const next = !isFollowingProfile;
+      const followerEntry = viewerIdentity ? { ...viewerIdentity } : null;
+
+      if (viewerIdKey && followerEntry) {
+        setFollowers((prev) => {
+          const filtered = prev.filter((item) => {
+            const itemId = resolveUserId(item);
+            return !itemId || String(itemId).toLowerCase() !== viewerIdKey;
+          });
+
+          return next ? [...filtered, followerEntry] : filtered;
+        });
+      }
+
+      setIsFollowingProfile(next);
+      toast.success(next ? "আপনি এখন এই প্রোফাইলটি অনুসরণ করছেন" : "আপনি এই প্রোফাইলটি অনুসরণ করা বন্ধ করেছেন");
     }
   };
 
   if (loading || !profile) {
     return (
       <div className="profile-page">
-        <div className="empty-state">???????? ???? ??? ?????...</div>
+        <div className="empty-state">প্রোফাইল লোড হচ্ছে...</div>
       </div>
     );
   }
@@ -278,6 +481,7 @@ export default function ProfilePage() {
         profile={profile}
         stats={stats}
         isOwner={isOwner}
+        isFollowing={isFollowingProfile}
         onPrimaryAction={handlePrimaryAction}
         onOpenAllPosts={() => setAllPostsOpen(true)}
         onOpenFollowers={() => setFollowersOpen(true)}
@@ -289,11 +493,13 @@ export default function ProfilePage() {
           profile={profile}
           isOwner={isOwner}
           seeds={seedItems}
+          hasMoreSeeds={hasMoreSeeds}
           onDeleteSeed={deleteSeed}
           onOpenComposer={(mode) => {
             setComposerMode(mode);
             setComposerOpen(true);
           }}
+          onLoadMoreSeeds={loadMoreSeeds}
         />
 
         <section className="post-feed">
@@ -324,16 +530,20 @@ export default function ProfilePage() {
       <FollowListModal
         open={followersOpen}
         onClose={() => setFollowersOpen(false)}
-        title="???? ??? ?????"
+        title="অনুসরণকারী"
         users={followers}
+        onToggleFollow={toggleFollowUser}
+        isFollowing={isUserInFollowing}
       />
 
       <FollowListModal
         open={followingOpen}
         onClose={() => setFollowingOpen(false)}
-        title="????? ?? ??? ??????"
+        title="আপনি যাদের অনুসরণ করছেন"
         users={following}
-        actionLabel={isOwner ? "Unfollow" : undefined}
+        onToggleFollow={toggleFollowUser}
+        isFollowing={isUserInFollowing}
+        actionLabel={isOwner ? () => "তালিকা থেকে সরান" : undefined}
         onAction={isOwner ? handleUnfollow : undefined}
       />
 
