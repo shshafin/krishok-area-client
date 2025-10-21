@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { fetchMe, updateProfile } from "@/api/authApi";
+import { fetchMe, updateProfile, verifyPassword } from "@/api/authApi";
 import { LiquedLoader } from "@/components/loaders";
+import toast from "react-hot-toast";
 
 import "../styles/common.css";
 import ProfileCard from "../components/ProfileCard";
@@ -12,6 +13,9 @@ export default function SettingsPage() {
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState(null);
   const [formValues, setFormValues] = useState(null);
+  const [password, setPassword] = useState("");
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     let alive = true;
@@ -61,7 +65,35 @@ export default function SettingsPage() {
   const handleProfileSubmit = async (e) => {
     e.preventDefault();
 
+    if (!formValues) {
+      return;
+    }
+
+    if (!password.trim()) {
+      toast.error("Enter your current password to save changes.");
+      return;
+    }
+
+    setIsSaving(true);
+
     try {
+      const response = await verifyPassword({ password });
+      let isValid =
+        response?.valid ??
+        response?.success ??
+        response?.isValid ??
+        response?.data?.valid ??
+        response?.data?.success;
+
+      if (typeof isValid === "undefined") {
+        isValid = true;
+      }
+
+      if (!isValid) {
+        toast.error(response?.message ?? "Incorrect password. Try again.");
+        return;
+      }
+
       const formData = new FormData();
       formData.append("name", formValues.name);
       formData.append("username", formValues.username);
@@ -78,10 +110,16 @@ export default function SettingsPage() {
         username: formValues.username,
       }));
 
-      alert("Profile updated successfully!");
+      toast.success("Profile updated successfully.");
+      setPassword("");
+      setIsPasswordVisible(false);
     } catch (err) {
       console.error("Profile update failed:", err);
-      alert("Profile update failed!");
+      const message =
+        err?.message ?? err?.error ?? "Profile update failed!";
+      toast.error(message);
+    } finally {
+      setIsSaving(false);
     }
   };
   // ======================
@@ -108,44 +146,18 @@ export default function SettingsPage() {
         }));
       }
 
-      alert("Profile photo updated successfully!");
+      toast.success("Profile photo updated successfully.");
     } catch (err) {
       console.error("Failed to update profile photo:", err);
-      alert("Profile photo update failed!");
+      toast.error("Profile photo update failed!");
     }
   };
 
   // ======================
-  // CoverImage handler
+  // Password input handler
   // ======================
-  const handleCoverPhotoChange = async (file) => {
-    // Step 1: temporary preview
-    setProfile((p) => ({
-      ...p,
-      coverImage: URL.createObjectURL(file),
-    }));
-
-    try {
-      const formData = new FormData();
-      formData.append("coverImage", file);
-
-      const res = await updateProfile(formData);
-      console.log("Cover photo updated:", res);
-
-      // Step 2: server response path update (যদি available)
-      const newCoverUrl = res?.data?.coverImage;
-      if (newCoverUrl) {
-        setProfile((p) => ({
-          ...p,
-          coverImage: `${baseApi}${newCoverUrl}`,
-        }));
-      }
-
-      alert("Cover photo updated successfully!");
-    } catch (err) {
-      console.error("Failed to update cover photo:", err);
-      alert("Cover photo update failed!");
-    }
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
   };
 
   // ======================
@@ -167,12 +179,12 @@ export default function SettingsPage() {
   };
 
   if (loading) {
-  return (
-    <div className="page-loader">
-      <LiquedLoader label="???????? ???? ??? ?????..." />
-    </div>
-  );
-}
+    return (
+      <div className="page-loader">
+        <LiquedLoader label="Loading settings..." />
+      </div>
+    );
+  }
 
 
   return (
@@ -180,18 +192,28 @@ export default function SettingsPage() {
       <ProfileCard
         data={profile}
         onChangePhoto={handleProfilePhotoChange}
-        onChangeCover={handleCoverPhotoChange}
+        showCover={false}
       />
 
       <div className="settings-form-wrapper mt-24">
         <ProfileForm
-          values={formValues}
+          values={formValues ?? {}}
           onChange={(e) =>
             setFormValues((v) => ({ ...v, [e.target.name]: e.target.value }))
           }
           onSubmit={handleProfileSubmit}
+          isSubmitting={isSaving}
+          passwordValue={password}
+          onPasswordChange={handlePasswordChange}
+          isPasswordVisible={isPasswordVisible}
+          onTogglePasswordVisibility={() =>
+            setIsPasswordVisible((prev) => !prev)
+          }
         />
       </div>
     </div>
   );
 }
+
+
+

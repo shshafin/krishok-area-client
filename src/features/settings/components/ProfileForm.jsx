@@ -4,20 +4,32 @@ import UserIcon from "@/assets/IconComponents/UserIcon";
 import GlobeIcon from "@/assets/IconComponents/GlobeIcon";
 import PhoneIcon from "@/assets/IconComponents/PhoneIcon";
 import MapPinIcon from "@/assets/IconComponents/MapPinIcon";
+import LockIcon from "@/assets/IconComponents/LockIcon";
 import SaveIcon from "@/assets/IconComponents/SaveIcon";
+import EyeIcon from "@/assets/IconComponents/Eye.jsx";
+import EyeOffIcon from "@/assets/IconComponents/EyeOff.jsx";
 
 export default function ProfileForm({
   values = {},
   onChange = () => {},
   onSubmit = (e) => e.preventDefault(),
+  passwordValue = "",
+  onPasswordChange = () => {},
+  isPasswordVisible = false,
+  onTogglePasswordVisibility = () => {},
+  isSubmitting = false,
 }) {
+  const safeValues = values || {};
+
   const {
     name = "",
     username = "",
     bio = "",
     phone = "",
     address = "",
-  } = values;
+  } = safeValues;
+
+  const passwordToggleLabel = isPasswordVisible ? "Hide password" : "Show password";
 
   return (
     <section className="card">
@@ -96,11 +108,38 @@ export default function ProfileForm({
             />
           </div>
 
+          <div className="form-row">
+            <label className="label">
+              <LockIcon /> Password Confirmation
+            </label>
+            <div className="password-input-wrapper">
+              <input
+                className="input"
+                type={isPasswordVisible ? "text" : "password"}
+                placeholder="Enter your account password"
+                value={passwordValue}
+                onChange={onPasswordChange}
+                autoComplete="current-password"
+              />
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={onTogglePasswordVisibility}
+                aria-label={passwordToggleLabel}>
+                {isPasswordVisible ? <EyeOffIcon width={22} height={22} /> : <EyeIcon width={22} height={22} />}
+              </button>
+            </div>
+            <p className="field-help">
+              Enter your current password to confirm changes.
+            </p>
+          </div>
+
           <div className="form-footer">
             <button
               className="btn btn-primary"
-              type="submit">
-              <SaveIcon /> Save Changes
+              type="submit"
+              disabled={isSubmitting}>
+              <SaveIcon /> {isSubmitting ? "Saving..." : "Save Changes"}
             </button>
           </div>
         </div>
@@ -108,3 +147,4 @@ export default function ProfileForm({
     </section>
   );
 }
+

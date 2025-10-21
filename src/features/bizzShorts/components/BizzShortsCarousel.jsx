@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import useEmblaCarousel from "embla-carousel-react";
+import { NavLink } from "react-router-dom";
 
 import "@/features/bizzShorts/styles/BizzShorts.css";
 import { dummyShorts } from "../data/dummyShorts";
@@ -8,9 +9,11 @@ import { dummyShorts } from "../data/dummyShorts";
 export default function BizzShortsCarousel({
   items,
   initialItems = dummyShorts,
-  title = "বীজ বাজার হাইলাইটস",
+  title = "বীজ গ্যালেরি",
   description = "সর্বশেষ বীজ তালিকা দেখতে সোয়াইপ করুন",
   allowDelete = true,
+  showMeta = true,
+  linkBase, // when provided, each card becomes a NavLink to `${linkBase}/${id}`
   onDelete,
   loadMore,
   hasMore = false,
@@ -176,65 +179,127 @@ export default function BizzShortsCarousel({
         <div className="bizz-shorts__container">
           {displayedShorts.map((short) => (
             <article key={short.id} className="bizz-shorts__slide">
-              <div className="bizz-shorts__card">
-                <img
-                  src={short.mediaUrl}
-                  alt={short.title}
-                  loading="lazy"
-                  className="bizz-shorts__image"
-                />
-                <div className="bizz-shorts__meta">
-                  <span className="bizz-shorts__title">{short.title}</span>
-                  <span className="bizz-shorts__credit">{short.photographer}</span>
+              {linkBase ? (
+                <NavLink to={`${linkBase}/${short.id}`} className="bizz-shorts__card-link">
+                  <div className="bizz-shorts__card">
+                    <img
+                      src={short.mediaUrl}
+                      alt={short.title}
+                      loading="lazy"
+                      className="bizz-shorts__image"
+                    />
+                    {showMeta && (
+                      <div className="bizz-shorts__meta">
+                        <span className="bizz-shorts__title">{short.title}</span>
+                        <span className="bizz-shorts__credit">{short.photographer}</span>
+                      </div>
+                    )}
+                    {allowDelete && (
+                      <button
+                        type="button"
+                        className="bizz-shorts__delete"
+                        onClick={() => handleDelete(short.id)}
+                        aria-label={`Remove ${short.title}`}>
+                        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+                          <polyline
+                            points="3 6 5 6 21 6"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                          <path
+                            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                          <line
+                            x1="10"
+                            y1="11"
+                            x2="10"
+                            y2="17"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                          />
+                          <line
+                            x1="14"
+                            y1="11"
+                            x2="14"
+                            y2="17"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                          />
+                        </svg>
+                      </button>
+                    )}
+                  </div>
+                </NavLink>
+              ) : (
+                <div className="bizz-shorts__card">
+                  <img
+                    src={short.mediaUrl}
+                    alt={short.title}
+                    loading="lazy"
+                    className="bizz-shorts__image"
+                  />
+                  {showMeta && (
+                    <div className="bizz-shorts__meta">
+                      <span className="bizz-shorts__title">{short.title}</span>
+                      <span className="bizz-shorts__credit">{short.photographer}</span>
+                    </div>
+                  )}
+                  {allowDelete && (
+                    <button
+                      type="button"
+                      className="bizz-shorts__delete"
+                      onClick={() => handleDelete(short.id)}
+                      aria-label={`Remove ${short.title}`}>
+                      <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+                        <polyline
+                          points="3 6 5 6 21 6"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <line
+                          x1="10"
+                          y1="11"
+                          x2="10"
+                          y2="17"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                        />
+                        <line
+                          x1="14"
+                          y1="11"
+                          x2="14"
+                          y2="17"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                        />
+                      </svg>
+                    </button>
+                  )}
                 </div>
-                {allowDelete && (
-                  <button
-                    type="button"
-                    className="bizz-shorts__delete"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      handleDelete(short.id);
-                    }}
-                    aria-label={`Remove ${short.title}`}>
-                    <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
-                      <polyline
-                        points="3 6 5 6 21 6"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <line
-                        x1="10"
-                        y1="11"
-                        x2="10"
-                        y2="17"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                      />
-                      <line
-                        x1="14"
-                        y1="11"
-                        x2="14"
-                        y2="17"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                      />
-                    </svg>
-                  </button>
-                )}
-              </div>
+              )}
             </article>
           ))}
         </div>
@@ -261,22 +326,26 @@ BizzShortsCarousel.propTypes = {
   title: PropTypes.string,
   description: PropTypes.string,
   allowDelete: PropTypes.bool,
+  showMeta: PropTypes.bool,
   onDelete: PropTypes.func,
   loadMore: PropTypes.func,
   hasMore: PropTypes.bool,
   loadMoreOffset: PropTypes.number,
   className: PropTypes.string,
+  linkBase: PropTypes.string,
 };
 
 BizzShortsCarousel.defaultProps = {
   items: undefined,
   initialItems: dummyShorts,
-  title: "বীজ বাজার হাইলাইটস",
+  title: "বীজ গ্যালেরি",
   description: "সর্বশেষ বীজ তালিকা দেখতে সোয়াইপ করুন",
   allowDelete: true,
+  showMeta: true,
   onDelete: undefined,
   loadMore: undefined,
   hasMore: false,
   loadMoreOffset: 2,
   className: "",
+  linkBase: undefined,
 };

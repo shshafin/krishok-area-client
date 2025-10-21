@@ -105,6 +105,43 @@
   transform: translateY(-1px);
 }
 
+@media screen and (max-width: 622px) {
+
+  .profile-overview {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0rem;
+    text-align: center;
+  }
+
+  .profile-overview-main {
+    height: fit-content;
+    width: fit-content;
+    max-height: fit-content;
+    margin-bottom: 1rem;
+  }
+
+  .profile-overview-name {
+    padding: 0;
+  }
+
+  .profile-quick-actions {
+    width: 100%;
+  }
+  .profile-stat-buttons .button {
+    width: 100% !important;
+    min-width: 100% !important;
+  }
+  .profile-stat-buttons {
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
 .profile-primary-button {
   border-radius: 999px;
   padding: 0.75rem 1.5rem;
@@ -168,12 +205,15 @@
 
 @media (max-width: 1024px) {
   .profile-two-column {
+    width: 100% !important;
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
 
   .profile-two-column > .profile-sidebar,
   .profile-two-column > .post-feed {
+    width: 100%;
+    min-width: 100%;
     justify-self: stretch;
   }
 }
@@ -261,6 +301,45 @@
 
 .profile-seed-carousel .bizz-shorts__slide {
   flex: 0 0 220px;
+}
+
+/* Profile specific: make gallery cards compact, square and image-only */
+.profile-seed-carousel .bizz-shorts__slide {
+  flex: 0 0 180px; /* increased slide width for taller cards */
+  padding: 0 0.35rem;
+}
+
+.profile-seed-carousel .bizz-shorts__card {
+  border-radius: 12px;
+  overflow: hidden;
+  background: transparent;
+  border: 1px solid rgba(148, 163, 184, 0.08);
+  box-shadow: none;
+}
+
+.profile-seed-carousel .bizz-shorts__image {
+  height: 180px; /* taller square */
+  object-fit: cover;
+  display: block;
+}
+
+/* remove meta text in profile sidebar gallery */
+.profile-seed-carousel .bizz-shorts__meta {
+  display: none !important;
+}
+
+/* allow delete button visibility — leave visibility/opacity to carousel's rules when allowDelete is true */
+
+/* make the whole card a link with no decoration */
+.profile-seed-carousel .bizz-shorts__card-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* slightly lift on hover for a subtle effect */
+.profile-seed-carousel .bizz-shorts__card:hover {
+  transform: translateY(-4px);
 }
 
 .sidebar-info-row {
@@ -419,13 +498,17 @@
 
 .post-delete-btn {
   border: none;
-  background: rgba(148, 163, 184, 0.16);
+  background: rgba(148, 163, 184, 0.082);
   width: 32px;
   height: 32px;
   border-radius: 50%;
   cursor: pointer;
   color: #ef4444;
   font-weight: 700;
+  display: flex !important;
+  align-items: center;
+  justify-self: center;
+  justify-content: center;
 }
 
 .post-delete-btn:hover {
@@ -469,6 +552,20 @@
   gap: 1rem;
   font-weight: 600;
   color: #a5b4fc;
+}
+
+.post-engagement button {
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  padding: 0;
+}
+
+.post-engagement button:hover {
+  color: #cbd5f5;
+  text-decoration: underline;
 }
 
 .post-actions {
@@ -539,6 +636,61 @@
   transform: translateY(-1px);
 }
 
+.post-likes-wrapper {
+  margin-top: 1rem;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 16px;
+  background: rgba(13, 20, 36, 0.75);
+  max-height: 360px;
+  overflow: hidden;
+}
+
+.post-likes-list {
+  max-height: 360px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+}
+
+.post-likes-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.post-likes-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(59, 130, 246, 0.35);
+}
+
+.post-likes-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.post-likes-name {
+  font-weight: 600;
+  color: #e2e8f0;
+}
+
+.post-likes-username {
+  font-size: 0.85rem;
+  color: #94a3b8;
+}
+
+.post-likes-loading {
+  text-align: center;
+  padding: 0.75rem;
+  color: #cbd5f5;
+  font-weight: 600;
+}
+
 /* Modal base */
 .ka-modal-backdrop {
   position: fixed;
@@ -563,7 +715,7 @@
   border-radius: 18px;
   width: 100%;
   max-width: 720px;
-  max-height: 100%;
+  max-height: 80%;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -631,6 +783,7 @@
   border-radius: 16px;
   overflow: hidden;
   background: #0b1628;
+  max-height: 76%;
   border: 1px solid rgba(148, 163, 184, 0.2);
 }
 
@@ -898,6 +1051,34 @@
   gap: 1rem;
 }
 
+.composer-viewer {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.85rem 1rem;
+  border-radius: 14px;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  background: rgba(13, 22, 39, 0.85);
+}
+
+.composer-viewer img {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(59, 130, 246, 0.35);
+}
+
+.composer-viewer-name {
+  font-weight: 600;
+  color: #f8fafc;
+}
+
+.composer-viewer-username {
+  font-size: 0.85rem;
+  color: rgba(148, 163, 184, 0.85);
+}
+
 .composer-body textarea {
   min-height: 120px;
   resize: vertical;
@@ -925,34 +1106,112 @@
   background: rgba(37, 99, 235, 0.15);
 }
 
-.composer-preview {
-  position: relative;
+.composer-media-summary {
+  display: flex;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(148, 163, 184, 0.85);
+}
+
+.composer-media-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+}
+
+.composer-media-card {
+  display: flex;
+  flex-direction: column;
   border-radius: 16px;
   overflow: hidden;
-  background: rgba(8, 14, 26, 0.85);
   border: 1px solid rgba(59, 130, 246, 0.18);
+  background: rgba(8, 14, 26, 0.78);
+  box-shadow: 0 16px 40px -28px rgba(7, 12, 24, 0.7);
 }
 
-.composer-preview img,
-.composer-preview video {
+.composer-media-thumb {
+  position: relative;
   width: 100%;
-  display: block;
-  border-radius: 12px;
-  object-fit: cover;
-  max-height: 380px;
+  aspect-ratio: 4 / 3;
+  background: rgba(15, 23, 42, 0.9);
 }
 
-.composer-preview button {
+.composer-media-thumb img,
+.composer-media-thumb video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.composer-media-remove {
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: 10px;
+  right: 10px;
   border: none;
   background: rgba(15, 23, 42, 0.8);
   color: #ffffff;
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   cursor: pointer;
+  font-size: 1.1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.composer-media-remove:hover {
+  background: rgba(37, 99, 235, 0.85);
+  transform: translateY(-1px);
+}
+
+.composer-media-badge {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: #0f172a;
+  background: rgba(148, 163, 184, 0.85);
+}
+
+.composer-media-badge-image {
+  background: rgba(129, 199, 132, 0.85);
+}
+
+.composer-media-badge-video {
+  background: rgba(129, 140, 248, 0.85);
+}
+
+.composer-media-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.7rem 0.85rem 0.8rem;
+  color: #e2e8f0;
+  font-size: 0.85rem;
+}
+
+.composer-media-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.composer-media-size {
+  color: rgba(148, 163, 184, 0.75);
+  font-weight: 500;
 }
 
 .composer-actions {

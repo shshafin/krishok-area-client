@@ -3,7 +3,12 @@ import "../styles/common.css";
 import "../styles/ProfileDetails.css";
 import CameraIcon from "@/assets/IconComponents/CameraIcon";
 
-export default function ProfileCard({ data, onChangePhoto, onChangeCover }) {
+export default function ProfileCard({
+  data,
+  onChangePhoto,
+  onChangeCover,
+  showCover = true,
+}) {
   const {
     profileImage,
     coverImage,
@@ -17,39 +22,43 @@ export default function ProfileCard({ data, onChangePhoto, onChangeCover }) {
 
   return (
     <section className="card card-padding">
-      {/* Cover Image Section */}
-      <div className="cover-photo-wrap">
-        <img
-          src={
-            coverImage
-              ? coverImage.startsWith("http") || coverImage.startsWith("blob:")
-                ? coverImage
-                : `${baseApi}${coverImage}`
-              : "/default-cover.png"
-          }
-          alt="Cover"
-          className="cover-photo"
-        />
-
-        <input
-          type="file"
-          accept="image/*"
-          style={{ display: "none" }}
-          id="coverUpload"
-          onChange={(e) => {
-            if (e.target.files && e.target.files[0]) {
-              onChangeCover(e.target.files[0]); // parent function call
+      {showCover && (
+        <div className="cover-photo-wrap">
+          <img
+            src={
+              coverImage
+                ? coverImage.startsWith("http") || coverImage.startsWith("blob:")
+                  ? coverImage
+                  : `${baseApi}${coverImage}`
+                : "/default-cover.png"
             }
-          }}
-        />
-        <button
-          className="changeCover"
-          aria-label="Change Cover Picture"
-          onClick={() => document.getElementById("coverUpload").click()}
-          type="button">
-          <CameraIcon />
-        </button>
-      </div>
+            alt="Cover"
+            className="cover-photo"
+          />
+
+          <input
+            type="file"
+            accept="image/*"
+            style={{ display: "none" }}
+            id="coverUpload"
+            onChange={(e) => {
+              if (!onChangeCover) return;
+              if (e.target.files && e.target.files[0]) {
+                onChangeCover(e.target.files[0]);
+              }
+            }}
+          />
+          {onChangeCover && (
+            <button
+              className="changeCover"
+              aria-label="Change Cover Picture"
+              onClick={() => document.getElementById("coverUpload").click()}
+              type="button">
+              <CameraIcon />
+            </button>
+          )}
+        </div>
+      )}
 
       <div className="header-block">
         <div className="profile-photo-wrap">

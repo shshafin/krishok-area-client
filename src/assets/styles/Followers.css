@@ -23,7 +23,8 @@
 .follower .profile {
     width: 2.5rem;
     height: 2.5rem;
-    border-radius: 50%;
+    overflow: hidden;
+    border-radius: 50% !important;
 }
 
 .title {

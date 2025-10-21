@@ -87,7 +87,7 @@ export default function GallerySection({
   if ((status === "loading" || status === "idle") && !post) {
     return (
       <div className="page-loader">
-        <LiquedLoader label="???????? ????? ??? ?????..." />
+        <LiquedLoader label="গ্যালারি পোস্ট লোড হচ্ছে..." />
       </div>
     );
   }

@@ -2,9 +2,18 @@ import { useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import BizzShortsCarousel from "@/features/bizzShorts/components/BizzShortsCarousel";
 
+const BUTTON_LABELS = [
+  { label: "টেক্সট পোস্ট", type: "text" },
+  { label: "ভিডিও পোস্ট", type: "video" },
+  { label: "ছবি / ভিডিও", type: "media" },
+];
+
+const FALLBACK_INFO = "তথ্য পাওয়া যায়নি";
+
 export default function ProfileSidebar({
   profile,
   isOwner,
+  compactSeedDisplay,
   seeds,
   hasMoreSeeds,
   onDeleteSeed,
@@ -13,18 +22,12 @@ export default function ProfileSidebar({
 }) {
   const [showSeedGallery, setShowSeedGallery] = useState(true);
 
-  const composerButtons = [
-    { label: "লিখিত পোস্ট", type: "text" },
-    { label: "ভিডিও যুক্ত করুন", type: "video" },
-    { label: "ছবি / মিডিয়া", type: "media" },
-  ];
-
   const carouselItems = useMemo(
     () =>
       seeds.map((seed) => ({
         ...seed,
         mediaUrl: seed.mediaUrl ?? seed.image,
-        photographer: seed.photographer || seed.supplier || profile?.name || "বীজ সরবরাহকারী",
+        photographer: seed.photographer || seed.supplier || profile?.name || "অজানা তথ্য",
       })),
     [profile?.name, seeds]
   );
@@ -32,41 +35,24 @@ export default function ProfileSidebar({
   return (
     <aside className="profile-sidebar">
       <div className="profile-sidebar-card">
-        <h3 style={{ margin: 0, fontSize: "1.1rem" }}>যোগাযোগের তথ্য</h3>
+        <h3 style={{ margin: 0, fontSize: "1.1rem" }}>প্রাথমিক তথ্য</h3>
         <div className="sidebar-info-row">
-          ইমেইল : <span>{profile.email || "প্রকাশ করা হয়নি"}</span>
+          ইমেইল : <span>{profile.email || FALLBACK_INFO}</span>
         </div>
         <div className="sidebar-info-row">
-          মোবাইল : <span>{profile.phone || "প্রকাশ করা হয়নি"}</span>
+          ফোন : <span>{profile.phone || FALLBACK_INFO}</span>
         </div>
         <div className="sidebar-info-row">
-          বিভাগ : <span>{profile.division || "উল্লেখ নেই"}</span>
+          বিভাগ : <span>{profile.division || FALLBACK_INFO}</span>
         </div>
         <div className="sidebar-info-row">
-          ঠিকানা : <span>{profile.address || "উল্লেখ নেই"}</span>
+          ঠিকানা : <span>{profile.address || FALLBACK_INFO}</span>
         </div>
       </div>
 
-      {isOwner && (
-        <div className="profile-sidebar-card">
-          <h3 style={{ margin: 0, fontSize: "1.1rem" }}>দ্রুত পোস্ট তৈরি করুন</h3>
-          <div className="post-composer-buttons">
-            {composerButtons.map((button) => (
-              <button
-                key={button.type}
-                type="button"
-                onClick={() => onOpenComposer?.(button.type)}
-              >
-                {button.label}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-
       <div className="profile-sidebar-card seed-carousel-card">
         <div className="seed-carousel-card__header">
-          <h3 style={{ margin: 0, fontSize: "1.1rem" }}>বীজ বাজার</h3>
+          <h3 style={{ margin: 0, fontSize: "1.1rem" }}>বীজ সংগ্রহ</h3>
           <button
             type="button"
             className="profile-primary-button seed-carousel-card__toggle"
@@ -81,19 +67,21 @@ export default function ProfileSidebar({
             <BizzShortsCarousel
               items={carouselItems}
               className="profile-seed-carousel"
-              title="বীজ বাজার"
-              description="সর্বশেষ বীজ তালিকা দেখতে সোয়াইপ করুন"
-              allowDelete={isOwner}
+              title="বীজ গ্যালেরি"
+              description="পছন্দের বীজগুলো এখানে দেখুন"
+              allowDelete={isOwner} // show delete button only for owner
+              showMeta={false} // hide title/credit, only image
+              linkBase="/post" // make each card a NavLink to /post/:id
               onDelete={isOwner ? onDeleteSeed : undefined}
               loadMore={onLoadMoreSeeds}
               hasMore={hasMoreSeeds}
               loadMoreOffset={1}
             />
           ) : (
-            <div className="empty-state seed-carousel-card__empty">বীজ বাজারে এখনো কিছু যোগ করা হয়নি</div>
+            <div className="empty-state seed-carousel-card__empty">এখনও কোনও বীজ যোগ করা হয়নি</div>
           )
         ) : (
-          <div className="empty-state seed-carousel-card__empty">বীজ বাজার ক্যারোসেল লুকানো আছে</div>
+          <div className="empty-state seed-carousel-card__empty">সংগ্রহ দেখতে আবার দেখুন বোতামে চাপ দিন</div>
         )}
       </div>
     </aside>
@@ -108,6 +96,7 @@ ProfileSidebar.propTypes = {
     address: PropTypes.string,
   }).isRequired,
   isOwner: PropTypes.bool,
+  compactSeedDisplay: PropTypes.bool,
   seeds: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
@@ -126,6 +115,7 @@ ProfileSidebar.propTypes = {
 
 ProfileSidebar.defaultProps = {
   isOwner: false,
+  compactSeedDisplay: false,
   seeds: [],
   hasMoreSeeds: false,
   onDeleteSeed: undefined,

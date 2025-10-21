@@ -48,7 +48,7 @@ export default function ShowFollowUsers() {
   if (loading) {
     return (
       <div className="page-loader">
-        <LiquedLoader label="????????????? ??? ?????..." />
+        <LiquedLoader label="অনুসারীদের তালিকা লোড হচ্ছে..." />
       </div>
     );
   }

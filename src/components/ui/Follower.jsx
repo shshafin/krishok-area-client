@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import "@/assets/styles/Followers.css";
 import { useState } from "react";
 import { baseApi } from "../../api";
@@ -6,12 +6,17 @@ import { baseApi } from "../../api";
 function Follower({
   userid,
   userprofile,
+  userProfile,
   username,
   email,
   isFollowing: initialFollow = false,
   onFollow,
 }) {
   const [isFollowing, setIsFollowing] = useState(initialFollow);
+  const profileImage =
+    userProfile ??
+    userprofile ??
+    "https://i.postimg.cc/fRVdFSbg/e1ef6545-86db-4c0b-af84-36a726924e74.png";
 
   const handleFollowClick = (e) => {
     e.preventDefault();
@@ -20,19 +25,16 @@ function Follower({
   };
 
   return (
-    <Link
+    <NavLink
       to={`/user/${userid}`}
       className="follower">
       <section>
         <div className="profile">
           <img
             src={
-              userprofile
-                ? userprofile.startsWith("http") ||
-                  userprofile.startsWith("blob:")
-                  ? userprofile
-                  : `${baseApi}${userprofile}`
-                : "https://i.postimg.cc/fRVdFSbg/e1ef6545-86db-4c0b-af84-36a726924e74.png" // fallback
+              profileImage.startsWith("http") || profileImage.startsWith("blob:")
+                ? profileImage
+                : `${baseApi}${profileImage}`
             }
             alt={username + " Profile"}
           />
@@ -45,7 +47,7 @@ function Follower({
       <button onClick={handleFollowClick}>
         {isFollowing ? "Following" : "Follow"}
       </button>
-    </Link>
+    </NavLink>
   );
 }
 

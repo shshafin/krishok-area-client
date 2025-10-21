@@ -13,9 +13,21 @@
     justify-content: center;
     flex-direction: column;
     padding: 1.5rem;
+    gap: 1.5rem;
 }
 
 .feed {
     width: 100%;
     max-width: 670px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.limit-width {
+    width: 100%;
+    max-width: 670px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }

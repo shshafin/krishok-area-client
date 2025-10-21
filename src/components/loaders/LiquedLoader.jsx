@@ -5,6 +5,7 @@ export default function LiquedLoader({ label }) {
   return (
     <div className="liqued-loader-wrapper" role="status" aria-live="polite">
       <div className="liqued-loader" />
+      {label ? <p className="liqued-loader-label">{label}</p> : null}
     </div>
   );
 }

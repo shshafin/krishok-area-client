@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { NavLink } from "react-router-dom";
 import PropTypes from "prop-types";
 import { format } from "timeago.js";
 import DeleteOutlineIcon from "@/assets/IconComponents/DeleteOutlineIcon";
@@ -14,14 +15,20 @@ const TEXT_LIKE = "\u09B2\u09BE\u0987\u0995";
 const TEXT_COMMENTS = "\u09AE\u09A8\u09CD\u09A4\u09AC\u09CD\u09AF";
 const TEXT_COMMENT = "\u09AE\u09A8\u09CD\u09A4\u09AC\u09CD\u09AF";
 const TEXT_COMMENT_PLACEHOLDER = "\u09AE\u09A8\u09CD\u09A4\u09AC\u09CD\u09AF \u0995\u09B0\u09C1\u09A8...";
+const TEXT_DELETE_POST_ARIA = "\u09AA\u09CB\u09B8\u09CD\u099F \u09AE\u09C1\u099B\u09C7 \u09AB\u09C7\u09B2\u09C1\u09A8";
+const TEXT_MEDIA_ALT = "\u09AA\u09CB\u09B8\u09CD\u099F\u09C7\u09B0 \u099B\u09AC\u09BF";
+const TEXT_LIKE_COUNT_SUFFIX = "\u09B2\u09BE\u0987\u0995";
+const TEXT_COMMENT_COUNT_SUFFIX = "\u09AE\u09A8\u09CD\u09A4\u09AC\u09CD\u09AF";
 
 export default function PostCard({
   post,
   isOwner,
   onLike,
+  onOpenLikes,
   onOpenComments,
   onDelete,
   onAddComment,
+  onOpenPost,
 }) {
   const [commentText, setCommentText] = useState("");
 
@@ -33,22 +40,46 @@ export default function PostCard({
   };
 
   const media = post.media;
+  const handleOpenPost = () => {
+    onOpenPost?.(post.id);
+  };
+  const handleMediaKeyDown = (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      handleOpenPost();
+    }
+  };
+  const mediaInteractableProps = onOpenPost
+    ? {
+        role: "button",
+        tabIndex: 0,
+        onClick: handleOpenPost,
+        onKeyDown: handleMediaKeyDown,
+      }
+    : {};
 
   return (
     <article className="post-card">
       <header className="post-card-header">
-        <div className="post-card-meta">
+        <NavLink
+          to={
+            post.author?.username
+              ? `/user/${post.author.username}`
+              : `/user/${post.author.id ?? post.author._id ?? ""}`
+          }
+          className="post-card-meta"
+        >
           <img src={post.author.avatar} alt={post.author.name} />
           <div className="post-card-author">
             <h5>{post.author.name}</h5>
             <span>{format(post.createdAt)}</span>
           </div>
-        </div>
+        </NavLink>
         {isOwner && (
           <button
             type="button"
             className="post-delete-btn"
-            aria-label="পোস্ট মুছে ফেলুন"
+            aria-label={TEXT_DELETE_POST_ARIA}
             onClick={() => onDelete?.(post.id)}
           >
             <DeleteOutlineIcon width={16} />
@@ -59,18 +90,22 @@ export default function PostCard({
       {post.content && <p className="post-content">{post.content}</p>}
 
       {media?.src && (
-        <div className="post-media">
+        <div className="post-media" {...mediaInteractableProps}>
           {media.type === "video" ? (
             <video src={media.src} controls muted loop style={mediaStyles} />
           ) : (
-            <img src={media.src} alt={post.content || "পোস্টের ছবি"} style={mediaStyles} />
+            <img src={media.src} alt={post.content || TEXT_MEDIA_ALT} style={mediaStyles} />
           )}
         </div>
       )}
 
       <div className="post-engagement">
-        <span>{post.likes} লাইক</span>
-        <span>{post.comments.length} মন্তব্য</span>
+        <button type="button" onClick={() => onOpenLikes?.(post.id)}>
+          {`${post.likes} ${TEXT_LIKE_COUNT_SUFFIX}`}
+        </button>
+        <button type="button" onClick={() => onOpenComments?.(post.id)}>
+          {`${post.comments.length} ${TEXT_COMMENT_COUNT_SUFFIX}`}
+        </button>
       </div>
 
       <div className="post-actions">
@@ -111,6 +146,14 @@ PostCard.propTypes = {
     }),
     likes: PropTypes.number,
     liked: PropTypes.bool,
+    likedUsers: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        name: PropTypes.string,
+        username: PropTypes.string,
+        avatar: PropTypes.string,
+      })
+    ),
     author: PropTypes.shape({
       name: PropTypes.string.isRequired,
       avatar: PropTypes.string.isRequired,
@@ -123,15 +166,19 @@ PostCard.propTypes = {
   }).isRequired,
   isOwner: PropTypes.bool,
   onLike: PropTypes.func,
+  onOpenLikes: PropTypes.func,
   onOpenComments: PropTypes.func,
   onDelete: PropTypes.func,
   onAddComment: PropTypes.func,
+  onOpenPost: PropTypes.func,
 };
 
 PostCard.defaultProps = {
   isOwner: false,
   onLike: undefined,
+  onOpenLikes: undefined,
   onOpenComments: undefined,
   onDelete: undefined,
   onAddComment: undefined,
+  onOpenPost: undefined,
 };

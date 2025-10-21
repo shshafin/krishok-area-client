@@ -77,3 +77,37 @@
   max-width: 56rem;
   margin-bottom: 2rem;
 }
+
+.password-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-input-wrapper .input {
+  padding-right: 2.75rem;
+}
+
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 0.75rem;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  color: var(--gray);
+  cursor: pointer;
+  display: inline-flex;
+  padding: 0;
+}
+
+.password-toggle:hover {
+  color: #fff;
+}
+
+.field-help.error {
+  color: var(--danger, #f87171);
+}
+
+.field-help.success {
+  color: var(--green-500, #34d399);
+}

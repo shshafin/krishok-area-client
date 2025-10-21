@@ -5376,7 +5376,7 @@ user-icon
 /* NIRDESHIKA PAGE CSS START */
 
 .header-back {
-  background: #266984;
+  background: #2c333a;
   padding: 10px 0px 10px 0px;
 }
 
@@ -5384,6 +5384,7 @@ user-icon
   width: 90%;
   margin: auto;
   display: flex;
+  align-items: center;
   justify-content: space-between;
 }
 
@@ -5425,15 +5426,15 @@ user-icon
   border-top: 1px solid #4a4a4a;
 }
 .photo-body-box {
-  background: #224150;
+  background: #2c333a;
   padding: 17px;
   border-top: 1px solid #4a4a4a;
 }
 
 .nir-body {
-  background: #224150;
-  padding: 17px 0px 0px 0px;
-  border-top: 1px solid #4a4a4a;
+    background: #2c333a;
+    padding: 17px 0 0;
+    border-top: 1px solid #4a4a4a;
 }
 
 .nir-body h1,
@@ -5497,7 +5498,7 @@ h4 {
   padding: 0.5rem 1rem;
   color: white;
   text-decoration: none;
-  border: 1px solid rgba(0, 0, 0, 0.125);
+  border: 1px solid rgb(212 208 208);
 }
 
 .bb1:hover {
@@ -6561,6 +6562,7 @@ h4 {
   margin: auto;
   margin-top: 20px;
   margin-bottom: 2%;
+  overflow: auto;
 }
 
 .product-details-imgtitle {
@@ -6672,7 +6674,8 @@ h4 {
   }
 
   .product-details-tablesize {
-    display: none;
+    min-width: 100vh;
+    overflow-x: scroll;
   }
   .product-details-displaysize {
     display: block;
@@ -6830,7 +6833,7 @@ h4 {
   display: flex;
   margin: auto;
   width: 100%;
-  object-fit: contain;
+  object-fit: cover;
   height: 470px;
 }
 
@@ -7374,7 +7377,7 @@ h4 {
 }
 
 .itkk30 {
-  background: #266984;
+  background: #2c333a;
   color: white;
   /* width: 243px; */
   text-align: center;
@@ -7426,7 +7429,7 @@ h4 {
 }
 
 .tdkkk11 {
-  background: #282828;
+  background: #2c333a;
   width: 100%;
   padding: 10px;
   border-radius: 8px;
@@ -7650,7 +7653,7 @@ h4 {
 }
 
 .vtdkkk11 {
-  background: #282828;
+  background: #2c333a;
   width: 100%;
   padding: 10px;
   border-radius: 8px;

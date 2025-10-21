@@ -12,6 +12,7 @@ import PostComposerModal from "../components/PostComposerModal";
 import FollowListModal from "../components/FollowListModal";
 import AllPostsModal from "../components/AllPostsModal";
 import { LiquedLoader } from "@/components/loaders";
+import CreatePost from "@/components/layout/CreatePost";
 
 import "@/features/profile/styles/ProfilePage.css";
 
@@ -20,13 +21,23 @@ const imageFromSeed = (seed) =>
 const avatarFromSeed = (seed) => `https://i.pravatar.cc/120?u=${seed}`;
 const sampleVideo = "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4";
 const SEED_BATCH_SIZE = 4;
+const createLikedUsers = (count, seedKey) =>
+  Array.from({ length: count }, (_, index) => {
+    const suffix = `${seedKey}-${index + 1}`;
+    return {
+      id: `liked-${suffix}`,
+      name: `বন্ধু ${index + 1}`,
+      username: `friend_${suffix}`,
+      avatar: avatarFromSeed(suffix),
+    };
+  });
 
 function buildMockProfile(usernameParam) {
   const username = usernameParam || "guest";
   const baseAvatar = avatarFromSeed(username);
 
   const profile = {
-    id: "user-1",
+    id: username,
     username,
     name: username,
     avatar: baseAvatar,
@@ -49,7 +60,6 @@ function buildMockProfile(usernameParam) {
       content: "New harvest ready to share",
       createdAt: "2025-10-19T21:58:05Z",
       media: { type: "image", src: imageFromSeed("FFEDD5") },
-      likes: 0,
       liked: false,
       author,
       comments: [
@@ -60,28 +70,29 @@ function buildMockProfile(usernameParam) {
           author,
         },
       ],
+      likedUsers: createLikedUsers(18, `${username}-166`),
     },
     {
       id: "165",
       content: "Logo concept for the new season",
       createdAt: "2025-10-19T21:57:47Z",
       media: { type: "image", src: imageFromSeed("E0F2FE") },
-      likes: 0,
       liked: false,
       author,
       comments: [],
+      likedUsers: createLikedUsers(6, `${username}-165`),
     },
     {
       id: "159",
       content: "Field update video",
       createdAt: "2025-10-12T16:05:32Z",
       media: { type: "video", src: sampleVideo },
-      likes: 1,
       liked: true,
       author,
       comments: [],
+      likedUsers: createLikedUsers(33, `${username}-159`),
     },
-  ];
+  ].map((post) => ({ ...post, likes: post.likedUsers.length }));
 
   const seedItems = [
     {
@@ -194,6 +205,8 @@ export default function ProfilePage() {
   const [currentUser, setCurrentUser] = useState(null);
   const [isFollowingProfile, setIsFollowingProfile] = useState(false);
 
+  const effectiveUsername = username ?? currentUser?.username ?? null;
+
   const viewerIdentity = useMemo(() => {
     if (currentUser) {
       const fallbackSeed = currentUser.username || currentUser.name || "viewer";
@@ -229,16 +242,50 @@ export default function ProfilePage() {
     setIsFollowingProfile((prev) => (prev === followerExists ? prev : followerExists));
   }, [followerExists, profile?.id]);
 
+  useEffect(() => {
+    if (username) {
+      return;
+    }
+
+    setProfile(null);
+    setPosts([]);
+    setSeedItems([]);
+    setRemainingSeeds([]);
+    setFollowers([]);
+    setFollowing([]);
+    setLoading(true);
+  }, [username]);
+
   const [composerOpen, setComposerOpen] = useState(false);
   const [composerMode, setComposerMode] = useState("text");
   const [allPostsOpen, setAllPostsOpen] = useState(false);
   const [followersOpen, setFollowersOpen] = useState(false);
   const [followingOpen, setFollowingOpen] = useState(false);
   const [activePostId, setActivePostId] = useState(null);
+  const [activePostMode, setActivePostMode] = useState("comments");
+
+  const closeActivePost = useCallback(() => {
+    setActivePostId(null);
+    setActivePostMode("comments");
+  }, []);
+
+  const openPostComments = useCallback((postId) => {
+    setActivePostMode("comments");
+    setActivePostId(postId);
+  }, []);
+
+  const openPostLikes = useCallback((postId) => {
+    setActivePostMode("likes");
+    setActivePostId(postId);
+  }, []);
 
   useEffect(() => {
+    if (!effectiveUsername) {
+      return;
+    }
+
     setLoading(true);
-    const mock = buildMockProfile(username);
+    const mock = buildMockProfile(effectiveUsername);
     setProfile(mock.profile);
     setPosts(mock.posts);
     const seeds = mock.seedItems ?? [];
@@ -247,7 +294,7 @@ export default function ProfilePage() {
     setFollowers(mock.followers);
     setFollowing(mock.following);
     setLoading(false);
-  }, [username]);
+  }, [effectiveUsername]);
 
   useEffect(() => {
     const loadCurrentUser = async () => {
@@ -266,10 +313,14 @@ export default function ProfilePage() {
 
   const currentUserId = resolveUserId(currentUser);
   const profileOwnerId = resolveUserId(profile);
+  const currentUsername = currentUser?.username ? String(currentUser.username).toLowerCase() : null;
+  const profileUsername = profile?.username ? String(profile.username).toLowerCase() : null;
   const isOwner = Boolean(
-    currentUserId &&
-    profileOwnerId &&
-    String(currentUserId).toLowerCase() === String(profileOwnerId).toLowerCase()
+    (currentUserId &&
+      profileOwnerId &&
+      String(currentUserId).toLowerCase() === String(profileOwnerId).toLowerCase()) ||
+    (currentUsername && profileUsername && currentUsername === profileUsername) ||
+    (!username && currentUserId)
   );
 
   const stats = useMemo(() => ({
@@ -358,15 +409,44 @@ export default function ProfilePage() {
 
   const toggleLike = (postId) => {
     setPosts((prev) =>
-      prev.map((post) =>
-        post.id === postId
-          ? {
-              ...post,
-              liked: !post.liked,
-              likes: post.liked ? Math.max(0, post.likes - 1) : post.likes + 1,
-            }
-          : post
-      )
+      prev.map((post) => {
+        if (post.id !== postId) return post;
+
+        const willLike = !post.liked;
+        const existingLikedUsers = Array.isArray(post.likedUsers) ? post.likedUsers : [];
+        let updatedLikedUsers = existingLikedUsers;
+
+        if (viewerIdentity && viewerIdKey) {
+          const hasViewer = existingLikedUsers.some((user) => {
+            const identifier = resolveUserId(user) ?? user?.username ?? user?.id;
+            if (identifier === undefined || identifier === null) return false;
+            return String(identifier).toLowerCase() === viewerIdKey;
+          });
+
+          if (willLike && !hasViewer) {
+            updatedLikedUsers = [...existingLikedUsers, viewerIdentity];
+          } else if (!willLike && hasViewer) {
+            updatedLikedUsers = existingLikedUsers.filter((user) => {
+              const identifier = resolveUserId(user) ?? user?.username ?? user?.id;
+              if (identifier === undefined || identifier === null) return true;
+              return String(identifier).toLowerCase() !== viewerIdKey;
+            });
+          }
+        }
+
+        const nextLikes = viewerIdKey
+          ? updatedLikedUsers.length
+          : willLike
+            ? (post.likes ?? 0) + 1
+            : Math.max(0, (post.likes ?? 0) - 1);
+
+        return {
+          ...post,
+          liked: willLike,
+          likes: nextLikes,
+          likedUsers: viewerIdKey ? updatedLikedUsers : existingLikedUsers,
+        };
+      })
     );
   };
 
@@ -419,10 +499,11 @@ export default function ProfilePage() {
 
   const deletePost = (postId) => {
     setPosts((prev) => prev.filter((post) => post.id !== postId));
-    if (activePostId === postId) setActivePostId(null);
-    toast.success("পোস্ট মুছে ফেলা হয়ছে");
+    if (activePostId === postId) {
+      closeActivePost();
+    }
+    toast.success("পোস্ট মুছে ফেলা হয়েছে");
   };
-
   const deleteSeed = (seedId) => {
     setSeedItems((prev) => prev.filter((seed) => seed.id !== seedId));
     setRemainingSeeds((prev) => prev.filter((seed) => seed.id !== seedId));
@@ -483,6 +564,7 @@ export default function ProfilePage() {
         stats={stats}
         isOwner={isOwner}
         isFollowing={isFollowingProfile}
+        showPrimaryAction={!isOwner}
         onPrimaryAction={handlePrimaryAction}
         onOpenAllPosts={() => setAllPostsOpen(true)}
         onOpenFollowers={() => setFollowersOpen(true)}
@@ -493,6 +575,7 @@ export default function ProfilePage() {
         <ProfileSidebar
           profile={profile}
           isOwner={isOwner}
+          compactSeedDisplay={!isOwner}
           seeds={seedItems}
           hasMoreSeeds={hasMoreSeeds}
           onDeleteSeed={deleteSeed}
@@ -504,15 +587,35 @@ export default function ProfilePage() {
         />
 
         <section className="post-feed">
+          {isOwner && (
+            <CreatePost
+              user={(profile.name || profile.username || "You").split(" ")[0]}
+              profile={profile.avatar}
+              onTextClick={() => {
+                setComposerMode("text");
+                setComposerOpen(true);
+              }}
+              onPhotoVideoClick={() => {
+                setComposerMode("media");
+                setComposerOpen(true);
+              }}
+              onFellingClick={() => {
+                setComposerMode("text");
+                setComposerOpen(true);
+              }}
+            />
+          )}
           {posts.map((post) => (
             <PostCard
               key={post.id}
               post={post}
               isOwner={isOwner}
               onLike={toggleLike}
-              onOpenComments={setActivePostId}
+              onOpenComments={openPostComments}
+              onOpenLikes={openPostLikes}
               onDelete={deletePost}
               onAddComment={addComment}
+              onOpenPost={openPostComments}
             />
           ))}
         </section>
@@ -523,7 +626,7 @@ export default function ProfilePage() {
         onClose={() => setAllPostsOpen(false)}
         posts={posts}
         onSelect={(post) => {
-          setActivePostId(post.id);
+          openPostComments(post.id);
           setAllPostsOpen(false);
         }}
       />
@@ -544,14 +647,15 @@ export default function ProfilePage() {
         users={following}
         onToggleFollow={toggleFollowUser}
         isFollowing={isUserInFollowing}
-        actionLabel={isOwner ? () => "তালিকা থেকে সরান" : undefined}
-        onAction={isOwner ? handleUnfollow : undefined}
+        actionLabel={undefined}
+        onAction={undefined}
       />
 
       <PostModal
         open={Boolean(activePost)}
         post={activePost}
-        onClose={() => setActivePostId(null)}
+        mode={activePostMode}
+        onClose={closeActivePost}
         onToggleLike={toggleLike}
         onAddComment={addComment}
         onDeleteComment={deleteComment}
@@ -563,7 +667,16 @@ export default function ProfilePage() {
         mode={composerMode}
         onClose={() => setComposerOpen(false)}
         onSubmit={submitComposer}
+        viewer={{
+          name: viewerIdentity?.name,
+          username: viewerIdentity?.username,
+          avatar: viewerIdentity?.avatar,
+        }}
       />
     </div>
   );
 }
+
+
+
+

@@ -46,6 +46,14 @@ export const changePassword = (data) => {
   });
 };
 
+export const verifyPassword = (data) => {
+  return request("/auth/verify-password", {
+    method: "POST",
+    body: JSON.stringify(data),
+    credentials: "include",
+  });
+};
+
 // Logout user
 export const logoutUser = () => {
   return request("/auth/logout", {

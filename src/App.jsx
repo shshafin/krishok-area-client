@@ -6,13 +6,11 @@ import Gallery from "@/features/gallery/pages/Gallery";
 import Auth from "@/features/auth/pages/Auth";
 import AdminLogin from "@/features/auth/components/AdminLogin";
 import TableViewPage from "@/features/guidelines/pages/TableViewPage";
-import DiscoverPage from "@/features/discover/page/DiscoverPage";
 import PrivateRoute from "./components/privateRoute/PrivateRoute";
 import PublicRoute from "./components/privateRoute/PublicRoute";
 import RoleBasedRoute from "./components/privateRoute/RoleBasedRoute";
 import SettingsPage from "@/features/settings/pages/SettingsPage";
 import ProfilePage from "@/features/profile/pages/Profile";
-import FollowPage from "@/features/follow/pages/Follow";
 
 import GalleryPost from "./features/gallery/pages/GalleryPost";
 import GuidlinesCard from "./features/gallery/pages/GuidlinesCard";
@@ -74,15 +72,6 @@ function App() {
           }
         />
 
-        <Route
-          path="/follow"
-          element={
-            <PrivateRoute>
-              <FollowPage />
-            </PrivateRoute>
-          }
-        />
-
         <Route path="/post/*" element={<GalleryPost />} />
 
         <Route path="/insects/*" element={<GuidlinesCard />} />
@@ -114,6 +103,15 @@ function App() {
           element={
             <PrivateRoute>
               <MarcketPricePage />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/me"
+          element={
+            <PrivateRoute>
+              <ProfilePage />
             </PrivateRoute>
           }
         />
@@ -159,15 +157,6 @@ function App() {
           element={
             <PrivateRoute>
               <BlogPage />
-            </PrivateRoute>
-          }
-        />
-
-        <Route
-          path="/discover"
-          element={
-            <PrivateRoute>
-              <DiscoverPage />
             </PrivateRoute>
           }
         />

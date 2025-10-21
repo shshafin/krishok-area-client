@@ -147,8 +147,8 @@ function Navigation() {
         )}
       </section>
 
-      <NavLink to="/discover">
-        <img src={followersIcon} alt="Followers" style={iconStyle} />
+      <NavLink to="/me">
+        <img src={followersIcon} alt="My profile" style={iconStyle} />
       </NavLink>
     </nav>
   );

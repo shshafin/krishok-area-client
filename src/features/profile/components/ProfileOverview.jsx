@@ -1,16 +1,19 @@
-﻿import PropTypes from "prop-types";
+import PropTypes from "prop-types";
+
+const COUNT_LABELS = {
+  posts: "টি পোস্ট",
+  followers: "জন অনুসারী",
+  following: "জনকে অনুসরণ করছেন",
+};
+
+const TEXT_EDIT_PROFILE = "প্রোফাইল সম্পাদনা";
+const TEXT_FOLLOW = "অনুসরণ করুন";
+const TEXT_FOLLOWING = "অনুসরণ করছেন";
 
 function formatCount(type, count) {
-  switch (type) {
-    case "posts":
-      return `${count} টি পোস্ট করেছেন`;
-    case "followers":
-      return `${count} জন ফলো করেছে`;
-    case "following":
-      return `${count} জনকে ফলো করেছেন`;
-    default:
-      return String(count);
-  }
+  const suffix = COUNT_LABELS[type];
+  if (!suffix) return String(count);
+  return `${count} ${suffix}`;
 }
 
 export default function ProfileOverview({
@@ -18,6 +21,7 @@ export default function ProfileOverview({
   stats,
   isOwner,
   isFollowing,
+  showPrimaryAction,
   onPrimaryAction,
   onOpenAllPosts,
   onOpenFollowers,
@@ -31,7 +35,11 @@ export default function ProfileOverview({
     .filter(Boolean)
     .join(" ");
 
-  const primaryButtonLabel = isOwner ? "প্রোফাইল সম্পাদনা" : isFollowing ? "আনফলো" : "ফলো";
+  const primaryButtonLabel = isOwner
+    ? TEXT_EDIT_PROFILE
+    : isFollowing
+    ? TEXT_FOLLOWING
+    : TEXT_FOLLOW;
 
   return (
     <section className="profile-overview">
@@ -60,14 +68,16 @@ export default function ProfileOverview({
           </button>
         </div>
 
-        <button
-          type="button"
-          className={primaryButtonClasses}
-          onClick={onPrimaryAction}
-          aria-pressed={isOwner ? undefined : isFollowing}
-        >
-          {primaryButtonLabel}
-        </button>
+        {showPrimaryAction && (
+          <button
+            type="button"
+            className={primaryButtonClasses}
+            onClick={onPrimaryAction}
+            aria-pressed={isOwner ? undefined : isFollowing}
+          >
+            {primaryButtonLabel}
+          </button>
+        )}
       </div>
     </section>
   );
@@ -87,6 +97,7 @@ ProfileOverview.propTypes = {
   }),
   isOwner: PropTypes.bool,
   isFollowing: PropTypes.bool,
+  showPrimaryAction: PropTypes.bool,
   onPrimaryAction: PropTypes.func,
   onOpenAllPosts: PropTypes.func,
   onOpenFollowers: PropTypes.func,
@@ -97,6 +108,7 @@ ProfileOverview.defaultProps = {
   stats: { posts: 0, followers: 0, following: 0 },
   isOwner: false,
   isFollowing: false,
+  showPrimaryAction: true,
   onPrimaryAction: undefined,
   onOpenAllPosts: undefined,
   onOpenFollowers: undefined,
