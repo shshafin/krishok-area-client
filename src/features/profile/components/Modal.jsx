@@ -10,6 +10,8 @@ export default function Modal({
   size = "md",
   children,
   className = "",
+  backdropZIndex,
+  backdropStyle,
 }) {
   useEffect(() => {
     if (!open) return undefined;
@@ -30,12 +32,18 @@ export default function Modal({
 
   if (!open) return null;
 
+  const combinedBackdropStyle = {
+    ...(backdropZIndex ? { zIndex: backdropZIndex } : {}),
+    ...(backdropStyle || {}),
+  };
+
   return (
     <div
       className="ka-modal-backdrop"
       role="dialog"
       aria-modal="true"
       onClick={onClose}
+      style={Object.keys(combinedBackdropStyle).length ? combinedBackdropStyle : undefined}
     >
       <div
         className={`ka-modal ka-modal-${size} ${className}`}

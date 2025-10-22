@@ -57,15 +57,15 @@ export default function Gallery() {
 
   return (
     <>
-      <div class="header-back">
-        <div class="mainback">
-          <div class="backlink">
+      <div className="header-back">
+        <div className="mainback">
+          <div className="backlink">
             <NavLink to="/guidelines">
               <span>⇦</span>
             </NavLink>
           </div>
-          <div class="crop-header">
-            <h4 class=""> {firstWord} </h4>
+          <div className="crop-header">
+            <h4 className=""> {firstWord} </h4>
           </div>
         </div>
 

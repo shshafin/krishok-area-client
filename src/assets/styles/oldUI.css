@@ -2488,7 +2488,7 @@
   width: 11%;
   height: 51px;
   background: #485057;
-  margin: auto;
+  margin: .5rem auto;
   border-radius: 50px;
   position: relative;
 }
@@ -2548,7 +2548,7 @@
 .add-img {
   width: 51px !important;
   height: 50px;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .icon-text {
@@ -8217,9 +8217,8 @@ h4 {
 .cbtn_minxi_imgsesalesx45x img {
   width: 90%;
   height: 190px;
-  /* border-radius: 50%; */
   margin: auto;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .cbtn_minxd_imagxds46 {

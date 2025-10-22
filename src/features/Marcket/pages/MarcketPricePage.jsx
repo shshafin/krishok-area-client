@@ -66,8 +66,8 @@ export default function MarcketPricePage() {
 
   return (
     <div className="daily_bxp45">
-      <div class="photo-body-box">
-        <h4 class="">প্রতিদিনের বাজার মূল্যের তালিকা দেখুন</h4>
+      <div className="photo-body-box">
+        <h4 className="">প্রতিদিনের বাজার মূল্যের তালিকা দেখুন</h4>
       </div>
 
       <div className="dxKXr_mboX74">

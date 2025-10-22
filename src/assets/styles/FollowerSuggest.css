@@ -19,7 +19,11 @@
         display: none;
     }
     .feed-area {
-        margin-top: 0.5rem;
+        margin-top: -1rem;
+        padding: 2rem .5rem;
+    }
+    .post-card {
+        padding: .4rem !important;
     }
 }
 

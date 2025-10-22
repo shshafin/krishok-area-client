@@ -140,4 +140,8 @@
     flex-direction: row;
     align-items: center;
   }
+  .h2 {
+    color: white;
+    margin: 0;
+  }
 }

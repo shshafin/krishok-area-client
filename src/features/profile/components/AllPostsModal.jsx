@@ -6,11 +6,11 @@ export default function AllPostsModal({ open, onClose, posts, onSelect }) {
     <Modal open={open} onClose={onClose} title="সবগুলো পোস্ট" size="lg">
       {posts?.length ? (
         <div className="all-posts-grid">
-          {posts.map((post) => (
+          {posts.map((post, idx) => (
             <button
               type="button"
               className="all-posts-item"
-              key={post.id}
+              key={`${post.id ?? 'p'}-${idx}`}
               onClick={() => onSelect?.(post)}
             >
               {post.media?.type === "video" ? (

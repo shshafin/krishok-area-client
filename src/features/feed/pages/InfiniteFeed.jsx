@@ -186,7 +186,18 @@ export default function InfiniteFeed() {
       }
 
       const mapped = nextChunk.map((item) => adaptFeedPost(item, currentUserId ?? null));
-      setPosts((prev) => [...prev, ...mapped]);
+      // merge while preserving existing order and avoiding duplicate ids
+      setPosts((prev) => {
+        const map = new Map();
+        // add previous posts first
+        prev.forEach((p) => map.set(String(p.id), p));
+        // add new posts only if id not already present
+        mapped.forEach((p) => {
+          const key = String(p.id);
+          if (!map.has(key)) map.set(key, p);
+        });
+        return Array.from(map.values());
+      });
       if (nextChunk.length < getChunkSize(page)) {
         setHasMore(false);
       }
@@ -205,6 +216,7 @@ export default function InfiniteFeed() {
   }, [loadPosts, hasMore]);
 
   useEffect(() => {
+    // trigger earlier when the loader is near viewport
     const observer = new IntersectionObserver(
       (entries) => {
         const first = entries[0];
@@ -212,7 +224,7 @@ export default function InfiniteFeed() {
           setPage((prev) => prev + 1);
         }
       },
-      { threshold: 1 }
+      { threshold: 0.1, rootMargin: "200px" }
     );
 
     const current = loaderRef.current;
@@ -416,6 +428,14 @@ export default function InfiniteFeed() {
     setDeletingCommentId(null);
   }, []);
 
+  const handleDeletePost = useCallback((postId) => {
+    setPosts((prev) => prev.filter((p) => !sameId(p.id, postId)));
+    if (sameId(activePostId, postId)) {
+      setActivePostId(null);
+    }
+    toast.success("পোস্ট মুছে ফেলা হয়েছে");
+  }, [activePostId]);
+
   const activePost = useMemo(
     () => posts.find((post) => sameId(post.id, activePostId)) ?? null,
     [posts, activePostId]
@@ -431,13 +451,14 @@ export default function InfiniteFeed() {
 
   return (
     <div className="feed">
-      {posts.map((post) => {
+  {posts.map((post) => {
         const isOwner = currentUserId ? sameId(post.author?.id, currentUserId) : false;
         return (
           <PostCard
             key={post.id}
             post={post}
             isOwner={isOwner}
+            onDelete={() => handleDeletePost(post.id)}
             onLike={() => handleToggleLike(post.id)}
             onOpenLikes={() => openLikesModal(post.id)}
             onOpenComments={() => openCommentsModal(post.id)}

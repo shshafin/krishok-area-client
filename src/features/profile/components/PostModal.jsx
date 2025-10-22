@@ -182,7 +182,14 @@ export default function PostModal({
 
   if (!post) {
     return (
-      <Modal open={open} onClose={onClose} size="md" className="post-modal">
+      <Modal
+        open={open}
+        onClose={onClose}
+        size="md"
+        className="post-modal post-modal--top"
+        backdropZIndex={2000}
+        backdropStyle={{ padding: 0, alignItems: 'flex-start' }}
+      >
         <div className="modal-loader-container">
           <LiquedLoader label={TEXT_LOADING} />
         </div>
@@ -219,7 +226,15 @@ export default function PostModal({
   const setLikesMode = () => setActiveMode("likes");
 
   return (
-    <Modal open={open} onClose={onClose} header={header} size="xl" className="post-modal">
+    <Modal
+      open={open}
+      onClose={onClose}
+      header={header}
+      size="xl"
+      className="post-modal post-modal--top"
+      backdropZIndex={2000}
+      backdropStyle={{ padding: 0, alignItems: 'flex-start' }}
+    >
       <div className="post-modal-content">
         <div className="post-modal-media">
           {post.media?.type === "video" ? (
@@ -256,27 +271,6 @@ export default function PostModal({
             </button>
             <button type="button" onClick={setCommentsMode}>
               {commentCountLabel}
-            </button>
-          </div>
-
-          <div className="post-modal-tabs" role="tablist">
-            <button
-              type="button"
-              role="tab"
-              aria-selected={!isLikesMode}
-              className={!isLikesMode ? "is-active" : ""}
-              onClick={setCommentsMode}
-            >
-              {TEXT_COMMENTS_LABEL}
-            </button>
-            <button
-              type="button"
-              role="tab"
-              aria-selected={isLikesMode}
-              className={isLikesMode ? "is-active" : ""}
-              onClick={setLikesMode}
-            >
-              {`${TEXT_LIKES_LABEL} (${post.likes ?? 0})`}
             </button>
           </div>
 
@@ -340,9 +334,13 @@ export default function PostModal({
                   );
                 })}
               </div>
-
-              <div className="comment-input-area">
+              
+            </>
+          )}
+        </div>
+        <div className="comment-input-area">
                 <textarea
+                  name="comment"
                   value={commentText}
                   onChange={(event) => setCommentText(event.target.value)}
                   placeholder={TEXT_COMMENT_PLACEHOLDER}
@@ -355,9 +353,6 @@ export default function PostModal({
                   {TEXT_SUBMIT_COMMENT}
                 </button>
               </div>
-            </>
-          )}
-        </div>
       </div>
     </Modal>
   );

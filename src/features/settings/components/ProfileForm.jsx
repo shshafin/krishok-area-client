@@ -114,6 +114,7 @@ export default function ProfileForm({
             </label>
             <div className="password-input-wrapper">
               <input
+                name="password"
                 className="input"
                 type={isPasswordVisible ? "text" : "password"}
                 placeholder="Enter your account password"

@@ -123,6 +123,7 @@ export default function PostCard({
 
       <div className="comment-form">
         <textarea
+          name="comment"
           value={commentText}
           onChange={(event) => setCommentText(event.target.value)}
           placeholder={TEXT_COMMENT_PLACEHOLDER}

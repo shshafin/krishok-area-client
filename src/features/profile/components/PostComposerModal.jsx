@@ -180,6 +180,7 @@ export default function PostComposerModal({
         )}
 
         <textarea
+          name="text"
           placeholder="Write something to share with everyone..."
           value={text}
           onChange={(event) => setText(event.target.value)}
@@ -191,6 +192,7 @@ export default function PostComposerModal({
             সমর্থিত ফরম্যাট: JPG, PNG, GIF, MP4, WEBM (সর্বোচ্চ {maxAttachments} ফাইল)
           </p>
           <input
+            name="attachments"
             type="file"
             ref={fileInputRef}
             accept={ACCEPTED_MEDIA}
