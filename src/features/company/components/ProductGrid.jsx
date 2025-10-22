@@ -7,7 +7,6 @@ const slugify = (s = "") =>
     .toString()
     .trim()
     .toLowerCase()
-    .normalize("NFKD")
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/[^a-z0-9\u0980-\u09FF\s-]/g, "") // keep basic Bangla range + spaces/dash
     .replace(/\s+/g, "-")
@@ -21,11 +20,18 @@ const categoryHeadingClass = {
   "আগাছানাশক": "agacxc_7x",
 };
 
-function CategorySection({ title }) {
+function CategorySection({ title, isExpanded, onToggle }) {
   const cls = categoryHeadingClass[title] || "";
   return (
-    <div className="Pctg_xh18">
-      <h4 className={cls}>{title}</h4>
+    <div className="product-section">
+      <div className="product-section__header" onClick={onToggle}>
+        <div className="product-section__title">{title}</div>
+        <div className={`product-section__icon ${isExpanded ? 'is-open' : ''}`}>
+          <svg className="product-section__icon-svg" viewBox="0 0 24 24">
+            <path d="M7 14l5-5 5 5z"/>
+          </svg>
+        </div>
+      </div>
     </div>
   );
 }
@@ -45,6 +51,9 @@ function CategorySection({ title }) {
  */
 
 export default function ProductGrid({ items = [], initialCount = 20, step = 10 }) {
+  // State for which categories are expanded
+  const [expandedCategories, setExpandedCategories] = useState(new Set());
+
   // Preferred category ordering for company pages
   const preferredOrder = ["কীটনাশক", "ছত্রাকনাশক", "আগাছানাশক", "অনুখাদ্য"];
 
@@ -71,6 +80,12 @@ export default function ProductGrid({ items = [], initialCount = 20, step = 10 }
     });
   }, [items]);
 
+  // Initialize all categories as expanded by default
+  useEffect(() => {
+    const allCategories = new Set(grouped.map(([cat]) => cat));
+    setExpandedCategories(allCategories);
+  }, [grouped]);
+
   // Flatten to a linear render list with category headers injected
   // We'll render categories as separate rows so alignment is predictable.
   const [visible, setVisible] = useState(initialCount);
@@ -93,44 +108,71 @@ export default function ProductGrid({ items = [], initialCount = 20, step = 10 }
     return () => obs.disconnect();
   }, [items.length, step]);
 
+  // Toggle category expansion
+  const toggleCategory = (category) => {
+    setExpandedCategories(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(category)) {
+        newSet.delete(category);
+      } else {
+        newSet.add(category);
+      }
+      return newSet;
+    });
+  };
+
   // Render: for each category, show header then a grid row of items
   return (
     <div className="product-align">
       {grouped.map(([cat, arr]) => {
-        const colorClass =
-          cat === "কীটনাশক" ? "colorboxk" :
-          cat === "ছত্রাকনাশক" ? "colorboxc" :
-          cat === "অনুখাদ্য" ? "colorboxo" :
-          cat === "আগাছানাশক" ? "colorboxa" : "";
+        const isExpanded = expandedCategories.has(cat);
 
         return (
           <div key={cat} className="category-block">
-            <CategorySection title={cat} />
-            <div className="category-row">
-              {arr.slice(0, Math.max(0, Math.min(arr.length, visible))).map(item => {
-                const { id, name, material, category, slug, img } = item;
-                const url = `/productdetails/${slug || slugify(name)}`;
-                return (
-                  <div className="si" key={`item-${id}`}>
-                    <NavLink to={url} className="co">
-                      {/* Image at top */}
-                      <div className="product-image">
-                        <img src={img || "https://placehold.co/300x400?text=No+Image"} alt={name} />
-                      </div>
-                      {/* Text content below */}
-                      <div className="cardBb">
-                        <h3 className="pronamesize">{name}</h3>
-                        <p className="new">{category}</p>
-                      </div>
-                    </NavLink>
-                  </div>
-                );
-              })}
-            </div>
+            <CategorySection
+              title={cat}
+              isExpanded={isExpanded}
+              onToggle={() => toggleCategory(cat)}
+            />
+            {isExpanded && (
+              <div className="category-row">
+                {arr.slice(0, Math.max(0, Math.min(arr.length, visible))).map(item => {
+                  const { id, name, material, category, slug, img } = item;
+                  const url = `/productdetails/${slug || slugify(name)}`;
+                  const categoryClass =
+                    cat === "কীটনাশক"
+                      ? "colorboxk"
+                      : cat === "ছত্রাকনাশক"
+                      ? "colorboxc"
+                      : cat === "আগাছানাশক"
+                      ? "colorboxw"
+                      : cat === "অনুখাদ্য"
+                      ? "colorboxf"
+                      : "";
+
+                  return (
+                    <div className="si" key={`item-${id}`}>
+                      <NavLink to={url} className="co product-card" title={name}>
+                        <div className="product-card__media">
+                          <img
+                            src={img || "https://placehold.co/320x220?text=Product"}
+                            alt={name}
+                            loading="lazy"
+                          />
+                        </div>
+                        <div className="product-card__body">
+                          <h3 className="pronamesize">{name}</h3>
+                          <p className={`product-card__category ${categoryClass}`}>{category}</p>
+                        </div>
+                      </NavLink>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
         );
       })}
-
       <div ref={sentinelRef} />
     </div>
   );

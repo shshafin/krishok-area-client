@@ -94,9 +94,17 @@ export default function CompanyName() {
     { id: 54, name: "টোপাজ 20 ইসি",      img: "https://e7.pngegg.com/pngimages/24/502/png-clipart-herbicide-insecticide-malathion-weed-control-others-pest-control-lawn-thumbnail.png" },
   ];
 
-  // merge image URLs from `items` into `products` by id
+  // merge image URLs from `items` into `products` by id and add slug
   const imgMap = new Map(items.map(it => [String(it.id), it.img]));
-  const merged = products.map(p => ({ ...p, img: imgMap.get(String(p.id)) }));
+  const merged = products.map(p => ({
+    ...p,
+    img: imgMap.get(String(p.id)),
+    slug: p.name.toString().trim().toLowerCase()
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9\u0980-\u09FF\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-")
+  }));
 
   return (<>
     <CompanyHeader />

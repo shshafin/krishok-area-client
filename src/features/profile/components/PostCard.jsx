@@ -45,6 +45,20 @@ export default function PostCard({
   };
 
   const media = post.media;
+  const mediaGallery = Array.isArray(post.mediaGallery)
+    ? post.mediaGallery.filter((item) => item && item.type === "image" && item.src)
+    : [];
+  const canShowGallery = media?.type !== "video";
+  const galleryImages = canShowGallery
+    ? mediaGallery.length
+      ? mediaGallery
+      : media?.type === "image"
+        ? [media]
+        : []
+    : [];
+  const totalGalleryImages = galleryImages.length;
+  const extraImageCount = totalGalleryImages > 4 ? totalGalleryImages - 4 : 0;
+  const visibleGallery = extraImageCount ? galleryImages.slice(0, 4) : galleryImages;
   const handleOpenPost = () => {
     onOpenPost?.(post.id);
   };
@@ -94,13 +108,33 @@ export default function PostCard({
 
       {post.content && <p className="post-content">{post.content}</p>}
 
-      {media?.src && (
+      {(media?.type === "video" && media?.src) && (
         <div className="post-media" {...mediaInteractableProps}>
-          {media.type === "video" ? (
-            <video src={media.src} controls muted loop style={mediaStyles} />
-          ) : (
-            <img src={media.src} alt={post.content || TEXT_MEDIA_ALT} style={mediaStyles} />
-          )}
+          <video src={media.src} controls muted loop style={mediaStyles} />
+        </div>
+      )}
+
+      {visibleGallery.length > 0 && (
+        <div
+          className={`post-media post-media--has-gallery`}
+          data-count={totalGalleryImages}
+          {...mediaInteractableProps}>
+          <div className={`post-media-grid count-${Math.min(visibleGallery.length, 4)}`}>
+            {visibleGallery.map((item, index) => {
+              const isOverflowItem = extraImageCount > 0 && index === visibleGallery.length - 1;
+              const key = item.src ?? `media-${index}`;
+              return (
+                <div
+                  key={key}
+                  className={`post-media-grid-item${isOverflowItem ? " post-media-grid-item--more" : ""}`}>
+                  <img src={item.src} alt={post.content || TEXT_MEDIA_ALT} />
+                  {isOverflowItem && (
+                    <span className="post-media-grid-more-label">+{extraImageCount}</span>
+                  )}
+                </div>
+              );
+            })}
+          </div>
         </div>
       )}
 
@@ -150,6 +184,12 @@ PostCard.propTypes = {
       type: PropTypes.oneOf(["image", "video"]),
       src: PropTypes.string,
     }),
+    mediaGallery: PropTypes.arrayOf(
+      PropTypes.shape({
+        type: PropTypes.oneOf(["image"]),
+        src: PropTypes.string,
+      })
+    ),
     likes: PropTypes.number,
     liked: PropTypes.bool,
     likedUsers: PropTypes.arrayOf(

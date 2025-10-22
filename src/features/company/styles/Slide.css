@@ -9,6 +9,7 @@
 .embla__container {
   display: flex; /* use flex, not grid, with embla */
   gap: 12px;
+  align-items: flex-start;
 }
 
 /* Slides – give them a fixed basis so they render even before image loads */
@@ -60,15 +61,15 @@
 
 @media (max-width: 768px) {
   .pro-back {
-    width: 3rem !important;
+    width: 2rem !important;
   }
 }
 
 .pro-back.right {
-  right: 3rem !important;
+  right: 2rem !important;
 }
 .pro-back.left {
-  left: 3rem !important;
+  left: 2rem !important;
 }
 
 .product-details-tabletitle {

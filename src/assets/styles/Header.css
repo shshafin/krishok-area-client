@@ -13,6 +13,8 @@ padding: .75rem 1.5rem;
     right: 0;
     left: 0;
     position: fixed;
+    border-left: none;
+    border-right: none;
 }
 
 .header .group img {
@@ -284,8 +286,13 @@ padding: .75rem 1.5rem;
 
 @media (max-width: 520px) {
     .notification-popover {
-        right: -12px;
+        top: 4rem;
+        left: 0%;
+        right: 0%;
+        width: 100% !important;
+        position: fixed;
         width: min(320px, 92vw);
+        border-radius: 0;
     }
 }
 

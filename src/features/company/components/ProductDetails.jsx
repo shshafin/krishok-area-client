@@ -19,25 +19,79 @@ export default function ProductDetails({
         "ফসলের বাড়ন্ত সময়ে জমিতে ক্ষুদ্রপোকা দেখা গেলে ১৫ দিন অন্তর অন্তর স্প্রে করতে হবে ।",
     },
   ],
-  
 }) {
-
-const items = [
-    { id: 2,  name: "একামাইট ১.৮ ই সি", img: "https://e7.pngegg.com/pngimages/184/503/png-clipart-insecticide-herbicide-pesticide-fungicide-others-acaricide-triticale.png" },
-    { id: 4,  name: "এসিবিন ২৮ এস সি", img: "https://e7.pngegg.com/pngimages/684/889/png-clipart-hexaconazole-fungicide-agriculture-insecticide-herbicide-choota-bheem-agriculture-solvent-in-chemical-reactions-thumbnail.png" },
-    { id: 6,  name: "ম্যাজিক ড্রপ",      img: "https://e7.pngegg.com/pngimages/451/698/png-clipart-herbicide-bayer-cropscience-fungicide-agriculture-product-kind-agriculture-agricultural-chemistry-thumbnail.png" },
-    { id: 7,  name: "টিডো প্লাস",        img: "https://e7.pngegg.com/pngimages/89/588/png-clipart-herbicide-paraquat-pesticide-insecticide-weed-shaktiman-24dichlorophenoxyacetic-acid-weed-thumbnail.png" },
-    { id: 9,  name: "ইকোসালফান ১০ ইসি",  img: "https://e7.pngegg.com/pngimages/513/231/png-clipart-fungicide-herbicide-agriculture-syngenta-bayer-product-kind-agriculture-product-kind-thumbnail.png" },
-    { id: 10, name: "লুমেকটিন 10 জি",     img: "https://e7.pngegg.com/pngimages/522/91/png-clipart-insecticide-the-karate-kid-pesticide-syngenta-snake-sticking-material-pest-control-agriculture-thumbnail.png" },
-    { id: 11, name: "এডমায়ার",           img: "https://e7.pngegg.com/pngimages/193/1002/png-clipart-insecticide-herbicide-bayer-crop-pflanzenschutzmittel-product-kind-crop-bayer-thumbnail.png" },
-    { id: 25, name: "বাহাদুর",           img: "http://e7.pngegg.com/pngimages/732/99/png-clipart-insecticide-herbicide-biological-pest-control-weed-fungicide-buxus-pest-control-organic-farming-thumbnail.png" },
-    { id: 26, name: "ইকোসালফান ১০ ইসি ইকোসালফান ১০ ইসি ইকোসালফান ১০ ইসি", img: "https://e7.pngegg.com/pngimages/205/355/png-clipart-herbicide-fungicide-bayer-product-cheminova-product-kind-organic-farming-azoxystrobin-thumbnail.png" },
-    { id: 27, name: "এসিমিক্স ৫৫ ই সি",  img: "https://e7.pngegg.com/pngimages/147/644/png-clipart-liquid-phosphite-anion-fertilisers-fungicide-solution-ornamentals-agriculture-business-thumbnail.png" },
-    { id: 28, name: "product name is come", img: "https://e7.pngegg.com/pngimages/928/509/png-clipart-insecticide-pesticide-aerosol-spray-wound-tenchu-pharmaceutical-drug-aerosol-spray-thumbnail.png" },
-    { id: 29, name: "কেমামিক্স ৭৫০ ডব্লিউ পি", img: "https://e7.pngegg.com/pngimages/309/400/png-clipart-liquid-laboratory-flasks-chemical-substance-water-bottles-laboratory-equipment-glass-laboratory-thumbnail.png" },
-    { id: 44, name: "এন্ট্রাকল",         img: "https://e7.pngegg.com/pngimages/99/595/png-clipart-herbicide-glyphosate-weed-sprayer-killer-price-pest-control-agriculture-thumbnail.png" },
-    { id: 54, name: "টোপাজ 20 ইসি",      img: "https://e7.pngegg.com/pngimages/24/502/png-clipart-herbicide-insecticide-malathion-weed-control-others-pest-control-lawn-thumbnail.png" },
-];
+  const items = [
+    {
+      id: 2,
+      name: "একামাইট ১.৮ ই সি",
+      img: "https://e7.pngegg.com/pngimages/184/503/png-clipart-insecticide-herbicide-pesticide-fungicide-others-acaricide-triticale.png",
+    },
+    {
+      id: 4,
+      name: "এসিবিন ২৮ এস সি",
+      img: "https://e7.pngegg.com/pngimages/684/889/png-clipart-hexaconazole-fungicide-agriculture-insecticide-herbicide-choota-bheem-agriculture-solvent-in-chemical-reactions-thumbnail.png",
+    },
+    {
+      id: 6,
+      name: "ম্যাজিক ড্রপ",
+      img: "https://e7.pngegg.com/pngimages/451/698/png-clipart-herbicide-bayer-cropscience-fungicide-agriculture-product-kind-agriculture-agricultural-chemistry-thumbnail.png",
+    },
+    {
+      id: 7,
+      name: "টিডো প্লাস",
+      img: "https://e7.pngegg.com/pngimages/89/588/png-clipart-herbicide-paraquat-pesticide-insecticide-weed-shaktiman-24dichlorophenoxyacetic-acid-weed-thumbnail.png",
+    },
+    {
+      id: 9,
+      name: "ইকোসালফান ১০ ইসি",
+      img: "https://e7.pngegg.com/pngimages/513/231/png-clipart-fungicide-herbicide-agriculture-syngenta-bayer-product-kind-agriculture-product-kind-thumbnail.png",
+    },
+    {
+      id: 10,
+      name: "লুমেকটিন 10 জি",
+      img: "https://e7.pngegg.com/pngimages/522/91/png-clipart-insecticide-the-karate-kid-pesticide-syngenta-snake-sticking-material-pest-control-agriculture-thumbnail.png",
+    },
+    {
+      id: 11,
+      name: "এডমায়ার",
+      img: "https://e7.pngegg.com/pngimages/193/1002/png-clipart-insecticide-herbicide-bayer-crop-pflanzenschutzmittel-product-kind-crop-bayer-thumbnail.png",
+    },
+    {
+      id: 25,
+      name: "বাহাদুর",
+      img: "http://e7.pngegg.com/pngimages/732/99/png-clipart-insecticide-herbicide-biological-pest-control-weed-fungicide-buxus-pest-control-organic-farming-thumbnail.png",
+    },
+    {
+      id: 26,
+      name: "ইকোসালফান ১০ ইসি ইকোসালফান ১০ ইসি ইকোসালফান ১০ ইসি",
+      img: "https://e7.pngegg.com/pngimages/205/355/png-clipart-herbicide-fungicide-bayer-product-cheminova-product-kind-organic-farming-azoxystrobin-thumbnail.png",
+    },
+    {
+      id: 27,
+      name: "এসিমিক্স ৫৫ ই সি",
+      img: "https://e7.pngegg.com/pngimages/147/644/png-clipart-liquid-phosphite-anion-fertilisers-fungicide-solution-ornamentals-agriculture-business-thumbnail.png",
+    },
+    {
+      id: 28,
+      name: "product name is come",
+      img: "https://e7.pngegg.com/pngimages/928/509/png-clipart-insecticide-pesticide-aerosol-spray-wound-tenchu-pharmaceutical-drug-aerosol-spray-thumbnail.png",
+    },
+    {
+      id: 29,
+      name: "কেমামিক্স ৭৫০ ডব্লিউ পি",
+      img: "https://e7.pngegg.com/pngimages/309/400/png-clipart-liquid-laboratory-flasks-chemical-substance-water-bottles-laboratory-equipment-glass-laboratory-thumbnail.png",
+    },
+    {
+      id: 44,
+      name: "এন্ট্রাকল",
+      img: "https://e7.pngegg.com/pngimages/99/595/png-clipart-herbicide-glyphosate-weed-sprayer-killer-price-pest-control-agriculture-thumbnail.png",
+    },
+    {
+      id: 54,
+      name: "টোপাজ 20 ইসি",
+      img: "https://e7.pngegg.com/pngimages/24/502/png-clipart-herbicide-insecticide-malathion-weed-control-others-pest-control-lawn-thumbnail.png",
+    },
+  ];
 
   return (
     <div style={{ marginTop: "5rem" }}>
@@ -76,34 +130,31 @@ const items = [
         <div className="product-details-tabletitle">
           <h2>প্রয়োগ ক্ষেত্র ও মাত্রা</h2>
 
-          <table className="product-details-table">
-            <thead>
-              <tr>
-                <th scope="col">ফসল</th>
-                <th scope="col">বালাই</th>
-                <th scope="col">মাত্রা</th>
-                <th scope="col">ব্যবহারবিধি</th>
-              </tr>
-            </thead>
-            <tbody>
-              {tableData.map((item, i) => (
-                <tr key={i}>
-                  <td>
+          {/* Cards Grid replacing the old table */}
+          <div className="product-details-cardgrid">
+            {tableData.map((item, i) => (
+              <article key={i} className="product-details-card">
+                <div className="product-details-singlecardgrid">
+                  <div className="product-details-singlecard">
+                    <span className="product-details-cardlabel">ফসল</span>
                     <p>{item.crop}</p>
-                  </td>
-                  <td>
+                  </div>
+                  <div className="product-details-singlecard">
+                    <span className="product-details-cardlabel">বালাই</span>
                     <p>{item.pest}</p>
-                  </td>
-                  <td>
+                  </div>
+                  <div className="product-details-singlecard">
+                    <span className="product-details-cardlabel">মাত্রা</span>
                     <p>{item.dose}</p>
-                  </td>
-                  <td>
+                  </div>
+                  <div className="product-details-singlecard">
+                    <span className="product-details-cardlabel">ব্যবহারবিধি</span>
                     <p>{item.method}</p>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -112,7 +163,7 @@ const items = [
         companySlug="aci-crop-care-101"
       />
 
-    <SlideGallery items={items} />
+      <SlideGallery items={items} />
     </div>
   );
 }

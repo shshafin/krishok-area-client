@@ -6,6 +6,8 @@ import { format } from "timeago.js";
 import DeleteOutlineIcon from "@/assets/IconComponents/DeleteOutlineIcon";
 import { LiquedLoader } from "@/components/loaders";
 import Modal from "./Modal";
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
 
 const LIKES_CHUNK = 12;
 
@@ -60,12 +62,49 @@ export default function PostModal({
   const likesScrollRef = useRef(null);
   const likesThrottleRef = useRef(false);
   const likesTimerRef = useRef(null);
+  const autoplayPlugin = useMemo(
+    () => Autoplay({
+      delay: 4000,
+      playOnInit: true,
+      stopOnInteraction: false,
+      stopOnMouseEnter: true,
+    }),
+    []
+  );
 
   const likedUsers = useMemo(
     () => (Array.isArray(post?.likedUsers) ? post.likedUsers : []),
     [post]
   );
   const isLikesMode = activeMode === "likes";
+
+  const media = post?.media ?? null;
+  const galleryImages = useMemo(() => {
+    if (!post) {
+      return [];
+    }
+    const rawGallery = Array.isArray(post.mediaGallery)
+      ? post.mediaGallery.filter((item) => item && item.type === "image" && item.src)
+      : [];
+    if (rawGallery.length > 0) {
+      return rawGallery;
+    }
+    if (media?.type === "image" && media?.src) {
+      return [{ type: "image", src: media.src }];
+    }
+    return [];
+  }, [post, media]);
+  const useCarousel = galleryImages.length > 1;
+  const hasGallery = galleryImages.length > 0;
+  const hasVideo = media?.type === "video" && media?.src;
+
+  const [emblaRef] = useEmblaCarousel(
+    {
+      align: "start",
+      loop: useCarousel,
+    },
+    useCarousel ? [autoplayPlugin] : []
+  );
 
   useEffect(() => {
     if (!open) return;
@@ -236,12 +275,29 @@ export default function PostModal({
       backdropStyle={{ padding: 0, alignItems: 'flex-start' }}
     >
       <div className="post-modal-content">
-        <div className="post-modal-media">
-          {post.media?.type === "video" ? (
-            <video src={post.media.src} controls muted loop />
-          ) : (
-            <img src={post.media?.src} alt={post.content || TEXT_MEDIA_ALT} />
-          )}
+        <div className={`post-modal-media${useCarousel ? " post-modal-media--carousel" : ""}`}>
+          {hasVideo ? (
+            <video src={media.src} controls muted loop />
+          ) : hasGallery ? (
+            useCarousel ? (
+              <div className="post-modal-carousel">
+                <div className="post-modal-carousel__viewport" ref={emblaRef}>
+                  <div className="post-modal-carousel__container">
+                    {galleryImages.map((item, index) => {
+                      const key = item.src ?? `slide-${index}`;
+                      return (
+                        <div className="post-modal-carousel__slide" key={key}>
+                          <img src={item.src} alt={post.content || TEXT_MEDIA_ALT} />
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <img src={galleryImages[0]?.src} alt={post.content || TEXT_MEDIA_ALT} />
+            )
+          ) : null}
         </div>
 
         <div className="post-modal-comments">
@@ -334,25 +390,25 @@ export default function PostModal({
                   );
                 })}
               </div>
-              
             </>
           )}
         </div>
+
         <div className="comment-input-area">
-                <textarea
-                  name="comment"
-                  value={commentText}
-                  onChange={(event) => setCommentText(event.target.value)}
-                  placeholder={TEXT_COMMENT_PLACEHOLDER}
-                />
-                <button
-                  type="button"
-                  onClick={handleSubmitComment}
-                  disabled={!commentText.trim()}
-                >
-                  {TEXT_SUBMIT_COMMENT}
-                </button>
-              </div>
+          <textarea
+            name="comment"
+            value={commentText}
+            onChange={(event) => setCommentText(event.target.value)}
+            placeholder={TEXT_COMMENT_PLACEHOLDER}
+          />
+          <button
+            type="button"
+            onClick={handleSubmitComment}
+            disabled={!commentText.trim()}
+          >
+            {TEXT_SUBMIT_COMMENT}
+          </button>
+        </div>
       </div>
     </Modal>
   );
@@ -376,6 +432,12 @@ PostModal.propTypes = {
         name: PropTypes.string,
         username: PropTypes.string,
         avatar: PropTypes.string,
+      })
+    ),
+    mediaGallery: PropTypes.arrayOf(
+      PropTypes.shape({
+        type: PropTypes.oneOf(["image"]),
+        src: PropTypes.string,
       })
     ),
     comments: PropTypes.arrayOf(

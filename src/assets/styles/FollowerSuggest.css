@@ -20,10 +20,30 @@
     }
     .feed-area {
         margin-top: -1rem;
-        padding: 2rem .5rem;
+        padding: 2rem 0rem;
     }
     .post-card {
-        padding: .4rem !important;
+        width: 100%;
+        border-radius: 0 !important;
+        border-left: none !important;
+        border-right: none !important;
+    }
+    .limit-width {
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        max-width: 100%;
+        min-width: 100%;
+    }
+    .feed {
+        width: 100% !important;
+        min-width: 100%;
+        gap: .3rem;
+    }
+    .createPost {
+        border-radius: 0 !important;
+        border-left: none !important;
+        border-right: none !important;
     }
 }
 
