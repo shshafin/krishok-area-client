@@ -47,29 +47,25 @@ export default function Pesticide({ items = [] }) {
         <h1 className={styles.heroTitle}>
           বাংলাদেশের কীটনাশক আমদানী, বাজারজাতকারী ও পরিবেশক কোম্পানীর তালিকাসমূহ
         </h1>
-        <p className={styles.heroSub}>
-          কৃষি কীটনাশক পণ্য এবং কোম্পানির বিস্তারিত তথ্য
-        </p>
-      </section>
 
-      {/* Search */}
-      <section className={styles.controls}>
-        <div className={styles.searchWrap}>
-          <SearchIcon className={styles.searchIcon} />
-          <input
-            ref={inputRef}
-            type="text"
-            value={query}
-            onChange={onSearch}
-            placeholder="খুঁজুন...  (Press ⌘/Ctrl + K)"
-            className={styles.searchInput}
-          />
+        {/* Replace hero subtext with the search control */}
+        <div className={styles.heroSearch}>
+          <div className={styles.searchWrap}>
+            <SearchIcon className={styles.searchIcon} />
+            <input
+              ref={inputRef}
+              type="text"
+              value={query}
+              onChange={onSearch}
+              placeholder="খুঁজুন...  (Press ⌘/Ctrl + K)"
+              className={styles.searchInput}
+            />
+          </div>
         </div>
       </section>
 
       {/* List */}
       <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>কোম্পানি সমূহ</h2>
         <PesticideList items={filtered} />
       </section>
     </div>

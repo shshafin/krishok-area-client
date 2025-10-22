@@ -32,7 +32,7 @@ export default function ProfileCard({
                   : `${baseApi}${coverImage}`
                 : "/default-cover.png"
             }
-            alt="Cover"
+            alt="কভার"
             className="cover-photo"
           />
 

@@ -71,7 +71,7 @@ export default function ProfileSidebar({
               description="পছন্দের বীজগুলো এখানে দেখুন"
               allowDelete={isOwner} // show delete button only for owner
               showMeta={false} // hide title/credit, only image
-              linkBase="/post" // make each card a NavLink to /post/:id
+              openSeedModalOnClick={true}
               onDelete={isOwner ? onDeleteSeed : undefined}
               loadMore={onLoadMoreSeeds}
               hasMore={hasMoreSeeds}

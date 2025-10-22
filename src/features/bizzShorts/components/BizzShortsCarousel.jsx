@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import useEmblaCarousel from "embla-carousel-react";
 import { NavLink } from "react-router-dom";
+import SeedModal from "./SeedModal";
 
 import "@/features/bizzShorts/styles/BizzShorts.css";
 import { dummyShorts } from "../data/dummyShorts";
@@ -14,6 +15,7 @@ export default function BizzShortsCarousel({
   allowDelete = true,
   showMeta = true,
   linkBase, // when provided, each card becomes a NavLink to `${linkBase}/${id}`
+  openSeedModalOnClick = false,
   onDelete,
   loadMore,
   hasMore = false,
@@ -30,6 +32,8 @@ export default function BizzShortsCarousel({
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(false);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [seedModalOpen, setSeedModalOpen] = useState(false);
+  const [selectedShort, setSelectedShort] = useState(null);
 
   const usingControlledItems = Array.isArray(items);
 
@@ -179,131 +183,63 @@ export default function BizzShortsCarousel({
         <div className="bizz-shorts__container">
           {displayedShorts.map((short) => (
             <article key={short.id} className="bizz-shorts__slide">
-              {linkBase ? (
-                <NavLink to={`${linkBase}/${short.id}`} className="bizz-shorts__card-link">
-                  <div className="bizz-shorts__card">
-                    <img
-                      src={short.mediaUrl}
-                      alt={short.title}
-                      loading="lazy"
-                      className="bizz-shorts__image"
-                    />
-                    {showMeta && (
-                      <div className="bizz-shorts__meta">
-                        <span className="bizz-shorts__title">{short.title}</span>
-                        <span className="bizz-shorts__credit">{short.photographer}</span>
-                      </div>
-                    )}
-                    {allowDelete && (
-                      <button
-                        type="button"
-                        className="bizz-shorts__delete"
-                        onClick={() => handleDelete(short.id)}
-                        aria-label={`Remove ${short.title}`}>
-                        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
-                          <polyline
-                            points="3 6 5 6 21 6"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <path
-                            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <line
-                            x1="10"
-                            y1="11"
-                            x2="10"
-                            y2="17"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                          />
-                          <line
-                            x1="14"
-                            y1="11"
-                            x2="14"
-                            y2="17"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                          />
-                        </svg>
-                      </button>
-                    )}
+              <div
+                className="bizz-shorts__card"
+                role="button"
+                tabIndex={0}
+                onClick={() => {
+                  if (openSeedModalOnClick) {
+                    setSelectedShort(short);
+                    setSeedModalOpen(true);
+                    return;
+                  }
+                  if (linkBase) {
+                    // allow NavLink navigation by programmatic push
+                    window.location.href = `${linkBase}/${short.id}`;
+                  }
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    if (openSeedModalOnClick) {
+                      setSelectedShort(short);
+                      setSeedModalOpen(true);
+                    } else if (linkBase) {
+                      window.location.href = `${linkBase}/${short.id}`;
+                    }
+                  }
+                }}
+              >
+                <img src={short.mediaUrl} alt={short.title} loading="lazy" className="bizz-shorts__image" />
+                {showMeta && (
+                  <div className="bizz-shorts__meta">
+                    <span className="bizz-shorts__title">{short.title}</span>
+                    <span className="bizz-shorts__credit">{short.photographer}</span>
                   </div>
-                </NavLink>
-              ) : (
-                <div className="bizz-shorts__card">
-                  <img
-                    src={short.mediaUrl}
-                    alt={short.title}
-                    loading="lazy"
-                    className="bizz-shorts__image"
-                  />
-                  {showMeta && (
-                    <div className="bizz-shorts__meta">
-                      <span className="bizz-shorts__title">{short.title}</span>
-                      <span className="bizz-shorts__credit">{short.photographer}</span>
-                    </div>
-                  )}
-                  {allowDelete && (
-                    <button
-                      type="button"
-                      className="bizz-shorts__delete"
-                      onClick={() => handleDelete(short.id)}
-                      aria-label={`Remove ${short.title}`}>
-                      <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
-                        <polyline
-                          points="3 6 5 6 21 6"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <line
-                          x1="10"
-                          y1="11"
-                          x2="10"
-                          y2="17"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                        />
-                        <line
-                          x1="14"
-                          y1="11"
-                          x2="14"
-                          y2="17"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                        />
-                      </svg>
-                    </button>
-                  )}
-                </div>
-              )}
+                )}
+                {allowDelete && (
+                  <button
+                    type="button"
+                    className="bizz-shorts__delete"
+                    onClick={(ev) => {
+                      ev.stopPropagation();
+                      handleDelete(short.id);
+                    }}
+                    aria-label={`Remove ${short.title}`}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+                      <polyline points="3 6 5 6 21 6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      <line x1="10" y1="11" x2="10" y2="17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                      <line x1="14" y1="11" x2="14" y2="17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                    </svg>
+                  </button>
+                )}
+              </div>
             </article>
           ))}
         </div>
       </div>
+      <SeedModal open={seedModalOpen} short={selectedShort} onClose={() => setSeedModalOpen(false)} />
       {isLoadingMore && (
         <div className="bizz-shorts__loading" aria-live="polite">
           আরও বীজ লোড হচ্ছে...
@@ -348,4 +284,5 @@ BizzShortsCarousel.defaultProps = {
   loadMoreOffset: 2,
   className: "",
   linkBase: undefined,
+  openSeedModalOnClick: false,
 };

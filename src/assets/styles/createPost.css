@@ -1,7 +1,7 @@
 .createPost {
   width: 100%;
   display: flex;
-  background: var(--layout);
+  background: rgba(15, 23, 42, 0.9);
   border-radius: calc(var(--radius) + 2px);
   border: 1px solid #374151;
   padding: 1rem;
@@ -46,7 +46,7 @@
   background: var(--lighterGray);
   border-radius: 25px;
   color: var(--gray);
-  font-size: 1.125rem;
+  font-size: 1rem;
   cursor: pointer;
 }
 

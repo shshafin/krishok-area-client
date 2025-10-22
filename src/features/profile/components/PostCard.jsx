@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import PropTypes from "prop-types";
 import { format } from "timeago.js";
@@ -31,6 +32,10 @@ export default function PostCard({
   onOpenPost,
 }) {
   const [commentText, setCommentText] = useState("");
+  const location = useLocation();
+
+  // Show delete button only when on the user's profile page (/me)
+  const showDeleteButton = Boolean(isOwner && location?.pathname?.startsWith("/me"));
 
   const submitComment = () => {
     const value = commentText.trim();
@@ -75,7 +80,7 @@ export default function PostCard({
             <span>{format(post.createdAt)}</span>
           </div>
         </NavLink>
-        {isOwner && (
+        {showDeleteButton && (
           <button
             type="button"
             className="post-delete-btn"

@@ -45,7 +45,7 @@ function Follower({
         </div>
       </section>
       <button onClick={handleFollowClick}>
-        {isFollowing ? "Following" : "Follow"}
+        {isFollowing ? "আনফলো" : "ফলো"}
       </button>
     </NavLink>
   );

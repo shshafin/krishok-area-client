@@ -20,18 +20,18 @@ function Profile({ data, changeProfile }) {
         <div className="largeProfile">
           <img
             src={profile}
-            alt={`${username || "user"}'s profile`}
+            alt={`${username || "ব্যবহারকারী"}'র প্রোফাইল ছবি`}
           />
         </div>
         <button className="changeProfile"
-          aria-label="Change Profile Picture"
+          aria-label="প্রোফাইল ছবি পরিবর্তন করুন"
           onClick={changeProfile}
         >
           <CameraIcon />
         </button>
       </section>
 
-      {/* User Details */}
+        {/* User Details */}
       <section className="user-details">
         <section className="main flex FD-c">
           <span className="name">{name}</span>
@@ -43,11 +43,11 @@ function Profile({ data, changeProfile }) {
         <section className="status-container flex FY-center">
           <section className="followers flex FD-c F-center">
             <div className="count">{followers}</div>
-            <div className="text">Followers</div>
+            <div className="text">অনুসারী</div>
           </section>
           <section className="followers flex FD-c F-center">
             <div className="count">{following}</div>
-            <div className="text">Following</div>
+            <div className="text">অনুসরণ করছেন</div>
           </section>
           <section className="followers flex FD-c F-center">
             <div className={`status ${status ? "green" : "gray"}`}>●</div>

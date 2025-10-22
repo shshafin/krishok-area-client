@@ -29,26 +29,24 @@ export default function ProfileForm({
     address = "",
   } = safeValues;
 
-  const passwordToggleLabel = isPasswordVisible ? "Hide password" : "Show password";
+  const passwordToggleLabel = isPasswordVisible ? "পাসওয়ার্ড লুকান" : "পাসওয়ার্ড দেখুন";
 
   return (
     <section className="card">
       <div className="section-title">
-        <UserIcon /> Profile Information
+        <UserIcon /> প্রোফাইল তথ্য
       </div>
 
-      <form
-        className="form-section"
-        onSubmit={onSubmit}>
+      <form className="form-section" onSubmit={onSubmit}>
         <div className="form-stack">
           <div className="form-row">
             <label className="label">
-              <UserIcon /> Full Name
+              <UserIcon /> পুরো নাম
             </label>
             <input
               className="input"
               name="name"
-              placeholder="Enter your full name"
+              placeholder="আপনার পুরো নাম লিখুন"
               value={name}
               onChange={onChange}
             />
@@ -56,13 +54,13 @@ export default function ProfileForm({
 
           <div className="form-row">
             <label className="label">
-              <UserIcon /> Username
+              <UserIcon /> ইউজারনেম
             </label>
             <input
               className="input"
               name="username"
               required
-              placeholder="Enter a username"
+              placeholder="একটি ইউজারনেম লিখুন"
               value={username}
               onChange={onChange}
             />
@@ -70,13 +68,13 @@ export default function ProfileForm({
 
           <div className="form-row">
             <label className="label">
-              <GlobeIcon /> Bio
+              <GlobeIcon /> পরিচিতি
             </label>
             <textarea
               className="textarea"
               name="bio"
               rows={4}
-              placeholder="Tell us about yourself..."
+              placeholder="নিজের সম্পর্কে কিছু লিখুন..."
               value={bio}
               onChange={onChange}
             />
@@ -84,12 +82,13 @@ export default function ProfileForm({
 
           <div className="form-row">
             <label className="label">
-              <PhoneIcon /> Phone Number
+              <PhoneIcon /> ফোন নম্বর
             </label>
             <input
               className="input"
               name="phone"
-              placeholder="+880 1234 567890"
+              type="tel"
+              placeholder="আপনার ফোন নম্বর লিখুন"
               value={phone}
               onChange={onChange}
             />
@@ -97,12 +96,12 @@ export default function ProfileForm({
 
           <div className="form-row">
             <label className="label">
-              <MapPinIcon /> Address/Location
+              <MapPinIcon /> ঠিকানা
             </label>
             <input
               className="input"
               name="address"
-              placeholder="Enter your address or location"
+              placeholder="আপনার ঠিকানা লিখুন"
               value={address}
               onChange={onChange}
             />
@@ -110,39 +109,36 @@ export default function ProfileForm({
 
           <div className="form-row">
             <label className="label">
-              <LockIcon /> Password Confirmation
+              <LockIcon /> পাসওয়ার্ড
             </label>
             <div className="password-input-wrapper">
               <input
-                name="password"
                 className="input"
                 type={isPasswordVisible ? "text" : "password"}
-                placeholder="Enter your account password"
+                name="password"
+                placeholder="পরিবর্তন সংরক্ষণের জন্য পাসওয়ার্ড লিখুন"
                 value={passwordValue}
                 onChange={onPasswordChange}
-                autoComplete="current-password"
+                required
               />
               <button
                 type="button"
                 className="password-toggle"
                 onClick={onTogglePasswordVisibility}
                 aria-label={passwordToggleLabel}>
-                {isPasswordVisible ? <EyeOffIcon width={22} height={22} /> : <EyeIcon width={22} height={22} />}
+                {isPasswordVisible ? <EyeOffIcon /> : <EyeIcon />}
               </button>
             </div>
-            <p className="field-help">
-              Enter your current password to confirm changes.
-            </p>
           </div>
 
-          <div className="form-footer">
-            <button
-              className="btn btn-primary"
-              type="submit"
-              disabled={isSubmitting}>
-              <SaveIcon /> {isSubmitting ? "Saving..." : "Save Changes"}
-            </button>
-          </div>
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="btn btn-primary"
+            style={{ marginTop: "1rem" }}>
+            <SaveIcon />
+            পরিবর্তন সংরক্ষণ করুন
+          </button>
         </div>
       </form>
     </section>

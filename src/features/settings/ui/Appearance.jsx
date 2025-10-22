@@ -6,11 +6,11 @@ function Appearance(){
             </div>
 
             <section className="details">
-                <div className="name">Theme</div>
-                <div className="gray">{mode} mode is active</div>
+                <div className="name">থিম</div>
+                <div className="gray">{mode === 'dark' ? 'ডার্ক' : 'লাইট'} মোড সক্রিয়</div>
             </section>
 
-            <button className="changeMode">Switch to Dark or Light</button>
+            <button className="changeMode">ডার্ক/লাইট মোডে পরিবর্তন করুন</button>
         </section>
         </>)
 }

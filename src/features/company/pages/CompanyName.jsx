@@ -94,10 +94,13 @@ export default function CompanyName() {
     { id: 54, name: "টোপাজ 20 ইসি",      img: "https://e7.pngegg.com/pngimages/24/502/png-clipart-herbicide-insecticide-malathion-weed-control-others-pest-control-lawn-thumbnail.png" },
   ];
 
+  // merge image URLs from `items` into `products` by id
+  const imgMap = new Map(items.map(it => [String(it.id), it.img]));
+  const merged = products.map(p => ({ ...p, img: imgMap.get(String(p.id)) }));
+
   return (<>
-    
     <CompanyHeader />
-    <ProductGrid items={products} initialCount={20} step={10} />
+    <ProductGrid items={merged} initialCount={20} step={10} />
 
      <SlideGallery items={items} />
   </>);

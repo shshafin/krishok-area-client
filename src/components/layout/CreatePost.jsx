@@ -40,7 +40,7 @@ function CreatePost({
         <div
           className="textPost"
           onClick={onTextClick}>
-          <span>{`What's on your mind, ${user}?`}</span>
+          <span>{`তোমার মনে কি আছে, ${user}?`}</span>
         </div>
       </section>
 

@@ -59,7 +59,7 @@ export default function SideMenu({
         },
         { to: "/market", label: "বাজার দর", Icon: MarcketIcon },
         { to: "/seed-market", label: "বিজ বাজার", Icon: SeedIcon },
-        { to: "/me", label: "My Profile", Icon: UserPlusIcon },
+        { to: "/follow", label: "নতুন ব্যবহারকারী", Icon: UserPlusIcon },
         { to: "/logout", label: "লগ আউট", Icon: LogOutIcon },
       ],
     [itemsProp]

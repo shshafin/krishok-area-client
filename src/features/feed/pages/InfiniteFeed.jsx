@@ -70,26 +70,61 @@ const adaptFeedPost = (rawPost, viewerId) => {
   const postId = resolveId(rawPost) ?? rawPost?._id ?? rawPost?.id ?? `post-${Date.now()}`;
   const author = adaptUser(rawPost?.user ?? rawPost?.author ?? {}, TEXT_UNKNOWN_AUTHOR);
 
-  const videos = Array.isArray(rawPost?.videos) ? rawPost.videos : [];
-  const images = Array.isArray(rawPost?.images) ? rawPost.images : [];
-  const firstVideo = [
-    ...videos,
+  const coerceMediaSrc = (candidate) => {
+    if (!candidate) return null;
+    if (typeof candidate === "string") return candidate;
+    if (typeof candidate === "object") {
+      if (typeof candidate.url === "string") return candidate.url;
+      if (typeof candidate.src === "string") return candidate.src;
+      if (typeof candidate.path === "string") return candidate.path;
+    }
+    return null;
+  };
+
+  const videoCandidates = [
+    ...(Array.isArray(rawPost?.videos) ? rawPost.videos : []),
     rawPost?.video,
     rawPost?.media?.video,
-  ].find((item) => typeof item === "string" && item.trim().length > 0) ?? null;
-  const firstImage = [
-    ...images,
+  ];
+  const firstVideoCandidate =
+    videoCandidates
+      .map(coerceMediaSrc)
+      .find((item) => typeof item === "string" && item.trim().length > 0) ?? null;
+
+  const imageCandidates = [
+    ...(Array.isArray(rawPost?.images) ? rawPost.images : []),
     rawPost?.image,
     rawPost?.mediaUrl,
     rawPost?.media,
     rawPost?.coverPhoto,
-  ].find((item) => typeof item === "string" && item.trim().length > 0) ?? null;
+    ...(Array.isArray(rawPost?.media?.images) ? rawPost.media.images : []),
+    ...(Array.isArray(rawPost?.mediaFiles) ? rawPost.mediaFiles : []),
+  ];
+
+  const imageSources = imageCandidates
+    .map(coerceMediaSrc)
+    .filter((value) => typeof value === "string" && value.trim().length > 0);
+
+  const uniqueImages = [];
+  for (const src of imageSources) {
+    const absolute = ensureAbsoluteUrl(src);
+    if (!absolute) continue;
+    if (!uniqueImages.includes(absolute)) {
+      uniqueImages.push(absolute);
+    }
+  }
+
+  const mediaGallery = uniqueImages.slice(0, 7).map((src) => ({ type: "image", src }));
 
   let media = null;
-  if (firstVideo) {
-    media = { type: "video", src: ensureAbsoluteUrl(firstVideo) };
-  } else if (firstImage) {
-    media = { type: "image", src: ensureAbsoluteUrl(firstImage) };
+  if (firstVideoCandidate) {
+    const videoSrc = ensureAbsoluteUrl(firstVideoCandidate);
+    if (videoSrc) {
+      media = { type: "video", src: videoSrc };
+    }
+  }
+  if (!media && mediaGallery.length) {
+    media = mediaGallery[0];
   }
 
   const likeEntries = Array.isArray(rawPost?.likes) ? rawPost.likes : [];
@@ -129,6 +164,7 @@ const adaptFeedPost = (rawPost, viewerId) => {
     content: rawPost?.text ?? rawPost?.content ?? rawPost?.caption ?? rawPost?.description ?? "",
     createdAt: rawPost?.createdAt ?? new Date().toISOString(),
     media,
+    mediaGallery,
     likes: likedUsers.length,
     liked,
     likedUsers,

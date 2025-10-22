@@ -77,6 +77,16 @@
   margin: 0;
 }
 
+.heroSearch {
+  margin-top: 0.75rem;
+  display: flex;
+  align-items: center;
+}
+
+.heroSearch .searchWrap {
+  max-width: 42rem;
+}
+
 /* Controls */
 .controls {
   padding: 1.5rem;
@@ -114,6 +124,7 @@
 /* Section */
 .section {
   padding: 0 1.5rem 2rem;
+  margin-top: 1rem;
 }
 .sectionTitle {
   font-size: 1.25rem;

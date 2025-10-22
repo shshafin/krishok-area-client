@@ -4682,7 +4682,7 @@ user-icon
 .company-position {
   /* position: sticky; */
   top: 60px;
-  background: #266984;
+  background: #2c333a;
   padding: 30px 15px 20px 15px;
   color: white;
   font-weight: bold;
@@ -5087,6 +5087,136 @@ user-icon
   text-align: center;
 }
 
+/* Scoped product grid/card overrides for company pages (product-align) */
+.product-align {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem;
+  justify-content: flex-start;
+}
+
+/* Make category headers span full width */
+.product-align > .Pctg_xh18 {
+  width: 100%;
+  margin: 0.5rem 0 0.25rem 0;
+}
+
+.si {
+  background: #2c333a;
+  border: 1px solid #807b7b;
+  border-radius: 8px;
+  overflow: hidden;
+  width: calc((100% - 3rem) / 4); /* 4 cards per row with 1rem gap */
+}
+
+@media (max-width: 1200px) {
+  .si {
+    width: calc((100% - 2rem) / 3); /* 3 cards per row */
+  }
+}
+
+@media (max-width: 900px) {
+  .si {
+    width: calc((100% - 1rem) / 2); /* 2 cards per row */
+  }
+}
+
+@media (max-width: 600px) {
+  .si {
+    width: 100%; /* 1 card per row */
+  }
+}
+
+.product-align .product-image {
+  height: 160px;
+  overflow: hidden;
+}
+
+.product-align .product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+.co {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+}
+
+.cardBb {
+  padding: 12px;
+}
+
+.pronamesize {
+  font-size: 16px;
+  margin: 0 0 8px;
+  color: #e2e8f0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.new {
+  font-size: 14px;
+  margin: 0;
+  color: #94a3b8;
+}
+
+/* Category row styling */
+.category-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  width: 100%;
+}
+
+/* compact variant: hide material text and any lingering CTA inside product grid */
+.product-align .mulname,
+.product-align .buttom,
+.product-align .plinkk {
+  display: none !important;
+}
+
+/* clamp title to two lines to avoid tall cards */
+.product-align .pronamesize {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* category row grid to keep items aligned per-category */
+.product-align .category-block {
+  width: 100%;
+}
+
+.product-align .category-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 260px));
+  gap: 1.25rem;
+  align-items: start;
+  justify-content: start;
+}
+
+/* subtle hover/focus for the whole card */
+.product-align .product-card {
+  transition: transform 150ms ease, box-shadow 180ms ease;
+}
+
+.product-align .product-card:focus,
+.product-align .product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 36px -18px rgba(0,0,0,0.6);
+  outline: none;
+}
+
 .co {
   background-color: #266984;
   color: aliceblue;
@@ -5185,7 +5315,7 @@ user-icon
 
 .plinkk {
   display: inline-block;
-  background: #266984;
+  background: #2c333a;
   color: rgb(238, 255, 0);
   border: none;
   font-weight: 600;
@@ -5213,7 +5343,7 @@ user-icon
 }
 
 .headh {
-  background: #266984;
+  background: #2c333a;
   padding: 30px 15px 30px 16px;
   color: white;
   font-weight: bold;
@@ -5228,7 +5358,7 @@ user-icon
 }
 
 .headha {
-  background: #266984;
+  background: #2c333a;
   padding: 30px 15px 30px 16px;
   color: white;
   font-weight: bold;
@@ -5250,7 +5380,7 @@ user-icon
 }
 
 .accordion_head {
-  background: #266984;
+  background: #2c333a;
   padding: 12px;
   cursor: pointer;
 }
@@ -5312,7 +5442,7 @@ user-icon
 }
 
 .bc {
-  background: #266984;
+  background: #2c333a;
   color: white;
   text-align: center;
   padding: 5px 5px 0px 5px;
@@ -5421,7 +5551,7 @@ user-icon
 }
 
 .video-body-box {
-  background: #224150;
+  background: #2c333a;
   padding: 17px;
   border-top: 1px solid #4a4a4a;
 }
@@ -5450,7 +5580,7 @@ h4 {
 
 .boboo {
   font-weight: bold;
-  border-bottom: 1px solid #224150;
+  border-bottom: 1px solid #3a4047;
   padding-bottom: 20px;
   margin-bottom: 20px;
 }
@@ -5862,7 +5992,7 @@ h4 {
   font-size: 19px;
   cursor: pointer;
   border-radius: 10px;
-  background: #266984;
+  background: #2c333a;
   border: none;
   height: 43;
 }
@@ -5937,7 +6067,7 @@ h4 {
 }
 
 .user-profile-name {
-  background: #266984;
+  background: #2c333a;
   border-radius: 0px 0px 10px 10px;
   padding: 15px 0px 15px 0px;
   width: 70%;
@@ -5976,7 +6106,7 @@ h4 {
   margin-left: 20px;
 }
 .user-profile-name span p {
-  background: #266984;
+  background: #2c333a;
   width: 8px;
   height: 23px;
   margin-top: 12px;
@@ -6008,7 +6138,7 @@ h4 {
 }
 .u-infosmoll {
   width: 100%;
-  background: #266984;
+  background: #2c333a;
   float: left;
   border-radius: 8px;
   padding: 8px;
@@ -6149,7 +6279,7 @@ h4 {
 
 .u-info {
   width: 100%;
-  background: #266984;
+  background: #2c333a;
   float: left;
   border-radius: 8px;
   padding: 8px;
@@ -6169,7 +6299,7 @@ h4 {
 .u-link {
   width: 30%;
   height: 180px;
-  background: #266984;
+  background: #2c333a;
   float: right;
   border-radius: 8px;
   padding: 20px;
@@ -6342,14 +6472,14 @@ h4 {
 }
 
 #akrdxfi11 {
-  background: #266984;
+  background: #2c333a;
   padding: 10px;
   margin: 5px;
   /* border-radius: 5px; */
   position: relative;
 }
 #akrdxfi12 {
-  background: #266984;
+  background: #2c333a;
   padding: 10px;
   margin: 5px;
   /*  border-radius: 5px; */
@@ -6483,7 +6613,7 @@ h4 {
   margin-left: 10px;
 
   width: 50%;
-  background: #266984;
+  background: #2c333a;
 }
 
 /* GALLARY DETALILS CSS END */
@@ -6694,7 +6824,7 @@ h4 {
 /* RELATED PRODUCTS CARD DISPLAY CSS START */
 
 .related-product-header {
-  background: #266984;
+  background: #2c333a;
   width: 90%;
   margin: auto;
   text-align: center;
@@ -6742,7 +6872,7 @@ h4 {
   margin: 10px;
   border: none;
   text-align: center;
-  background: #266984;
+  background: #2c333a;
 }
 
 .related-products-content {
@@ -6766,7 +6896,7 @@ h4 {
 
 .related-product-tag {
   padding: 0.5rem 1rem;
-  background: #266984;
+  background: #2c333a;
   border-top: 1px solid rgba(0, 0, 0, 0.125);
 }
 
@@ -6780,7 +6910,7 @@ h4 {
 
 .related-product-tag-tag {
   display: inline-block;
-  background: #266984;
+  background: #2c333a;
   color: rgb(238, 255, 0);
   border: none;
   font-weight: 600;
@@ -7011,7 +7141,7 @@ h4 {
 /* RELATED CROP CARD DISPLAY CSS START */
 
 .related-crop-main-header {
-  background: #266984;
+  background: #2c333a;
   width: 93%;
   margin: auto;
   text-align: center;
@@ -7069,7 +7199,7 @@ h4 {
 }
 
 .related-slide-crop-title {
-  background: #266984;
+  background: #2c333a;
   color: white;
   /* width: 243px; */
   text-align: center;
@@ -7140,7 +7270,7 @@ h4 {
 }
 
 .accordion_head:hover {
-  background: #266984;
+  background: #2c333a;
 }
 
 .accordion_head h4 {
@@ -7599,7 +7729,7 @@ h4 {
 }
 
 .vtkk30 {
-  background: #266984;
+  background: #2c333a;
   color: white;
   text-align: center;
   padding: 5px 8px 0px 5px;
@@ -7781,7 +7911,7 @@ h4 {
 /* COMPANY BACK BUTTON START CSS */
 
 .com-header-back {
-  background: #266984;
+  background: #2c333a;
   padding: 15px 0px 15px 0px;
   border-top: 1px solid #807b7b;
   position: relative;
