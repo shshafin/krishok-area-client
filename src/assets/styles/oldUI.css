@@ -3027,13 +3027,11 @@
 
 .colorboxk {
   color: #ffffff !important;
-  background: rgba(255, 255, 255, 0.1);
   padding: 2px 6px;
   border-radius: 4px;
   font-size: 12px;
   font-weight: 500;
   display: inline-block;
-  border: 1px solid rgba(255, 255, 255, 0.2);
   user-select: none;
   position: relative;
 }
@@ -3385,27 +3383,15 @@
 
 .colorboxk {
   color: #ffffff !important;
-  background: rgba(255, 255, 255, 0.1);
   padding: 2px 6px;
   border-radius: 4px;
   font-size: 12px;
   font-weight: 500;
   display: inline-block;
-  border: 1px solid rgba(255, 255, 255, 0.2);
   user-select: none;
   position: relative;
 }
 
-
-
-.colorboxc {
-  color: rgb(194, 28, 28);
-  user-select: none;
-}
-.colorboxa {
-  color: red;
-  user-select: none;
-}
 .colorboxo {
   color: #2eceff;
   user-select: none;
@@ -5897,19 +5883,13 @@ h4 {
   gap: 1rem;
   padding: 1.25rem 1.5rem;
   background: rgba(15, 23, 42, 0.9);
-  color: #f472b6; /* Pink color for titles */
+  color: rgb(243 248 255);
   cursor: pointer;
   border: none;
   outline: none;
   font-size: 1.125rem;
   font-weight: 600;
   transition: background 0.25s ease, color 0.25s ease;
-}
-
-.product-section__header:hover,
-.product-section__header:focus-visible {
-  background: rgba(30, 41, 59, 0.95);
-  color: #f472b6;
 }
 
 .product-section__title {

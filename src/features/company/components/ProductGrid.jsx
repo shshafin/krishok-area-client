@@ -15,7 +15,7 @@ const slugify = (s = "") =>
 /** Category → heading CSS class map (match your original classes) */
 const categoryHeadingClass = {
   "কীটনাশক": "kitnacxc_7x",
-  "ছত্রাকনাশক": "chotrcxc_7x",
+  "ছত্রакনাশক": "chotrcxc_7x",
   "অনুখাদ্য": "unuxc_7x",
   "আগাছানাশক": "agacxc_7x",
 };
@@ -23,12 +23,12 @@ const categoryHeadingClass = {
 function CategorySection({ title, isExpanded, onToggle }) {
   const cls = categoryHeadingClass[title] || "";
   return (
-    <div className="product-section">
+    <div className={`product-section ${cls}`}>
       <div className="product-section__header" onClick={onToggle}>
         <div className="product-section__title">{title}</div>
-        <div className={`product-section__icon ${isExpanded ? 'is-open' : ''}`}>
-          <svg className="product-section__icon-svg" viewBox="0 0 24 24">
-            <path d="M7 14l5-5 5 5z"/>
+        <div className={`product-section__icon ${isExpanded ? "is-open" : ""}`}>
+          <svg className="product-section__icon-svg" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M7 14l5-5 5 5z" />
           </svg>
         </div>
       </div>
@@ -42,9 +42,10 @@ function CategorySection({ title, isExpanded, onToggle }) {
  *  - items: Array<{
  *      id: number|string,
  *      name: string,        // product name (Bangla/English)
- *      material: string,    // active ingredient / material
+ *      material?: string,   // active ingredient / material
  *      category: string,    // e.g. কীটনাশক / ছত্রাকনাশক / অনুখাদ্য / আগাছানাশক
- *      slug?: string        // optional precomputed slug
+ *      slug?: string,       // optional precomputed slug
+ *      img?: string         // image URL
  *    }>
  *  - initialCount?: number (default 20)
  *  - step?: number (default 10)
@@ -86,8 +87,7 @@ export default function ProductGrid({ items = [], initialCount = 20, step = 10 }
     setExpandedCategories(allCategories);
   }, [grouped]);
 
-  // Flatten to a linear render list with category headers injected
-  // We'll render categories as separate rows so alignment is predictable.
+  // Infinite scroll visibility counter
   const [visible, setVisible] = useState(initialCount);
   useEffect(() => setVisible(initialCount), [initialCount, items]);
 
@@ -112,16 +112,13 @@ export default function ProductGrid({ items = [], initialCount = 20, step = 10 }
   const toggleCategory = (category) => {
     setExpandedCategories(prev => {
       const newSet = new Set(prev);
-      if (newSet.has(category)) {
-        newSet.delete(category);
-      } else {
-        newSet.add(category);
-      }
+      if (newSet.has(category)) newSet.delete(category);
+      else newSet.add(category);
       return newSet;
     });
   };
 
-  // Render: for each category, show header then a grid row of items
+  // Render
   return (
     <div className="product-align">
       {grouped.map(([cat, arr]) => {
@@ -134,40 +131,56 @@ export default function ProductGrid({ items = [], initialCount = 20, step = 10 }
               isExpanded={isExpanded}
               onToggle={() => toggleCategory(cat)}
             />
+
             {isExpanded && (
               <div className="category-row">
-                {arr.slice(0, Math.max(0, Math.min(arr.length, visible))).map(item => {
-                  const { id, name, material, category, slug, img } = item;
-                  const url = `/productdetails/${slug || slugify(name)}`;
-                  const categoryClass =
-                    cat === "কীটনাশক"
-                      ? "colorboxk"
-                      : cat === "ছত্রাকনাশক"
-                      ? "colorboxc"
-                      : cat === "আগাছানাশক"
-                      ? "colorboxw"
-                      : cat === "অনুখাদ্য"
-                      ? "colorboxf"
-                      : "";
+                {arr
+                  .slice(0, Math.max(0, Math.min(arr.length, visible)))
+                  .map(item => {
+                    const { id, name, material, category, slug, img } = item;
+                    const url = `/productdetails/${slug || slugify(name)}`;
+                    const categoryClass =
+                      cat === "কীটনাশক"
+                        ? "colorboxk"
+                        : cat === "ছত্রাকনাশক"
+                        ? "colorboxc"
+                        : cat === "আগাছানাশক"
+                        ? "colorboxw"
+                        : cat === "অনুখাদ্য"
+                        ? "colorboxf"
+                        : "";
 
-                  return (
-                    <div className="si" key={`item-${id}`}>
-                      <NavLink to={url} className="co product-card" title={name}>
-                        <div className="product-card__media">
-                          <img
-                            src={img || "https://placehold.co/320x220?text=Product"}
-                            alt={name}
-                            loading="lazy"
-                          />
-                        </div>
-                        <div className="product-card__body">
-                          <h3 className="pronamesize">{name}</h3>
-                          <p className={`product-card__category ${categoryClass}`}>{category}</p>
-                        </div>
-                      </NavLink>
-                    </div>
-                  );
-                })}
+                    return (
+                      <div className="si" key={`item-${id}`}>
+                        <NavLink
+                          to={url}
+                          className="co product-card"
+                          title={name}
+                          aria-label={`${name} - ${category}`}
+                        >
+                          <div className="product-card__media">
+                            <img
+                              src={img || "https://placehold.co/320x220?text=Product"}
+                              alt={name}
+                              loading="lazy"
+                            />
+                          </div>
+
+                          <div className="product-card__body">
+                            {/* Name included INSIDE the product-card__category element */}
+                            <p className={`product-card__category ${categoryClass}`}>
+                              <span className="product-card__title">{name}</span>
+                              <br />
+                              {category}
+                            </p>
+
+                            {/* If you also want to surface material, uncomment this */}
+                            {/* <p className="product-card__material">{material}</p> */}
+                          </div>
+                        </NavLink>
+                      </div>
+                    );
+                  })}
               </div>
             )}
           </div>
