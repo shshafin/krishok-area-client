@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom";
 import PropTypes from "prop-types";
 import { format } from "timeago.js";
 import DeleteOutlineIcon from "@/assets/IconComponents/DeleteOutlineIcon";
+import { useVideoVisibility } from "@/hooks/useVideoVisibility";
 
 const mediaStyles = {
   width: "100%",
@@ -33,6 +34,9 @@ export default function PostCard({
 }) {
   const [commentText, setCommentText] = useState("");
   const location = useLocation();
+
+  // Video visibility hook for viewport-based play/pause
+  const videoRef = useVideoVisibility({ threshold: 0.3 });
 
   // Show delete button only when on the user's profile page (/me)
   const showDeleteButton = Boolean(isOwner && location?.pathname?.startsWith("/me"));
@@ -110,7 +114,7 @@ export default function PostCard({
 
       {(media?.type === "video" && media?.src) && (
         <div className="post-media" {...mediaInteractableProps}>
-          <video src={media.src} controls loop autoPlay style={mediaStyles} />
+          <video ref={videoRef} src={media.src} controls loop style={mediaStyles} />
         </div>
       )}
 

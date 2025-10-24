@@ -8,6 +8,7 @@ import { LiquedLoader } from "@/components/loaders";
 import Modal from "./Modal";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
+import { useVideoVisibility } from "@/hooks/useVideoVisibility";
 
 const LIKES_CHUNK = 12;
 
@@ -58,6 +59,9 @@ export default function PostModal({
   const [likesCursor, setLikesCursor] = useState(0);
   const [likesLoading, setLikesLoading] = useState(false);
   const [activeMode, setActiveMode] = useState(mode ?? "comments");
+
+  // Video visibility hook for viewport-based play/pause
+  const videoRef = useVideoVisibility({ threshold: 0.5 });
 
   const likesScrollRef = useRef(null);
   const likesThrottleRef = useRef(false);
@@ -277,7 +281,7 @@ export default function PostModal({
       <div className="post-modal-content">
         <div className={`post-modal-media${useCarousel ? " post-modal-media--carousel" : ""}`}>
           {hasVideo ? (
-            <video src={media.src} controls autoPlay loop />
+            <video ref={videoRef} src={media.src} controls loop />
           ) : hasGallery ? (
             useCarousel ? (
               <div className="post-modal-carousel">
@@ -304,20 +308,20 @@ export default function PostModal({
           {post.content && (
             <div
               style={{
-                border: "1px solid #e2e8f0",
-                borderRadius: "14px",
-                padding: "0.75rem",
+                border: '1px solid #e2e8f0',
+                borderRadius: '14px',
+                padding: '0.75rem',
               }}
             >
-              <div style={{ fontWeight: 600, marginBottom: "0.35rem" }}>{post.author.name}</div>
+              <div style={{ fontWeight: 600, marginBottom: '0.35rem' }}>{post.author.name}</div>
               <p style={{ margin: 0 }}>{post.content}</p>
             </div>
           )}
 
-          <div className="post-engagement" style={{ marginTop: "0.25rem", gap: "0.5rem" }}>
+          <div className="post-engagement" style={{ marginTop: '0.25rem', gap: '0.5rem' }}>
             <button
               type="button"
-              className={post.liked ? "liked" : ""}
+              className={post.liked ? 'liked' : ''}
               onClick={() => onToggleLike?.(post.id)}
             >
               {likeToggleLabel}
@@ -353,10 +357,10 @@ export default function PostModal({
                 )}
                 {post.comments.map((comment) => {
                   const profilePath = buildProfilePath(comment.author);
-                  const Wrapper = profilePath ? NavLink : "div";
+                  const Wrapper = profilePath ? NavLink : 'div';
                   const wrapperProps = profilePath
-                    ? { to: profilePath, className: "comment-item" }
-                    : { className: "comment-item" };
+                    ? { to: profilePath, className: 'comment-item' }
+                    : { className: 'comment-item' };
 
                   return (
                     <Wrapper key={comment.id} {...wrapperProps}>
@@ -412,7 +416,7 @@ export default function PostModal({
       </div>
     </Modal>
   );
-}
+};
 
 PostModal.propTypes = {
   open: PropTypes.bool,

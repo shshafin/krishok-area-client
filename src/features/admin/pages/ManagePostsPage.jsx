@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
-import { Video } from "yet-another-react-lightbox/plugins";
+import { Video } from "yet-another-react-lightbox/plugins/video";
 import DeleteOutlineIcon from "@/assets/IconComponents/DeleteOutlineIcon";
 import HeartOutlineIcon from "@/assets/IconComponents/HeartOutlineIcon";
 import CommentBubbleIcon from "@/assets/IconComponents/CommentBubbleIcon";
@@ -11,6 +11,7 @@ import { fetchPosts, deletePost } from "@/api/authApi";
 import "../styles/adminScoped.css";
 import config from "../../../../config";
 import { baseApi } from "../../../api";
+import { useVideoVisibility } from "@/hooks/useVideoVisibility";
 
 const PAGE_SIZE = 5;
 const isVideoFile = (url) => /\.(mp4|webm|ogg)$/i.test(url);
@@ -32,6 +33,9 @@ export default function ManagePostsPage() {
   const [lightbox, setLightbox] = useState(null);
   const loadTimerRef = useRef(null);
   const sentinelRef = useRef(null);
+
+  // Video visibility hook for viewport-based play/pause
+  const videoRef = useVideoVisibility({ threshold: 0.3 });
 
   // ✅ Fetch posts
   useEffect(() => {

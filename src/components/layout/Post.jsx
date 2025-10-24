@@ -14,6 +14,7 @@ import CommentBox from "../ui/CommentBox";
 import { baseApi } from "../../api";
 import { likePost, commentOnPost } from "@/api/authApi";
 import { Video, Zoom } from "yet-another-react-lightbox/plugins";
+import { useVideoVisibility } from "../../hooks/useVideoVisibility";
 
 export default function Post({
   post,
@@ -51,6 +52,9 @@ export default function Post({
   const [likesCount, setLikesCount] = useState(likes.length);
   const [comments, setComments] = useState(initialComments);
   const [openIndex, setOpenIndex] = useState(-1);
+
+  // Video visibility hook for viewport-based play/pause
+  const videoRef = useVideoVisibility({ threshold: 0.3 });
 
   useEffect(() => {
     setComments(initialComments);
@@ -178,9 +182,9 @@ export default function Post({
               onClick={() => setOpenIndex(index)}>
               {isVideo ? (
                 <video
+                  ref={videoRef}
                   src={url.startsWith("http") ? url : `${baseApi}${url}`}
                   controls
-                  autoPlay
                   preload="metadata"
                   className="media-video"
                 />

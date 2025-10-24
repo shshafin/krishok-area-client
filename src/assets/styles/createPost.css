@@ -17,9 +17,6 @@
     width: 100%;
     margin-right: 0;
   }
-  .createPost {
-    flex-direction: column;
-  }
   .lable-createPost {
     display: block !important;
   }
@@ -53,7 +50,9 @@
 .mediaPostOptions,
 .fellingPostOption {
   cursor: pointer;
-  padding: 0.5rem 1rem;
+  width: 3rem;
+  aspect-ratio: 1/1;
+  padding: .5rem;
   border-radius: var(--radius);
   transition: background 0.2s ease, color 0.2s ease;
 }
