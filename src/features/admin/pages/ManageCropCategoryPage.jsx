@@ -1,90 +1,22 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { NavLink } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
-import "../styles/adminScoped.css";
 import EditBadgeIcon from "@/assets/IconComponents/EditBadgeIcon";
 import DeleteBadgeIcon from "@/assets/IconComponents/DeleteBadgeIcon";
 import SearchIcon from "@/assets/IconComponents/SearchIcon";
+import AdminDataTable from "@/features/admin/components/AdminDataTable";
+import "../styles/adminScoped.css";
 
-const STORAGE_KEY = "admin.manageCropCategory";
-const CATEGORY_OPTIONS = ["ক্ষতিকর পোকামাকড়", "রোগবালাই", "সার প্রয়োগ", "আবহাওয়া সতর্কতা"];
+// 🔹 import API functions
+import { fetchAllCrops, editCrop, deleteCrop } from "@/api/authApi";
 
-const RAW_CATEGORIES = [
-  {
-    id: 21,
-    banglaName: "পটল",
-    englishName: "Potol",
-    categoryName: "ক্ষতিকর পোকামাকড়",
-    status: 0,
-  },
-  {
-    id: 22,
-    banglaName: "পেপে",
-    englishName: "Pepe",
-    categoryName: "রোগবালাই",
-    status: 0,
-  },
-  {
-    id: 23,
-    banglaName: "ধান",
-    englishName: "Rice",
-    categoryName: "ক্ষতিকর পোকামাকড়",
-    status: 0,
-  },
-  {
-    id: 24,
-    banglaName: "টমেটো",
-    englishName: "Tomato",
-    categoryName: "রোগবালাই",
-    status: 1,
-  },
-  {
-    id: 25,
-    banglaName: "আলু",
-    englishName: "Potato",
-    categoryName: "সার প্রয়োগ",
-    status: 1,
-  },
-  {
-    id: 26,
-    banglaName: "গম",
-    englishName: "Wheat",
-    categoryName: "আবহাওয়া সতর্কতা",
-    status: 1,
-  },
-];
-
-const normalizeCategory = (category, index) => {
-  if (!category || typeof category !== "object") return null;
-  return {
-    no: category.no ?? index + 1,
-    id: category.id ?? index + 1,
-    banglaName: category.banglaName ?? "",
-    englishName: category.englishName ?? "",
-    categoryName: category.categoryName ?? "",
-    status: Number.isFinite(category.status) ? category.status : 0,
-  };
-};
-
-const loadStoredCategories = () => {
-  if (typeof window === "undefined") return RAW_CATEGORIES;
-  try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (!raw) return RAW_CATEGORIES;
-    const parsed = JSON.parse(raw);
-    if (!Array.isArray(parsed)) return RAW_CATEGORIES;
-    const normalized = parsed.map((item, index) => normalizeCategory(item, index)).filter(Boolean);
-    return normalized.length ? normalized : RAW_CATEGORIES;
-  } catch (error) {
-    console.warn("Failed to load stored crop categories", error);
-    return RAW_CATEGORIES;
-  }
-};
+const CATEGORY_OPTIONS = ["ক্ষতিকর পোকামাকড়", "রোগবালাই"];
 
 const highlightClass = (categoryName) =>
   categoryName === "ক্ষতিকর পোকামাকড়" ? "cropctgred" : "";
 
 export default function ManageCropCategoryPage() {
-  const [categories, setCategories] = useState(loadStoredCategories);
+  const [categories, setCategories] = useState([]);
   const [search, setSearch] = useState("");
   const [editing, setEditing] = useState(null);
   const [formState, setFormState] = useState({
@@ -93,18 +25,30 @@ export default function ManageCropCategoryPage() {
     categoryName: CATEGORY_OPTIONS[0],
   });
   const [removing, setRemoving] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
   const searchInputRef = useRef(null);
 
+  // 🔹 Fetch all crops on mount
   useEffect(() => {
-    if (typeof window === "undefined") return undefined;
-    try {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(categories));
-    } catch (error) {
-      console.warn("Failed to persist crop categories", error);
-    }
-    return undefined;
-  }, [categories]);
+    const loadCrops = async () => {
+      try {
+        const res = await fetchAllCrops();
+        if (res?.data && Array.isArray(res.data)) {
+          setCategories(res.data);
+        } else {
+          setCategories([]);
+        }
+      } catch (error) {
+        console.error("Failed to fetch crops:", error);
+        toast.error("Failed to load crops");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadCrops();
+  }, []);
 
+  // 🔹 Search filter
   const filtered = useMemo(() => {
     const term = search.trim().toLowerCase();
     if (!term) return categories;
@@ -112,32 +56,39 @@ export default function ManageCropCategoryPage() {
       return (
         item.banglaName.toLowerCase().includes(term) ||
         item.englishName.toLowerCase().includes(term) ||
-        item.categoryName.toLowerCase().includes(term) ||
-        String(item.id).includes(term) ||
-        String(item.no ?? "").includes(term)
+        item.category.toLowerCase().includes(term)
       );
     });
   }, [categories, search]);
 
-  const handleDelete = (category) => {
-    setRemoving((prev) => ({ ...prev, [category.id]: true }));
-    setTimeout(() => {
-      setCategories((prev) => prev.filter((item) => item.id !== category.id));
+  // 🔹 Delete crop
+  const handleDelete = async (crop) => {
+    if (!window.confirm(`Delete ${crop.banglaName}?`)) return;
+
+    setRemoving((prev) => ({ ...prev, [crop._id]: true }));
+    try {
+      await deleteCrop(crop._id);
+      setCategories((prev) => prev.filter((item) => item._id !== crop._id));
+      toast.success(`"${crop.banglaName}" deleted successfully`);
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to delete crop");
+    } finally {
       setRemoving((prev) => {
         const next = { ...prev };
-        delete next[category.id];
+        delete next[crop._id];
         return next;
       });
-      toast.success(`Crop category #${category.id} deleted`);
-    }, 260);
+    }
   };
 
-  const handleEditStart = (category) => {
-    setEditing(category);
+  // 🔹 Edit start
+  const handleEditStart = (crop) => {
+    setEditing(crop);
     setFormState({
-      banglaName: category.banglaName,
-      englishName: category.englishName,
-      categoryName: category.categoryName,
+      banglaName: crop.banglaName,
+      englishName: crop.englishName,
+      categoryName: crop.category,
     });
   };
 
@@ -148,53 +99,70 @@ export default function ManageCropCategoryPage() {
     setFormState((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleFormSubmit = (event) => {
+  // 🔹 Edit submit
+  const handleFormSubmit = async (event) => {
     event.preventDefault();
     if (!editing) return;
+
     const trimmedBangla = formState.banglaName.trim();
     const trimmedEnglish = formState.englishName.trim();
+
     if (!trimmedBangla || !trimmedEnglish) {
       toast.error("Bangla and English names are required.");
       return;
     }
+
     const toastId = toast.loading("Saving changes...");
-    setCategories((prev) =>
-      prev.map((item) => {
-        if (item.id !== editing.id) return item;
-        return {
-          ...item,
-          banglaName: trimmedBangla,
-          englishName: trimmedEnglish,
-          categoryName: formState.categoryName,
-        };
-      })
-    );
-    toast.success(`Crop category #${editing.id} updated`, { id: toastId });
-    setEditing(null);
+    try {
+      await editCrop(editing._id, {
+        banglaName: trimmedBangla,
+        englishName: trimmedEnglish,
+        category: formState.categoryName,
+      });
+
+      // UI update
+      setCategories((prev) =>
+        prev.map((item) =>
+          item._id === editing._id
+            ? {
+                ...item,
+                banglaName: trimmedBangla,
+                englishName: trimmedEnglish,
+                category: formState.categoryName,
+              }
+            : item
+        )
+      );
+
+      toast.success("Crop updated successfully", { id: toastId });
+      setEditing(null);
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to update crop", { id: toastId });
+    }
   };
 
   const totalCount = categories.length;
   const visibleCount = filtered.length;
 
   return (
-    <div className="content-wrapper _scoped_admin" style={{ minHeight: "839px" }}>
+    <div
+      className="content-wrapper _scoped_admin"
+      style={{ minHeight: "839px" }}>
       <Toaster position="top-right" />
 
       <div className="content-header">
         <div className="container-fluid">
           <div className="row mb-2">
             <div className="col-sm-6">
-              <h1 className="m-0">Manage Crop Category</h1>
+              <h1 className="m-0">Manage Crops</h1>
             </div>
             <div className="col-sm-6">
               <ol className="breadcrumb float-sm-right">
                 <li className="breadcrumb-item">
-                  <a href="/admin/dashboard">Dashboard</a>
+                  <NavLink to="/admin/dashboard">Dashboard</NavLink>
                 </li>
-                <li className="breadcrumb-item">
-                  <a href="/admin/crops/manage-category">Crops</a>
-                </li>
-                <li className="breadcrumb-item active">Manage Category</li>
+                <li className="breadcrumb-item active">Crops</li>
               </ol>
             </div>
           </div>
@@ -206,133 +174,119 @@ export default function ManageCropCategoryPage() {
           <div className="row">
             <div className="card w-100">
               <div className="card-header d-flex flex-column flex-md-row gap-3 justify-content-md-between align-items-md-center">
-                <h3 className="card-title mb-0">Total Crop Category = [{totalCount}]</h3>
-                <span className="text-muted small">Showing {visibleCount} item{visibleCount === 1 ? "" : "s"}</span>
-                <div className="input-group" style={{ maxWidth: 340 }}>
+                <h3 className="card-title mb-0">
+                  Total Crops = [{totalCount}]
+                </h3>
+                <span className="text-muted small">
+                  Showing {visibleCount} item{visibleCount === 1 ? "" : "s"}
+                </span>
+                <div
+                  className="input-group"
+                  style={{ maxWidth: 340 }}>
                   <div className="input-group-prepend">
                     <span className="input-group-text">
-                      <SearchIcon size={18} color="#64748b" />
+                      <SearchIcon
+                        size={18}
+                        color="#64748b"
+                      />
                     </span>
                   </div>
                   <input
                     ref={searchInputRef}
                     type="search"
                     className="form-control"
-                    placeholder="Search by name or id"
+                    placeholder="Search by name or category"
                     value={search}
                     onChange={(event) => setSearch(event.target.value)}
-                    aria-label="Search crop categories"
                   />
                 </div>
               </div>
 
-              <div className="card-body table-responsive">
-                <table className="table table-bordered table-hover">
-                  <thead>
-                    <tr>
-                      <th>NO</th>
-                      <th>ID</th>
-                      <th>Crop Bangla Name</th>
-                      <th>Crop English Name</th>
-                      <th>Crop Category Name</th>
-                      <th>Crop Category Status</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filtered.map((category, index) => {
-                      const rowIndex = index + 1;
-                      return (
-                        <tr
-                          key={category.id}
-                          id={`deletecropctgtr_${category.id}`}
-                          className={removing[category.id] ? "is-removing" : ""}
-                        >
-                          <td>{rowIndex}</td>
-                          <td>{category.id}</td>
-                          <td>
-                            <div className="d-flex">
-                              <h5>{category.banglaName}</h5>
-                            </div>
-                          </td>
-                          <td>
-                            <div className="d-flex">
-                              <h5>{category.englishName}</h5>
-                            </div>
-                          </td>
-                          <td>
-                            <div className="d-flex">
-                              <h5 className={highlightClass(category.categoryName)}>{category.categoryName}</h5>
-                            </div>
-                          </td>
-                          <td>
-                            <div className="d-flex">
-                              <h5>{category.status}</h5>
-                            </div>
-                          </td>
-                          <td className="cropandcompanydeletbtn">
+              <div className="card-body">
+                {isLoading ? (
+                  <div className="text-center text-muted py-5">
+                    Loading crops...
+                  </div>
+                ) : (
+                  <AdminDataTable
+                    columns={[
+                      { key: "no", label: "NO", render: (_, i) => i + 1 },
+                      { key: "englishName", label: "English Name" },
+                      { key: "banglaName", label: "Bangla Name" },
+                      {
+                        key: "category",
+                        label: "Category",
+                        render: (row) => (
+                          <h5 className={highlightClass(row.category)}>
+                            {row.category}
+                          </h5>
+                        ),
+                      },
+                      {
+                        key: "actions",
+                        label: "Actions",
+                        cellClassName: "text-right",
+                        render: (row) => (
+                          <>
                             <button
                               type="button"
                               className="admin-icon-btn admin-icon-btn--edit"
-                              data-cid={category.id}
-                              onClick={() => handleEditStart(category)}
-                              aria-label={`Edit crop category ${category.banglaName}`}
-                            >
+                              onClick={() => handleEditStart(row)}>
                               <EditBadgeIcon size={30} />
                             </button>
                             <button
                               type="button"
                               className="admin-icon-btn admin-icon-btn--delete"
-                              onClick={() => handleDelete(category)}
-                              aria-label={`Delete crop category ${category.banglaName}`}
-                            >
+                              onClick={() => handleDelete(row)}>
                               <DeleteBadgeIcon size={30} />
                             </button>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                    {filtered.length === 0 && (
-                      <tr>
-                        <td colSpan="7" className="text-center text-muted py-4">
-                          No crop categories found.
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
+                          </>
+                        ),
+                      },
+                    ]}
+                    rows={filtered}
+                    emptyMessage="No crops found."
+                    getRowKey={(row) => row._id}
+                    getRowClassName={(row) =>
+                      removing[row._id] ? "is-removing" : ""
+                    }
+                  />
+                )}
               </div>
             </div>
           </div>
         </div>
       </section>
 
+      {/* 🔹 Edit Modal */}
       {editing && (
-        <div id="photo-modal" style={{ display: "flex" }} onClick={handleModalClose}>
-          <div id="photo-modal-form" onClick={(event) => event.stopPropagation()}>
-            <h2 className="edit-header">Edit Crop Category Box</h2>
+        <div
+          id="photo-modal"
+          style={{ display: "flex" }}
+          onClick={handleModalClose}>
+          <div
+            id="photo-modal-form"
+            onClick={(event) => event.stopPropagation()}>
+            <h2 className="edit-header">Edit Crop</h2>
 
-            <form autoComplete="off" id="editFormData" onSubmit={handleFormSubmit}>
+            <form onSubmit={handleFormSubmit}>
               <div className="card-bodyy">
                 <div className="display-flex flex-column flex-md-row gap-3">
-                  <div className="form-group amf flex-grow-1">
-                    <label htmlFor="edit_cropctg_bangname">Crop Bangla Name</label>
+                  <div className="form-group amf grow-grow-1">
+                    <label>Bangla Name</label>
                     <input
                       type="text"
-                      id="edit_cropctg_bangname"
                       name="banglaName"
                       value={formState.banglaName}
                       onChange={handleFormChange}
                       className="form-control"
                     />
-                    <input type="text" id="edit_crop_ctg_id" hidden value={editing.id} readOnly className="form-control" />
                   </div>
 
-                  <div className="form-group amf flex-grow-1">
-                    <label htmlFor="edit_cropctg_engname">Crop English Name</label>
+                  <div className="form-group amf grow-grow-1">
+                    <label>English Name</label>
                     <input
                       type="text"
-                      id="edit_cropctg_engname"
                       name="englishName"
                       value={formState.englishName}
                       onChange={handleFormChange}
@@ -342,17 +296,17 @@ export default function ManageCropCategoryPage() {
                 </div>
 
                 <div className="display-flex flex-column flex-md-row gap-3">
-                  <div className="form-group amf flex-grow-1">
-                    <label htmlFor="edit_crop_ctg">Crop Category Name</label>
+                  <div className="form-group amf grow-grow-1">
+                    <label>Category</label>
                     <select
-                      className="add-product-box form-control"
-                      id="edit_crop_ctg"
                       name="categoryName"
                       value={formState.categoryName}
                       onChange={handleFormChange}
-                    >
+                      className="form-control">
                       {CATEGORY_OPTIONS.map((option) => (
-                        <option key={option} value={option}>
+                        <option
+                          key={option}
+                          value={option}>
                           {option}
                         </option>
                       ))}
@@ -361,17 +315,25 @@ export default function ManageCropCategoryPage() {
                 </div>
               </div>
 
-              <div className="card-footer faa d-flex justify-content-between">
-                <button type="button" className="btn btn-outline-secondary" onClick={handleModalClose}>
+              <div className="card-footer d-flex justify-content-between">
+                <button
+                  type="button"
+                  className="btn btn-outline-secondary"
+                  onClick={handleModalClose}>
                   Cancel
                 </button>
-                <button type="submit" className="editcropctgid btn btn-primary">
+                <button
+                  type="submit"
+                  className="btn btn-primary">
                   Save Changes
                 </button>
               </div>
             </form>
 
-            <div id="photo-closebtn" role="button" tabIndex={0} onClick={handleModalClose}>
+            <div
+              id="photo-closebtn"
+              role="button"
+              onClick={handleModalClose}>
               X
             </div>
           </div>

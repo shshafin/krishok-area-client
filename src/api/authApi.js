@@ -17,14 +17,6 @@ export const loginUser = (data) => {
   });
 };
 
-// Login admin
-export const loginAdmin = (data) => {
-  return request("/admin/login", {
-    method: "POST",
-    body: JSON.stringify(data),
-  });
-};
-
 // Get me
 export const fetchMe = () => request("/users/me", { method: "GET" });
 
@@ -32,7 +24,7 @@ export const fetchMe = () => request("/users/me", { method: "GET" });
 export const updateProfile = (formData) => {
   return request("/users/profile", {
     method: "PUT",
-    body: formData, // FormData send হবে
+    body: formData,
     credentials: "include",
   });
 };
@@ -40,14 +32,6 @@ export const updateProfile = (formData) => {
 // password change
 export const changePassword = (data) => {
   return request("/auth/reset-password", {
-    method: "POST",
-    body: JSON.stringify(data),
-    credentials: "include",
-  });
-};
-
-export const verifyPassword = (data) => {
-  return request("/auth/verify-password", {
     method: "POST",
     body: JSON.stringify(data),
     credentials: "include",
@@ -101,6 +85,14 @@ export const createPost = (formData) => {
   });
 };
 
+// delete post
+export const deletePost = (postId) => {
+  return request(`/posts/${postId}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+};
+
 // fetch posts
 export const fetchPosts = () => {
   return request("/posts/", { method: "GET" });
@@ -123,8 +115,184 @@ export const commentOnPost = (postId, comment) => {
   });
 };
 
+// delete comment
 export const deleteComment = (postId, commentId) => {
   return request(`/posts/${postId}/comment/${commentId}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+};
+
+// add galleries
+export const addGalleries = (formData) => {
+  return request("/galleries/create", {
+    method: "POST",
+    body: formData,
+    credentials: "include",
+  });
+};
+
+// crops create
+export const addCrops = (formData) => {
+  return request("/crops/create", {
+    method: "POST",
+    body: formData,
+    credentials: "include",
+  });
+};
+
+// fetch all crops
+export const fetchAllCrops = () => {
+  return request("/crops/all", { method: "GET" });
+};
+
+// edit crop
+export const editCrop = (cropId, data) => {
+  return request(`/crops/${cropId}`, {
+    method: "PUT",
+    body: JSON.stringify(data),
+    credentials: "include",
+  });
+};
+
+// delete crop
+export const deleteCrop = (cropId) => {
+  return request(`/crops/${cropId}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+};
+
+// create crop details
+export const addCropDetails = (formData) => {
+  return request("/crop-details/create", {
+    method: "POST",
+    body: formData,
+    credentials: "include",
+  });
+};
+
+// fetch all crop details
+export const fetchAllCropDetails = () => {
+  return request("/crop-details/all", { method: "GET" });
+};
+
+// edit crop details
+export const editCropDetails = (cropDetailsId, data) => {
+  return request(`/crop-details/${cropDetailsId}`, {
+    method: "PUT",
+    body: JSON.stringify(data),
+    credentials: "include",
+  });
+};
+// delete crop details
+export const deleteCropDetails = (cropDetailsId) => {
+  return request(`/crop-details/${cropDetailsId}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+};
+
+// add company
+export const addCompany = (data) => {
+  return request("/companies/create", {
+    method: "POST",
+    body: JSON.stringify(data),
+    credentials: "include",
+  });
+};
+
+// fetch all companies
+export const fetchAllCompanies = () => {
+  return request("/companies/all", { method: "GET" });
+};
+
+// edit company
+export const editCompany = (companyId, data) => {
+  return request(`/companies/${companyId}`, {
+    method: "PUT",
+    body: JSON.stringify(data),
+    credentials: "include",
+  });
+};
+// delete company
+export const deleteCompany = (companyId) => {
+  return request(`/companies/${companyId}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+};
+
+// add product
+export const addProduct = (formData) => {
+  return request("/products/create", {
+    method: "POST",
+    body: formData,
+    credentials: "include",
+  });
+};
+
+// fetch all products
+export const fetchAllProducts = () => {
+  return request("/products/all", { method: "GET" });
+};
+
+// edit product
+export const editProduct = (productId, data) => {
+  return request(`/products/${productId}`, {
+    method: "PUT",
+    body: JSON.stringify(data),
+    credentials: "include",
+  });
+};
+// delete product
+export const deleteProduct = (productId) => {
+  return request(`/products/${productId}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+};
+
+// fetch all galleries
+export const fetchAllGalleries = () => {
+  return request("/galleries/all", { method: "GET" });
+};
+
+// create market price
+export const createMarketPrice = (data) => {
+  return request("/bazar-dors/create", {
+    method: "POST",
+    body: JSON.stringify(data),
+    credentials: "include",
+  });
+};
+// fetch all market prices
+export const fetchAllMarketPrices = () => {
+  return request("/bazar-dors/all", { method: "GET" });
+};
+// delete market price
+export const deleteMarketPrice = (priceId) => {
+  return request(`/bazar-dors/${priceId}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+};
+
+// create seed price
+export const createSeedPrice = (data) => {
+  return request("/biz-bazars/create", {
+    method: "POST",
+    body: JSON.stringify(data),
+    credentials: "include",
+  });
+};
+// fetch all seed prices
+export const fetchAllSeedPrices = () => {
+  return request("/biz-bazars/all", { method: "GET" });
+};
+// delete seed price
+export const deleteSeedPrice = (priceId) => {
+  return request(`/biz-bazars/${priceId}`, {
     method: "DELETE",
     credentials: "include",
   });

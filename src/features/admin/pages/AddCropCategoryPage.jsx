@@ -1,30 +1,12 @@
-import React, { useMemo, useState } from "react";
+/* eslint-disable no-unused-vars */
+import React, { useMemo, useState, useRef } from "react";
+import { NavLink } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
-
-const fakeSubmit = (payload) =>
-  new Promise((resolve, reject) => {
-    const delay = 700 + Math.random() * 800;
-    setTimeout(() => {
-      if (Math.random() < 0.1) {
-        reject(new Error("Unexpected server error. Please try again."));
-      } else {
-        resolve({ ok: true, id: Math.random().toString(36).slice(2) });
-      }
-    }, delay);
-  });
+import { addCrops } from "../../../api/authApi"; // ✅ Import API
 
 const CATEGORY_OPTIONS = [
-  { value: "pest-control", label: "ক্ষতিকর পোকামাকড়" },
-  { value: "disease-management", label: "রোগবালাই" },
-  { value: "nutrition", label: "সার ও পুষ্টি" },
-  { value: "climate-support", label: "আবহাওয়া সহায়তা" },
-  { value: "equipment-tools", label: "যন্ত্রপাতি ও সরঞ্জাম" },
-];
-
-const STATUS_OPTIONS = [
-  { value: "published", label: "Published" },
-  { value: "draft", label: "Draft" },
-  { value: "archived", label: "Archived" },
+  { value: "ক্ষতিকর পোকামাকড়", label: "ক্ষতিকর পোকামাকড়" },
+  { value: "রোগবালাই", label: "রোগবালাই" },
 ];
 
 const normalizeSlug = (value) =>
@@ -35,39 +17,27 @@ const normalizeSlug = (value) =>
     .replace(/(^-|-$)+/g, "")
     .toLowerCase();
 
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
+
 export default function AddCropCategoryPage() {
   const [banglaName, setBanglaName] = useState("");
   const [englishName, setEnglishName] = useState("");
   const [category, setCategory] = useState("");
-  const [status, setStatus] = useState("published");
-  const [notes, setNotes] = useState("");
+  const [image, setImage] = useState(null);
   const [submitting, setSubmitting] = useState(false);
+  const fileInputRef = useRef(null);
 
   const slug = useMemo(() => {
     const base = englishName.trim() || banglaName.trim();
     return base ? normalizeSlug(base) : "";
   }, [banglaName, englishName]);
 
-  const payload = useMemo(
-    () => ({
-      banglaName: banglaName.trim(),
-      englishName: englishName.trim(),
-      categoryType: category,
-      status,
-      slug,
-      notes: notes.trim(),
-      meta: {
-        createdBy: "admin",
-        createdAt: new Date().toISOString(),
-      },
-    }),
-    [banglaName, englishName, category, status, slug, notes]
-  );
-
   const validate = () => {
-    if (!payload.banglaName) return "Bangla crop name is required";
-    if (!payload.englishName) return "English crop name is required";
-    if (!payload.categoryType) return "Please select a crop category";
+    if (!banglaName.trim()) return "Bangla crop name is required";
+    if (!englishName.trim()) return "English crop name is required";
+    if (!category) return "Please select a crop category";
+    if (!image) return "Please select an image";
+    if (image.size > MAX_FILE_SIZE) return "Image size must be less than 10MB";
     return null;
   };
 
@@ -75,8 +45,8 @@ export default function AddCropCategoryPage() {
     setBanglaName("");
     setEnglishName("");
     setCategory("");
-    setStatus("published");
-    setNotes("");
+    setImage(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   const handleSubmit = async (event) => {
@@ -87,21 +57,45 @@ export default function AddCropCategoryPage() {
       toast.error(error);
       return;
     }
+
     setSubmitting(true);
     const toastId = toast.loading("Saving crop category...");
+
     try {
-      await fakeSubmit(payload);
+      const formData = new FormData();
+      formData.append("banglaName", banglaName.trim());
+      formData.append("englishName", englishName.trim());
+      formData.append("category", category);
+      formData.append("image", image); // ✅ backend expects `image`
+
+      await addCrops(formData);
       toast.success("Crop category saved!", { id: toastId });
       resetFields();
     } catch (err) {
-      toast.error(err.message || "Something went wrong", { id: toastId });
+      toast.error(err?.message || "Something went wrong", { id: toastId });
     } finally {
       setSubmitting(false);
     }
   };
 
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      toast.error("Only image files are allowed");
+      return;
+    }
+    if (file.size > MAX_FILE_SIZE) {
+      toast.error("Image size must be less than 10MB");
+      return;
+    }
+    setImage(file);
+  };
+
   return (
-    <div className="content-wrapper _scoped_admin" style={{ minHeight: "839px" }}>
+    <div
+      className="content-wrapper _scoped_admin"
+      style={{ minHeight: "839px" }}>
       <Toaster position="top-right" />
       <div className="content-header">
         <div className="container-fluid">
@@ -112,10 +106,12 @@ export default function AddCropCategoryPage() {
             <div className="col-sm-6">
               <ol className="breadcrumb float-sm-right">
                 <li className="breadcrumb-item">
-                  <a href="/admin/dashboard">Dashboard</a>
+                  <NavLink to="/admin/dashboard">Dashboard</NavLink>
                 </li>
                 <li className="breadcrumb-item">
-                  <a href="/admin/crops/manage-category">Manage Crop Category</a>
+                  <NavLink to="/admin/crops/manage-category">
+                    Manage Crop Category
+                  </NavLink>
                 </li>
                 <li className="breadcrumb-item active">Add Crop Category</li>
               </ol>
@@ -137,7 +133,8 @@ export default function AddCropCategoryPage() {
                     <div className="form-row">
                       <div className="form-group col-md-6">
                         <label htmlFor="banglaName">
-                          Crop Name (Bangla) <span className="text-danger">*</span>
+                          Crop Name (Bangla){" "}
+                          <span className="text-danger">*</span>
                         </label>
                         <input
                           id="banglaName"
@@ -145,13 +142,14 @@ export default function AddCropCategoryPage() {
                           className="form-control"
                           placeholder="বাংলা ফসলের নাম লিখুন"
                           value={banglaName}
-                          onChange={(event) => setBanglaName(event.target.value)}
+                          onChange={(e) => setBanglaName(e.target.value)}
                           required
                         />
                       </div>
                       <div className="form-group col-md-6">
                         <label htmlFor="englishName">
-                          Crop Name (English) <span className="text-danger">*</span>
+                          Crop Name (English){" "}
+                          <span className="text-danger">*</span>
                         </label>
                         <input
                           id="englishName"
@@ -159,11 +157,12 @@ export default function AddCropCategoryPage() {
                           className="form-control"
                           placeholder="Enter crop name in English"
                           value={englishName}
-                          onChange={(event) => setEnglishName(event.target.value)}
+                          onChange={(e) => setEnglishName(e.target.value)}
                           required
                         />
                       </div>
                     </div>
+
                     <div className="form-row">
                       <div className="form-group col-md-6">
                         <label htmlFor="categoryType">
@@ -173,64 +172,52 @@ export default function AddCropCategoryPage() {
                           id="categoryType"
                           className="form-control"
                           value={category}
-                          onChange={(event) => setCategory(event.target.value)}
-                          required
-                        >
-                          <option value="" hidden>
+                          onChange={(e) => setCategory(e.target.value)}
+                          required>
+                          <option
+                            value=""
+                            hidden>
                             Select crop category
                           </option>
                           {CATEGORY_OPTIONS.map((option) => (
-                            <option key={option.value} value={option.value}>
+                            <option
+                              key={option.value}
+                              value={option.value}>
                               {option.label}
                             </option>
                           ))}
                         </select>
                       </div>
                       <div className="form-group col-md-6">
-                        <label htmlFor="status">Status</label>
-                        <select
-                          id="status"
+                        <label htmlFor="image">
+                          Crop Image <span className="text-danger">*</span>
+                        </label>
+                        <input
+                          ref={fileInputRef}
+                          type="file"
                           className="form-control"
-                          value={status}
-                          onChange={(event) => setStatus(event.target.value)}
-                        >
-                          {STATUS_OPTIONS.map((option) => (
-                            <option key={option.value} value={option.value}>
-                              {option.label}
-                            </option>
-                          ))}
-                        </select>
+                          accept="image/*"
+                          onChange={handleFileChange}
+                          required
+                        />
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div className="card card-outline card-info">
-                  <div className="card-header">
-                    <h3 className="card-title mb-0">Additional Notes</h3>
-                  </div>
-                  <div className="card-body">
-                    <div className="form-group mb-0">
-                      <label htmlFor="notes">Internal Notes</label>
-                      <textarea
-                        id="notes"
-                        className="form-control"
-                        rows={4}
-                        placeholder="Add agronomic guidance, seasonal info, or reminders for editors."
-                        value={notes}
-                        onChange={(event) => setNotes(event.target.value)}
-                      />
-                    </div>
-                  </div>
-                </div>
                 <div className="card card-outline card-success mt-3">
                   <div className="card-body">
-                    <button type="submit" className="btn btn-primary btn-lg w-100 mb-2" disabled={submitting}>
+                    <button
+                      type="submit"
+                      className="btn btn-primary btn-lg w-100 mb-2"
+                      disabled={submitting}>
                       {submitting ? "Saving..." : "Save Category"}
                     </button>
-                    <a href="/admin/crops/manage-category" className="btn btn-outline-secondary w-100">
+                    <NavLink
+                      to="/admin/crops/manage-category"
+                      className="btn btn-outline-secondary w-100">
                       Manage Crop Categories
-                    </a>
+                    </NavLink>
                   </div>
                 </div>
               </div>

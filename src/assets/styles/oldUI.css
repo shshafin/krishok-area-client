@@ -5175,6 +5175,44 @@ h4 {
   color: white;
 }
 
+.main-header {
+  justify-content: space-between !important;
+}
+
+.crop-detail-actions {
+  position: absolute;
+  right: 0rem;
+  top: 1rem;
+  width: 5rem;
+  display: flex;
+  gap: .5rem;
+  align-items: center;
+  flex-direction: column;
+  height: 10rem;
+}
+
+.crop-detail-edit-icon {
+  position: relative !important;
+  z-index: 11111111;
+}
+
+.crop-detail-actions button {
+  width: 2.5rem !important;
+  height: 2.5rem !important;
+  position: initial !important;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: .5rem;
+  border: none !important;
+}
+
+.crop-detail-actions button svg path {
+  fill: none;
+}
+
 .related-products-main-header h2 {
   margin-bottom: 0px;
 }

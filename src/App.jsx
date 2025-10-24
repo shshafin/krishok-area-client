@@ -4,14 +4,14 @@ import Header from "@/components/layout/Header";
 import Home from "@/features/home/pages/Home";
 import Gallery from "@/features/gallery/pages/Gallery";
 import Auth from "@/features/auth/pages/Auth";
-import AdminLogin from "@/features/auth/components/AdminLogin";
 import TableViewPage from "@/features/guidelines/pages/TableViewPage";
+// import DiscoverPage from "@/features/discover/page/DiscoverPage";
 import PrivateRoute from "./components/privateRoute/PrivateRoute";
 import PublicRoute from "./components/privateRoute/PublicRoute";
 import RoleBasedRoute from "./components/privateRoute/RoleBasedRoute";
 import SettingsPage from "@/features/settings/pages/SettingsPage";
 import ProfilePage from "@/features/profile/pages/Profile";
-import Follow from "@/features/profile/pages/Follow";
+import FollowPage from "@/features/follow/pages/Follow";
 
 import GalleryPost from "./features/gallery/pages/GalleryPost";
 import GuidlinesCard from "./features/gallery/pages/GuidlinesCard";
@@ -36,12 +36,17 @@ const AddProductPage = lazy(() => import("./features/admin/pages/AddProductPage"
 const ManagePostsPage = lazy(() => import("./features/admin/pages/ManagePostsPage"));
 const ManageGalleryPhotosPage = lazy(() => import("./features/admin/pages/ManageGalleryPhotosPage"));
 const ManageCropCategoryPage = lazy(() => import("./features/admin/pages/ManageCropCategoryPage"));
+const ManageCropDetailsPage = lazy(() => import("./features/admin/pages/ManageCropDetailsPage"));
+const ManageCompanyPage = lazy(() => import("./features/admin/pages/ManageCompanyPage"));
+const ManageProductDetailsPage = lazy(() => import("./features/admin/pages/ManageProductDetailsPage"));
+const ManageBazarPricePage = lazy(() => import("./features/admin/pages/ManageBazarPricePage"));
+const ManageSeedBazarPage = lazy(() => import("./features/admin/pages/ManageSeedBazarPage"));
 const ManageNotificationsPage = lazy(() => import("./features/admin/pages/ManageNotificationsPage"));
 
 function App() {
   const location = useLocation();
   const adminFallback = <div className="p-4 text-center text-muted">Loading admin…</div>;
-  const hideHeader = ["/auth/login", "/auth/signup", "/auth/admin", "/admin"]; // Added admin paths
+  const hideHeader = ["/auth/login", "/auth/signup", "/admin"]; // Added admin paths
   const showHeader = !hideHeader.some((path) =>
     location.pathname.startsWith(path)
   ); // Use startsWith for admin paths
@@ -52,7 +57,6 @@ function App() {
 
       <Routes>
         {/* Public routes */}
-        <Route path="/auth/admin" element={<AdminLogin />} />
         <Route
           path="/auth/*"
           element={
@@ -69,6 +73,15 @@ function App() {
           element={
             <PrivateRoute>
               <Home />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/follow"
+          element={
+            <PrivateRoute>
+              <FollowPage />
             </PrivateRoute>
           }
         />
@@ -109,25 +122,7 @@ function App() {
         />
 
         <Route
-          path="/me"
-          element={
-            <PrivateRoute>
-              <ProfilePage />
-            </PrivateRoute>
-          }
-        />
-
-        <Route
-          path="/follow"
-          element={
-            <PrivateRoute>
-              <Follow />
-            </PrivateRoute>
-          }
-        />
-
-        <Route
-          path="/user/:username"
+          path="/user"
           element={
             <PrivateRoute>
               <ProfilePage />
@@ -167,6 +162,15 @@ function App() {
           element={
             <PrivateRoute>
               <BlogPage />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/discover"
+          element={
+            <PrivateRoute>
+              {/* <DiscoverPage /> */}
             </PrivateRoute>
           }
         />
@@ -237,7 +241,12 @@ function App() {
           <Route path="crops/add-category" element={<AddCropCategoryPage />} />
           <Route path="crops/add-details" element={<AddCropDetailsPage />} />
           <Route path="crops/manage-category" element={<ManageCropCategoryPage />} />
+          <Route path="crops/manage-details" element={<ManageCropDetailsPage />} />
+          <Route path="companies/manage" element={<ManageCompanyPage />} />
           <Route path="products/add" element={<AddProductPage />} />
+          <Route path="products/manage-details" element={<ManageProductDetailsPage />} />
+          <Route path="bazar/manage-price" element={<ManageBazarPricePage />} />
+          <Route path="bazar/manage-seed" element={<ManageSeedBazarPage />} />
           <Route path="notifications/manage" element={<ManageNotificationsPage />} />
         </Route>
       </Routes>
@@ -246,4 +255,3 @@ function App() {
 }
 
 export default App;
-

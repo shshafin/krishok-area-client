@@ -1,20 +1,7 @@
 import React, { useMemo, useState } from "react";
+import { NavLink } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
-
-const fakeSubmit = (payload) =>
-  new Promise((resolve, reject) => {
-    const time = 600 + Math.random() * 800;
-    setTimeout(() => {
-      if (Math.random() < 0.1) reject(new Error("Unable to save company. Try again."));
-      else resolve({ ok: true, id: Math.random().toString(36).slice(2) });
-    }, time);
-  });
-
-const STATUS_OPTIONS = [
-  { value: "published", label: "Published" },
-  { value: "draft", label: "Draft" },
-  { value: "archived", label: "Archived" },
-];
+import { addCompany } from "../../../api/authApi";
 
 const normalizeSlug = (value) =>
   value
@@ -27,48 +14,38 @@ const normalizeSlug = (value) =>
 export default function AddCompanyCategoryPage() {
   const [banglaName, setBanglaName] = useState("");
   const [englishName, setEnglishName] = useState("");
-  const [title, setTitle] = useState("");
-  const [status, setStatus] = useState("published");
   const [location, setLocation] = useState("");
-  const [notes, setNotes] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
   const slug = useMemo(() => {
-    const base = title.trim() || englishName.trim() || banglaName.trim();
+    const base = englishName.trim() || banglaName.trim();
     return base ? normalizeSlug(base) : "";
-  }, [title, englishName, banglaName]);
+  }, [englishName, banglaName]);
 
   const payload = useMemo(
     () => ({
       banglaName: banglaName.trim(),
       englishName: englishName.trim(),
-      title: title.trim(),
       slug,
-      status,
       location: location.trim(),
-      notes: notes.trim(),
       meta: {
         createdBy: "admin",
         createdAt: new Date().toISOString(),
       },
     }),
-    [banglaName, englishName, title, slug, status, location, notes]
+    [banglaName, englishName, slug, location]
   );
 
   const validate = () => {
     if (!payload.banglaName) return "Company name in Bangla is required";
     if (!payload.englishName) return "Company name in English is required";
-    if (!payload.title) return "Company title is required";
     return null;
   };
 
   const resetFields = () => {
     setBanglaName("");
     setEnglishName("");
-    setTitle("");
-    setStatus("published");
     setLocation("");
-    setNotes("");
   };
 
   const handleSubmit = async (event) => {
@@ -82,7 +59,7 @@ export default function AddCompanyCategoryPage() {
     setSubmitting(true);
     const toastId = toast.loading("Saving company...");
     try {
-      await fakeSubmit(payload);
+      await addCompany(payload); // ✅ এখানে fakeSubmit এর জায়গায় real API call
       toast.success("Company saved!", { id: toastId });
       resetFields();
     } catch (err) {
@@ -93,7 +70,9 @@ export default function AddCompanyCategoryPage() {
   };
 
   return (
-    <div className="content-wrapper _scoped_admin" style={{ minHeight: "839px" }}>
+    <div
+      className="content-wrapper _scoped_admin"
+      style={{ minHeight: "839px" }}>
       <Toaster position="top-right" />
       <div className="content-header">
         <div className="container-fluid">
@@ -104,10 +83,10 @@ export default function AddCompanyCategoryPage() {
             <div className="col-sm-6">
               <ol className="breadcrumb float-sm-right">
                 <li className="breadcrumb-item">
-                  <a href="/admin/dashboard">Dashboard</a>
+                  <NavLink to="/admin/dashboard">Dashboard</NavLink>
                 </li>
                 <li className="breadcrumb-item">
-                  <a href="/admin/companies/manage">Manage Company</a>
+                  <NavLink to="/admin/companies/manage">Manage Company</NavLink>
                 </li>
                 <li className="breadcrumb-item active">Add Company</li>
               </ol>
@@ -129,7 +108,8 @@ export default function AddCompanyCategoryPage() {
                     <div className="form-row">
                       <div className="form-group col-md-6">
                         <label htmlFor="banglaName">
-                          Company Name (Bangla) <span className="text-danger">*</span>
+                          Company Name (Bangla){" "}
+                          <span className="text-danger">*</span>
                         </label>
                         <input
                           id="banglaName"
@@ -137,13 +117,16 @@ export default function AddCompanyCategoryPage() {
                           className="form-control"
                           placeholder="বাংলা নাম লিখুন"
                           value={banglaName}
-                          onChange={(event) => setBanglaName(event.target.value)}
+                          onChange={(event) =>
+                            setBanglaName(event.target.value)
+                          }
                           required
                         />
                       </div>
                       <div className="form-group col-md-6">
                         <label htmlFor="englishName">
-                          Company Name (English) <span className="text-danger">*</span>
+                          Company Name (English){" "}
+                          <span className="text-danger">*</span>
                         </label>
                         <input
                           id="englishName"
@@ -151,39 +134,12 @@ export default function AddCompanyCategoryPage() {
                           className="form-control"
                           placeholder="Enter company name in English"
                           value={englishName}
-                          onChange={(event) => setEnglishName(event.target.value)}
+                          onChange={(event) =>
+                            setEnglishName(event.target.value)
+                          }
                           required
                         />
                       </div>
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="title">
-                        Company Title <span className="text-danger">*</span>
-                      </label>
-                      <input
-                        id="title"
-                        type="text"
-                        className="form-control"
-                        placeholder="Company headline or slogan"
-                        value={title}
-                        onChange={(event) => setTitle(event.target.value)}
-                        required
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="status">Status</label>
-                      <select
-                        id="status"
-                        className="form-control"
-                        value={status}
-                        onChange={(event) => setStatus(event.target.value)}
-                      >
-                        {STATUS_OPTIONS.map((option) => (
-                          <option key={option.value} value={option.value}>
-                            {option.label}
-                          </option>
-                        ))}
-                      </select>
                     </div>
                     <div className="form-group">
                       <label htmlFor="location">Location</label>
@@ -196,27 +152,21 @@ export default function AddCompanyCategoryPage() {
                         onChange={(event) => setLocation(event.target.value)}
                       />
                     </div>
-                    <div className="form-group mb-0">
-                      <label htmlFor="notes">Notes</label>
-                      <textarea
-                        id="notes"
-                        className="form-control"
-                        rows={4}
-                        placeholder="Internal notes, partnerships, history, etc."
-                        value={notes}
-                        onChange={(event) => setNotes(event.target.value)}
-                      />
-                    </div>
                   </div>
                 </div>
                 <div className="card card-outline card-success mt-3">
                   <div className="card-body">
-                    <button type="submit" className="btn btn-primary btn-lg w-100 mb-2" disabled={submitting}>
+                    <button
+                      type="submit"
+                      className="btn btn-primary btn-lg w-100 mb-2"
+                      disabled={submitting}>
                       {submitting ? "Saving..." : "Save Company"}
                     </button>
-                    <a href="/admin/companies/manage" className="btn btn-outline-secondary w-100">
+                    <NavLink
+                      to="/admin/companies/manage"
+                      className="btn btn-outline-secondary w-100">
                       Manage Company
-                    </a>
+                    </NavLink>
                   </div>
                 </div>
               </div>
