@@ -46,7 +46,7 @@
 }
 
 .video-card {
-  background: #fff;
+  background: #262c39;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -64,7 +64,7 @@
   position: relative;
   aspect-ratio: 16/9;
   overflow: hidden;
-  background: #f0f0f0;
+  background: #191d25;
 }
 
 .video-thumbnail {
@@ -91,7 +91,7 @@
 .video-title {
   font-size: 1.125rem;
   margin: 0 0 8px;
-  color: #333;
+  color: #f0f0f0;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   line-clamp: 2;

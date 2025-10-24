@@ -85,7 +85,7 @@ const VideoGallerySlider = () => {
                 </div>
                 <div className="video-info">
                   <h3 className="video-title">{video.title}</h3>
-                  <span className="video-views">{video.views} views</span>
+                  {/* <span className="video-views">{video.views} views</span> */}
                 </div>
               </div>
             </div>
