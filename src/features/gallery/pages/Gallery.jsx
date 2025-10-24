@@ -1,6 +1,8 @@
 import { useCallback, useMemo, useState } from "react";
 import Card from "@/features/gallery/components/Card.jsx";
+import VideoGallerySlider from "@/features/gallery/components/VideoGallerySlider";
 import "@/assets/styles/oldUI.css";
+import "@/features/gallery/styles/VideoGallerySlider.css";
 
 export default function Gallery() {
   const [query, setQuery] = useState("");
@@ -79,7 +81,7 @@ export default function Gallery() {
       {/* Top Info Section */}
       <div className="photo-body-box">
         <h4>কমিউনিটির শেয়ার করা অনুপ্রেরণাদায়ক ছবি আবিষ্কার করুন</h4>
-
+        
         {/* <div className="companyprosearchbox">
           <div className="allcompanyprosearchbox text-end rounded pb-3 paddingbox mt-5">
             <div id="onecompanyproduct" className="text-start">
@@ -100,8 +102,15 @@ export default function Gallery() {
         </div> */}
       </div>
 
+      {/* Video Gallery Slider */}
+      <div style={{ marginTop: "1.5rem" }}>
+        <VideoGallerySlider />
+      </div>
+
+
       {/* Gallery Cards */}
-      <div className="cards" style={{ marginTop: "1rem" }}>
+      <h2 class="gallery-title" style={{ marginTop: "3rem" }}>বৈশিষ্ট্যযুক্ত ছবি</h2>
+      <div className="cards" style={{ marginTop: "1rem", margin: "auto 3rem"}}>
         {filteredCards.map((it, idx) => (
           <Card key={it.id || idx} {...it} path="post" />
         ))}

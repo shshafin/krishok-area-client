@@ -15,8 +15,7 @@
 /* Slides – give them a fixed basis so they render even before image loads */
 .embla__slide {
   flex: 0 0 300px; /* width of one card */
-  height: 400px;
-  display: flex;
+  height: 277px;
   align-items: center;
   justify-content: center;
 }
