@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 import adminImage from "@/assets/images/krishok-image.png";
-import { loginAdmin } from "@/api/authApi";
+// import { loginAdmin } from "@/api/authApi";
 
 const initialFormState = Object.freeze({
   email: "",

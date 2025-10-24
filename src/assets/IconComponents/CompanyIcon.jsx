@@ -18,7 +18,7 @@ const CompanyIcon = (props) => (
       d="M8 9L11 9M8 13L11 13"
       stroke="currentColor"
       strokeWidth="1.5"
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     ></path>
     <path
@@ -31,13 +31,13 @@ const CompanyIcon = (props) => (
       d="M2 22L22 22"
       stroke="currentColor"
       strokeWidth="1.5"
-      stroke-linecap="round"
+      strokeLinecap="round"
     ></path>
     <path
       d="M3 22V6.71724C3 4.20649 3 2.95111 3.79118 2.32824C4.58237 1.70537 5.74742 2.04355 8.07752 2.7199L13.0775 4.17122C14.4836 4.57937 15.1867 4.78344 15.5933 5.33965C16 5.89587 16 6.65344 16 8.16857V22"
       stroke="currentColor"
       strokeWidth="1.5"
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     ></path>
   </svg>

@@ -22,6 +22,7 @@ import MarcketPricePage from "./features/Marcket/pages/MarcketPricePage";
 import CompanyPage from "./features/company/pages/CompanyPage";
 import CompanyName from "./features/company/pages/CompanyName";
 import ProductDetails from "./features/company/components/ProductDetails";
+import AdminLogin from "./features/auth/components/AdminLogin";
 
 // Admin Pages (lazy-loaded)
 const AdminLayout = lazy(() => import("./features/admin/components/AdminLayout"));
@@ -46,7 +47,7 @@ const ManageNotificationsPage = lazy(() => import("./features/admin/pages/Manage
 function App() {
   const location = useLocation();
   const adminFallback = <div className="page-loader"><LiquedLoader label="লোড হচ্ছে..." /></div>;
-  const hideHeader = ["/auth/login", "/auth/signup", "/admin"]; // Added admin paths
+  const hideHeader = ["/auth/login", "/auth/signup", "/admin", "/auth/admin"]; // Added admin paths
   const showHeader = !hideHeader.some((path) =>
     location.pathname.startsWith(path)
   ); // Use startsWith for admin paths
@@ -76,6 +77,7 @@ function App() {
             </PrivateRoute>
           }
         />
+
 
         <Route
           path="/follow"
@@ -225,9 +227,9 @@ function App() {
           path="/admin/*"
           element={
             <Suspense fallback={adminFallback}>
-              {/* <RoleBasedRoute allowedRoles={["admin"]}> */}
+              <RoleBasedRoute allowedRoles={["admin"]}>
               <AdminLayout />
-              {/* </RoleBasedRoute> */}
+              </RoleBasedRoute>
             </Suspense>
           }
         >

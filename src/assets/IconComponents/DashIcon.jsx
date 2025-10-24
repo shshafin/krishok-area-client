@@ -23,27 +23,27 @@ const DashIcon = (props) => (
       d="M6.99981 6.00002H7.00879"
       stroke="currentColor"
       strokeWidth="1.5"
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     ></path>
     <path
       d="M10.9998 6.00002H11.0088"
       stroke="currentColor"
       strokeWidth="1.5"
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     ></path>
     <path
       d="M17 17C17 14.2386 14.7614 12 12 12C9.23858 12 7 14.2386 7 17"
       stroke="currentColor"
       strokeWidth="1.5"
-      stroke-linecap="round"
+      strokeLinecap="round"
     ></path>
     <path
       d="M12.707 15.293L11.2928 16.7072"
       stroke="currentColor"
       strokeWidth="1.5"
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     ></path>
   </svg>
