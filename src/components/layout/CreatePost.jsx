@@ -40,7 +40,7 @@ function CreatePost({
         <div
           className="textPost"
           onClick={onTextClick}>
-          <span>পোস্ট করুন</span>
+          <span>পোস্ট করুন..</span>
         </div>
       </section>
 

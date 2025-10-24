@@ -131,7 +131,7 @@ export default function PostComposerModal({
 
   const headerTitle =
     mode === "video"
-      ? "ভিডিও পোস্ট করুন"
+      ? "ভিডিও পোস্ট করুন.."
       : mode === "media"
         ? "ছবি / ভিডিও যুক্ত করুন"
         : "আপনি কী ভাবছেন?";
