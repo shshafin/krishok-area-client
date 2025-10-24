@@ -74,11 +74,13 @@ export default function SeedMarketPage() {
         {/* Create Button */}
         <button
           className="cbtn_minx_dbpx58"
-          onClick={() => setCreateOpen(true)}
-        >
+          onClick={() => setCreateOpen(true)}>
           <div className="cbtn_dixbp_xr5">
             <div className="cbtn_minxi_imgsesalesx45x">
-              <img src={AddPost} alt="Add items" />
+              <img
+                src={AddPost}
+                alt="Add items"
+              />
             </div>
             <div className="cbtn_minxd_imagxds46">
               <h4>বীজ বাজার যোগ করুন</h4>
@@ -88,7 +90,11 @@ export default function SeedMarketPage() {
 
         {/* Items */}
         {items.map((it) => (
-          <MarketCard key={it.id} {...it} onClick={openCard} />
+          <MarketCard
+            key={it.id}
+            {...it}
+            onClick={openCard}
+          />
         ))}
       </div>
 

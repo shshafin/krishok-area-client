@@ -135,33 +135,32 @@ export default function Post({
           </div>
         )}
 
-
         <div className="media-content flex FY-center">
-        {/* Media */}
-        {media.map((url, index) => {
-          const isVideo = /\.(mp4|webm|ogg)$/i.test(url);
-          return (
-            <div
-              key={`${_id}-${index}`}
-              className="media-item cursor-pointer"
-              onClick={() => setOpenIndex(index)}>
-              {isVideo ? (
-                <video
-                  src={url.startsWith("http") ? url : `${baseApi}${url}`}
-                  muted
-                  controls
-                  preload="metadata"
-                  className="media-video"
-                />
-              ) : (
-                <img
-                  src={url.startsWith("http") ? url : `${baseApi}${url}`}
-                  alt={`media-${index}`}
-                />
-              )}
-            </div>
-          );
-        })}
+          {/* Media */}
+          {media.map((url, index) => {
+            const isVideo = /\.(mp4|webm|ogg)$/i.test(url);
+            return (
+              <div
+                key={`${_id}-${index}`}
+                className="media-item cursor-pointer"
+                onClick={() => setOpenIndex(index)}>
+                {isVideo ? (
+                  <video
+                    src={url.startsWith("http") ? url : `${baseApi}${url}`}
+                    muted
+                    controls
+                    preload="metadata"
+                    className="media-video"
+                  />
+                ) : (
+                  <img
+                    src={url.startsWith("http") ? url : `${baseApi}${url}`}
+                    alt={`media-${index}`}
+                  />
+                )}
+              </div>
+            );
+          })}
         </div>
 
         {/* Interactions */}

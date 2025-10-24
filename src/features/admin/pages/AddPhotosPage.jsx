@@ -1,16 +1,14 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { NavLink } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import UploadCloudIcon from "../../../assets/IconComponents/UploadCloudIcon";
-
-const fakeUpload = (payload) =>
-  new Promise((resolve, reject) => {
-    const ms = 800 + Math.random() * 900;
-    setTimeout(() => {
-      if (Math.random() < 0.15) reject(new Error("Network error. Try again."));
-      else resolve({ ok: true, id: Math.random().toString(36).slice(2) });
-    }, ms);
-  });
+import { addGalleries } from "../../../api/authApi"; // ✅ API Import
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
@@ -27,7 +25,6 @@ export default function AddPhotosPage() {
   const [isPublic, setIsPublic] = useState(true);
   const [photo, setPhoto] = useState(null);
   const [previewUrl, setPreviewUrl] = useState("");
-  const [isDragging, setIsDragging] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const fileInputRef = useRef(null);
 
@@ -50,39 +47,11 @@ export default function AddPhotosPage() {
     (event) => {
       const list = Array.from(event.target.files || []);
       if (list.length) {
-        const firstImage = list.find((file) => file.type.startsWith("image/")) || list[0];
+        const firstImage =
+          list.find((file) => file.type.startsWith("image/")) || list[0];
         handleIncomingFile(firstImage);
       }
       event.target.value = "";
-    },
-    [handleIncomingFile]
-  );
-
-  const onDragEnter = useCallback((event) => {
-    event.preventDefault();
-    setIsDragging(true);
-  }, []);
-
-  const onDragOver = useCallback((event) => {
-    event.preventDefault();
-  }, []);
-
-  const onDragLeave = useCallback((event) => {
-    const nextTarget = event.relatedTarget;
-    if (nextTarget instanceof Node && event.currentTarget.contains(nextTarget)) {
-      return;
-    }
-    setIsDragging(false);
-  }, []);
-
-  const onDrop = useCallback(
-    (event) => {
-      event.preventDefault();
-      setIsDragging(false);
-      const list = Array.from(event.dataTransfer?.files || []);
-      if (!list.length) return;
-      const firstImage = list.find((file) => file.type.startsWith("image/")) || list[0];
-      handleIncomingFile(firstImage);
     },
     [handleIncomingFile]
   );
@@ -108,32 +77,21 @@ export default function AddPhotosPage() {
     }
   }, []);
 
-  const payload = useMemo(
-    () => ({
-      description: description.trim(),
-      visibility: isPublic ? "public" : "private",
-      images: photo
-        ? [
-            {
-              name: photo.name,
-              size: photo.size,
-              type: photo.type,
-            },
-          ]
-        : [],
-    }),
-    [description, isPublic, photo]
-  );
-
   const validate = () => {
     if (!photo) return "Please add an image";
-    if (photo.size > MAX_FILE_SIZE) return `File "${photo.name}" is larger than 10MB`;
-    if (!photo.type.startsWith("image/")) return "Only image files are supported";
+    if (photo.size > MAX_FILE_SIZE)
+      return `File "${photo.name}" is larger than 10MB`;
+    if (!photo.type.startsWith("image/"))
+      return "Only image files are supported";
     return null;
   };
 
-  const formattedSize = useMemo(() => (photo ? formatFileSize(photo.size) : ""), [photo]);
+  const formattedSize = useMemo(
+    () => (photo ? formatFileSize(photo.size) : ""),
+    [photo]
+  );
 
+  // ✅ Submit Handler - REAL API Connected
   const onSubmit = async (event) => {
     event.preventDefault();
     if (submitting) return;
@@ -143,22 +101,32 @@ export default function AddPhotosPage() {
       return;
     }
     setSubmitting(true);
-    const toastId = toast.loading("Uploading photos...");
+
+    const toastId = toast.loading("Uploading photo...");
+
+    // 🔥 Create FormData
+    const formData = new FormData();
+    formData.append("description", description);
+    formData.append("visibility", isPublic ? "public" : "private");
+    formData.append("image", photo); // backend এ যে ফিল্ড দরকার সেটাই দিবে
+
     try {
-      const res = await fakeUpload(payload);
-      toast.success("Upload complete!", { id: toastId });
+      await addGalleries(formData);
+      toast.success("Photo uploaded successfully!", { id: toastId });
       setDescription("");
       setIsPublic(true);
       removePhoto();
     } catch (error) {
-      toast.error(error.message || "Something went wrong", { id: toastId });
+      toast.error(error?.message || "Upload failed!", { id: toastId });
     } finally {
       setSubmitting(false);
     }
   };
 
   return (
-    <div className="content-wrapper _scoped_admin add-photo-page" style={{ minHeight: "839px" }}>
+    <div
+      className="content-wrapper _scoped_admin add-photo-page"
+      style={{ minHeight: "839px" }}>
       <Toaster position="top-right" />
       <div className="content-header add-photo-header">
         <div className="container-fluid">
@@ -174,7 +142,9 @@ export default function AddPhotosPage() {
                 <NavLink to="/admin/dashboard">Dashboard</NavLink>
               </li>
               <li className="breadcrumb-item">
-                <NavLink to="/admin/media/manage-gallery-photo">Galleries</NavLink>
+                <NavLink to="/admin/media/manage-gallery-photo">
+                  Galleries
+                </NavLink>
               </li>
               <li className="breadcrumb-item active">Add photo</li>
             </ol>
@@ -184,9 +154,12 @@ export default function AddPhotosPage() {
 
       <section className="content add-photo-content">
         <div className="add-photo-shell">
-          <form className="add-photo-form" onSubmit={onSubmit}>
+          <form
+            className="add-photo-form"
+            onSubmit={onSubmit}>
             <div className="add-photo-card">
               <div className="add-photo-card-body">
+                {/* Description Field */}
                 <div className="add-photo-field">
                   <label htmlFor="description">Photo description</label>
                   <p className="add-photo-field-helper">
@@ -202,23 +175,28 @@ export default function AddPhotosPage() {
                   />
                 </div>
 
+                {/* Drag & Drop Zone */}
                 <div
-                  className={`add-photo-dropzone ${photo ? "has-photo" : ""} ${
-                    isDragging ? "is-dragging" : ""
-                  }`}
-                  onDragEnter={onDragEnter}
-                  onDragOver={onDragOver}
-                  onDragLeave={onDragLeave}
-                  onDrop={onDrop}
-                >
-                  <UploadCloudIcon size={64} className="add-photo-icon" />
+                  className={`add-photo-dropzone ${photo ? "has-photo" : ""}`}
+                  onDragEnter={(e) => e.preventDefault()}
+                  onDragOver={(e) => e.preventDefault()}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    const file = e.dataTransfer.files[0];
+                    handleIncomingFile(file);
+                  }}>
+                  <UploadCloudIcon
+                    size={64}
+                    className="add-photo-icon"
+                  />
                   <p className="add-photo-drop-title">Drag & drop your photo</p>
-                  <p className="add-photo-drop-subtitle">PNG or JPG, up to 10MB</p>
+                  <p className="add-photo-drop-subtitle">
+                    PNG or JPG, up to 10MB
+                  </p>
                   <button
                     type="button"
                     className="add-photo-secondary"
-                    onClick={onPickFiles}
-                  >
+                    onClick={onPickFiles}>
                     Browse files
                   </button>
                   <input
@@ -230,23 +208,32 @@ export default function AddPhotosPage() {
                   />
                 </div>
 
+                {/* Preview */}
                 {photo && (
                   <div className="add-photo-preview-wrapper">
                     <div className="add-photo-preview">
-                      {previewUrl && <img src={previewUrl} alt={photo.name} />}
+                      {previewUrl && (
+                        <img
+                          src={previewUrl}
+                          alt={photo.name}
+                        />
+                      )}
                     </div>
                     <div className="add-photo-preview-meta">
                       <div className="add-photo-preview-info">
-                        <span className="add-photo-preview-name" title={photo.name}>
+                        <span
+                          className="add-photo-preview-name"
+                          title={photo.name}>
                           {photo.name}
                         </span>
-                        <span className="add-photo-preview-size">{formattedSize}</span>
+                        <span className="add-photo-preview-size">
+                          {formattedSize}
+                        </span>
                       </div>
                       <button
                         type="button"
                         className="add-photo-remove"
-                        onClick={removePhoto}
-                      >
+                        onClick={removePhoto}>
                         Remove photo
                       </button>
                     </div>
@@ -258,8 +245,7 @@ export default function AddPhotosPage() {
                 <button
                   type="submit"
                   className="add-photo-submit"
-                  disabled={submitting}
-                >
+                  disabled={submitting}>
                   {submitting ? "Uploading..." : "Upload Photo"}
                 </button>
               </div>
