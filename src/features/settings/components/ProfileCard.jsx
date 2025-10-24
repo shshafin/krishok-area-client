@@ -110,7 +110,7 @@ export default function ProfileCard({
                   style={{ color: "#3b82f6", fontWeight: 800 }}>
                   {followers}
                 </div>
-                <div className="text">Followers</div>
+                <div className="text">অনুসারী</div>
               </div>
               <div className="followers">
                 <div
@@ -118,11 +118,11 @@ export default function ProfileCard({
                   style={{ color: "#10b981", fontWeight: 800 }}>
                   {following}
                 </div>
-                <div className="text">Following</div>
+                <div className="text">অনুসরণ করছেন</div>
               </div>
               <div className="followers">
                 <div className={`status ${isOnline ? "green" : "gray"}`}>●</div>
-                <div className="text">{isOnline ? "Online" : "Offline"}</div>
+                <div className="text">{isOnline ? "অনলাইন" : "অফলাইন"}</div>
               </div>
             </div>
           </div>

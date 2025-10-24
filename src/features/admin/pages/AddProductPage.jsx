@@ -320,14 +320,13 @@ export default function AddProductPage() {
 
                 {/* Applications */}
                 <div className="card card-outline card-success">
-                  <div className="card-header d-flex justify-content-between align-items-center">
+                  <div className="spaceAddProduct">
                     <h3 className="card-title mb-0">Application Details</h3>
                     <button
                       type="button"
-                      className="btn btn-sm btn-outline-primary"
+                      className="addBtn"
                       onClick={addApplicationRow}>
-                      Add Row
-                    </button>
+                      Add Row</button>
                   </div>
                   <div className="card-body">
                     <div className="table-responsive">

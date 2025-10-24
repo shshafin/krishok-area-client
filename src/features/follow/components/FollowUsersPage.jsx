@@ -113,7 +113,7 @@ export default function FollowUsersPage({
         </div>
 
         {hasMore && (
-          <div className={styles.loadMoreWrap}>
+          <div className={`${styles.loadMoreWrap} space-bottom`}>
             <button
               className={styles.loadMoreBtn}
               onClick={() =>
@@ -124,19 +124,6 @@ export default function FollowUsersPage({
           </div>
         )}
 
-        <div className={styles.statsWrap}>
-          <div className={styles.statsCard}>
-            <div className={styles.statBlock}>
-              <div className={styles.statNum}>{users.length}</div>
-              <div className={styles.statLabel}>মোট ব্যবহারকারী</div>
-            </div>
-            <div className={styles.divider} />
-            <div className={styles.statBlock}>
-              <div className={styles.statNum}>{following.size}</div>
-              <div className={styles.statLabel}>অনুসরণ করছেন</div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );

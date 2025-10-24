@@ -1,8 +1,8 @@
 .header {
-padding: .75rem 1.5rem;
+    padding: .75rem 1.5rem;
     background-color: #161d26;
     box-shadow: #0000001a 0 4px 12px;
-    border: 1px solid rgba(255, 255, 255, .154);
+    border-bottom: 1px solid rgba(255, 255, 255, .154);
     align-items: center;
     justify-content: space-between;
     flex-shrink: 0;

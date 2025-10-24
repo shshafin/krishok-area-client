@@ -59,11 +59,7 @@
 }
 
 .btn-primary {
-  background: linear-gradient(
-    90deg,
-    var(--primary),
-    color-mix(in oklab, var(--primary), black 18%)
-  );
+  background: var(--primary) !important;
   color: #fff;
 }
 .btn-primary:hover {

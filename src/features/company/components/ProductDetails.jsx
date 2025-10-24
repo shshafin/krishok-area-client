@@ -1,5 +1,6 @@
 import ProductBackHeader from "./ProductBackHeader";
 import SlideGallery from "./SlideGallery";
+import "@/assets/styles/ProductDetails.css";
 
 export default function ProductDetails({
   image = "https://placehold.co/300x400?text=Product+Image",
@@ -130,27 +131,31 @@ export default function ProductDetails({
         <div className="product-details-tabletitle">
           <h2>প্রয়োগ ক্ষেত্র ও মাত্রা</h2>
 
-          {/* Cards Grid replacing the old table */}
+          {/* Full width container with subcards for each crop */}
           <div className="product-details-cardgrid">
             {tableData.map((item, i) => (
-              <article key={i} className="product-details-card">
-                <div className="product-details-singlecardgrid">
-                  <div className="product-details-singlecard">
-                    <span className="product-details-cardlabel">ফসল</span>
-                    <p>{item.crop}</p>
+              <article key={i} className="product-details-container">
+                <div className="product-details-infocard">
+                  <div className="product-details-cardlabel">ফসল</div>
+                  <div className="product-details-crops">
+                    {item.crop.split(",").map((crop, index) => (
+                      <div key={index} className="product-details-cropcard">
+                        {crop.trim()}
+                      </div>
+                    ))}
                   </div>
-                  <div className="product-details-singlecard">
-                    <span className="product-details-cardlabel">বালাই</span>
-                    <p>{item.pest}</p>
-                  </div>
-                  <div className="product-details-singlecard">
-                    <span className="product-details-cardlabel">মাত্রা</span>
-                    <p>{item.dose}</p>
-                  </div>
-                  <div className="product-details-singlecard">
-                    <span className="product-details-cardlabel">ব্যবহারবিধি</span>
-                    <p>{item.method}</p>
-                  </div>
+                </div>
+                <div className="product-details-infocard">
+                  <div className="product-details-cardlabel">বালাই</div>
+                  <div className="product-details-cropcard">{item.pest}</div>
+                </div>
+                <div className="product-details-infocard">
+                  <div className="product-details-cardlabel">মাত্রা</div>
+                  <div className="product-details-cropcard">{item.dose}</div>
+                </div>
+                <div className="product-details-infocard">
+                  <div className="product-details-cardlabel">ব্যবহারবিধি</div>
+                  <div className="product-details-cropcard">{item.method}</div>
                 </div>
               </article>
             ))}

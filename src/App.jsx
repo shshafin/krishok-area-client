@@ -4,6 +4,7 @@ import Header from "@/components/layout/Header";
 import Home from "@/features/home/pages/Home";
 import Gallery from "@/features/gallery/pages/Gallery";
 import Auth from "@/features/auth/pages/Auth";
+import { LiquedLoader } from "@/components/loaders";
 import TableViewPage from "@/features/guidelines/pages/TableViewPage";
 import PrivateRoute from "./components/privateRoute/PrivateRoute";
 import PublicRoute from "./components/privateRoute/PublicRoute";
@@ -44,7 +45,7 @@ const ManageNotificationsPage = lazy(() => import("./features/admin/pages/Manage
 
 function App() {
   const location = useLocation();
-  const adminFallback = <div className="p-4 text-center text-muted">Loading admin…</div>;
+  const adminFallback = <div className="page-loader"><LiquedLoader label="লোড হচ্ছে..." /></div>;
   const hideHeader = ["/auth/login", "/auth/signup", "/admin"]; // Added admin paths
   const showHeader = !hideHeader.some((path) =>
     location.pathname.startsWith(path)

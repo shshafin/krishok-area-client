@@ -93,23 +93,22 @@ function UserCardBase({ user = {}, isFollowing, onToggle }) {
       <div className="user-card__body">
         <div className="name-row">
           <h3 className="username" title={user.name || user.username}>
-            {user.name || user.username || "Unknown user"}
+            { user.username || "Unknown user"}
           </h3>
-          {user.isOnline && <span className="presence-label">Live</span>}
         </div>
 
-        <p className="bio" title={user.bio || "No bio available"}>
-          {user.bio || "No bio available"}
+        <p className="bio" title={user.state || "No State available"}>
+          {user.state || "No State available"}
         </p>
 
-        <div className="meta-row">
+        {/* <div className="meta-row">
           <span className="followers">
             <strong>{followersCount}</strong> Followers
           </span>
           <span className="following">
             <strong>{followingCount}</strong> Following
           </span>
-        </div>
+        </div> */}
       </div>
 
       <div className="user-card__right">
@@ -119,34 +118,7 @@ function UserCardBase({ user = {}, isFollowing, onToggle }) {
           disabled={loading}>
           {loading ? (
             "Loading..."
-          ) : isFollowing ? (
-            <>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="btn-icon"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor">
-                <polyline points="20 6 9 17 4 12" />
-              </svg>
-              Following
-            </>
-          ) : (
-            <>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="btn-icon"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor">
-                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                <circle cx="9" cy="7" r="4" />
-                <line x1="19" y1="8" x2="19" y2="14" />
-                <line x1="22" y1="11" x2="16" y2="11" />
-              </svg>
-              Follow
-            </>
-          )}
+          ) : isFollowing ? "আনফলো" : "ফলো"}
         </button>
       </div>
     </article>

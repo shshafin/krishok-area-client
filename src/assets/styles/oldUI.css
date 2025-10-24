@@ -56,6 +56,7 @@
   opacity: 0;
   pointer-events: none;
   transition: all 0.3s ease-in-out;
+  z-index: 9998;
 }
 
 .me-modal-box-containar {
@@ -2919,12 +2920,6 @@
     font-size: 1.05rem;
   }
 
-  .guidelines-card-grid {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 1.1rem;
-    padding: 1.1rem;
-    justify-items: center;
-  }
 
   .comment-home-input-button textarea {
     width: 72%;
@@ -4784,6 +4779,8 @@ h4 {
   margin-top: 20px;
   margin-bottom: 2%;
   overflow: visible;
+  display: flex;
+  flex-direction: column;
 }
 
 .product-details-cardlabel {
@@ -4890,7 +4887,7 @@ h4 {
   pointer-events: none;
   transition: max-height 0.4s ease, opacity 0.4s ease, transform 0.4s ease;
   will-change: max-height, opacity, transform;
-  padding: 0 1.5rem;
+  padding: 0 1rem;
 }
 
 .guidelines-section__body.is-open {
@@ -4898,23 +4895,25 @@ h4 {
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
-  padding: 1.2rem 1.5rem 1.75rem;
+  padding: 1.2rem .5rem;
 }
 
 .guidelines-card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  display: flex;
+  width: 100%;
+  min-width: 100%;
   gap: 1.25rem;
   justify-content: stretch; /* makes grid items stretch to fill row width */
   align-items: stretch;
+  flex-direction: column;
   margin: 0;
-  width: 100%;
 }
 
 .guidelines-card {
   display: flex;
-  flex-direction: column;
+  flex-direction: row-reverse;
   align-items: center;
+  height: 5rem;
   background: rgba(12, 19, 34, 0.92);
   border: 1px solid rgba(148, 163, 184, 0.22);
   border-radius: 18px;
@@ -4924,7 +4923,6 @@ h4 {
   min-height: 0;
   transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.3s ease;
   box-shadow: 0 12px 28px rgba(8, 15, 28, 0.4);
-  width: min(100%, 220px);
 }
 
 .guidelines-card:focus-visible,
@@ -4960,6 +4958,7 @@ h4 {
   padding: 1rem 1rem 1.2rem;
   text-align: center;
   width: 100%;
+  text-align: left;
 }
 
 .guidelines-card__name {
@@ -5523,7 +5522,7 @@ h4 {
   margin-bottom: 0px;
 }
 .related-crop-main-header h2 span {
-  color: #2f3240;
+  color: #f9fafd;
 }
 .corpndpbmr {
   display: inline-block;
@@ -7680,7 +7679,7 @@ h4 {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1055;
+  z-index: 9998;
   padding: 1rem;
 }
 
@@ -7689,6 +7688,7 @@ h4 {
   border-radius: 16px;
   width: 100%;
   max-width: 420px;
+  z-index: 9999;
   box-shadow: 0 20px 45px rgba(15, 23, 42, 0.25);
   display: flex;
   flex-direction: column;
@@ -7712,6 +7712,38 @@ h4 {
   justify-content: flex-end;
   gap: 0.6rem;
   border-top: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.admin-modal-footer button {
+  color: white !important;
+}
+
+.btn-outline-secondary {
+  color: white !important;
+}
+
+.spaceAddProduct {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 1rem;
+}
+
+.addBtn {
+  background: #22c55e;
+  padding: .5rem 1rem;
+  border-radius: 4px;
+  color: white;
+}
+
+table .btn-outline-danger {
+  background: red !important;
+  border: none;
+  color: white;
+}
+
+table .btn-outline-danger.disabled, .btn-outline-danger:disabled {
+  color: white !important;
 }
 
 ._scoped_admin .notification-checkbox {

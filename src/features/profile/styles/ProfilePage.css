@@ -923,7 +923,12 @@
   justify-content: center !important;
   align-items: center !important;
   padding: 2rem 1rem;
-  z-index: 1000;
+  z-index: 1;
+}
+
+.ka-modal {
+  position: relative;
+  z-index: 2;
 }
 
 .modal-loader-container {
@@ -1011,7 +1016,7 @@
     flex-direction: column;
   }
   .post-modal-media {
-    max-height: 26vh;
+    max-height: 20vh;
   }
   .ka-modal-backdrop {
     padding: 0;
@@ -1021,13 +1026,15 @@
     border-radius: 0 !important;
     border: none;
     max-height: 100% !important;
-    height: 100vh !important;
+    height: 87vh !important;
   }
   .ka-modal-body {
-    height: 100%;
+    height: 88%;
+    overflow-x: auto;
   }
   .comment-list {
     margin-bottom: 5rem;
+    min-height: 20vh;
   }
   .comment-input-area {
     width: 100%;
