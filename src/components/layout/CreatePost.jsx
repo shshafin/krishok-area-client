@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 import "@/assets/styles/createPost.css";
 import ImageIcon from "@/assets/IconComponents/Image.jsx";
-import VideoIcon from "@/assets/IconComponents/Video.jsx";
 import { baseApi } from "../../api";
 
 function CreatePost({
@@ -59,22 +58,6 @@ function CreatePost({
           }}>
           <ImageIcon stroke="#4ade80" />
           <span className="lable-createPost">Photo</span>
-        </div>
-
-        <div
-          className="flex F-center FY-center mediaPostOptions mediaPostOptions--video"
-          role="button"
-          tabIndex={0}
-          onClick={() => onPhotoVideoClick?.("video")}
-          onKeyDown={(event) => {
-            if (!onPhotoVideoClick) return;
-            if (event.key === "Enter" || event.key === " ") {
-              event.preventDefault();
-              onPhotoVideoClick("video");
-            }
-          }}>
-          <VideoIcon stroke="#38bdf8" />
-          <span className="lable-createPost">Video</span>
         </div>
 
         {/* <div

@@ -290,9 +290,23 @@ export const createSeedPrice = (data) => {
 export const fetchAllSeedPrices = () => {
   return request("/biz-bazars/all", { method: "GET" });
 };
-// delete seed price
-export const deleteSeedPrice = (priceId) => {
-  return request(`/biz-bazars/${priceId}`, {
+// add video
+export const addVideo = (formData) => {
+  return request("/videos/create", {
+    method: "POST",
+    body: formData,
+    credentials: "include",
+  });
+};
+
+// fetch all videos
+export const fetchAllVideos = () => {
+  return request("/videos/all", { method: "GET" });
+};
+
+// delete video
+export const deleteVideo = (videoId) => {
+  return request(`/videos/${videoId}`, {
     method: "DELETE",
     credentials: "include",
   });

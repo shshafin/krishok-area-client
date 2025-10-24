@@ -221,7 +221,7 @@ export default function PostComposerModal({
                 <article key={item.id} className="composer-media-card">
                   <div className="composer-media-thumb">
                     {item.type === "video" ? (
-                      <video src={item.previewUrl} controls muted />
+                      <video src={item.previewUrl} controls autoPlay />
                     ) : (
                       <img src={item.previewUrl} alt={item.name} />
                     )}

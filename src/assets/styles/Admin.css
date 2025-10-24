@@ -1766,5 +1766,6 @@ table td {
 }
 
 .card-bodyy {
+  width: 100% !important;
   padding: 1rem 0;
 }

@@ -110,7 +110,7 @@ export default function PostCard({
 
       {(media?.type === "video" && media?.src) && (
         <div className="post-media" {...mediaInteractableProps}>
-          <video src={media.src} controls muted loop style={mediaStyles} />
+          <video src={media.src} controls loop autoPlay style={mediaStyles} />
         </div>
       )}
 

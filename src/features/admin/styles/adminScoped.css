@@ -1141,12 +1141,167 @@
   stroke: currentColor;
 }
 
-@media (max-width: 575.98px) {
-  ._scoped_admin .notifi {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.75rem;
-  }
+._scoped_admin .manage-videos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+
+._scoped_admin .manage-video-card {
+  position: relative;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
+}
+
+._scoped_admin .manage-video-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
+}
+
+._scoped_admin .manage-video-card.is-removing {
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+}
+
+._scoped_admin .manage-video-thumb {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  background: #f8fafc;
+  overflow: hidden;
+}
+
+._scoped_admin .manage-video-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+._scoped_admin .video-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f1f5f9;
+  color: #64748b;
+}
+
+._scoped_admin .video-duration {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #ffffff;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+._scoped_admin .manage-video-body {
+  padding: 1rem 1.1rem 0.75rem;
+  flex: 1;
+}
+
+._scoped_admin .manage-video-title {
+  margin: 0 0 0.5rem 0;
+  color: #0f172a;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.3;
+  max-height: 2.6rem;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+._scoped_admin .manage-video-description {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  max-height: 2.8rem;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+._scoped_admin .manage-video-footer {
+  margin-top: auto;
+  padding: 0.75rem 1.1rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 0.75rem;
+}
+
+._scoped_admin .manage-video-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  max-width: 60%;
+  min-width: 0;
+}
+
+._scoped_admin .manage-video-time {
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+._scoped_admin .video-submit-section {
+  padding: 2rem 1.5rem;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+}
+
+._scoped_admin .video-submit-btn {
+  width: 100% !important;
+  max-width: 400px;
+  padding: 1rem 2rem !important;
+  font-size: 1.1rem !important;
+  font-weight: 600 !important;
+  border-radius: 12px !important;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
+  border: none !important;
+  box-shadow: 0 8px 25px rgba(37, 99, 235, 0.35) !important;
+  transition: all 0.3s ease !important;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+._scoped_admin .video-submit-btn:hover:not([disabled]) {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 12px 35px rgba(37, 99, 235, 0.45) !important;
+  background: linear-gradient(135deg, #1d4ed8, #1e40af) !important;
+}
+
+._scoped_admin .video-submit-btn:active:not([disabled]) {
+  transform: translateY(0) !important;
+  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3) !important;
+}
+
+._scoped_admin .video-submit-btn:disabled {
+  opacity: 0.7 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2) !important;
+}
+
+._scoped_admin .video-submit-btn:focus {
+  outline: none !important;
+  box-shadow: 0 8px 25px rgba(37, 99, 235, 0.35), 0 0 0 3px rgba(37, 99, 235, 0.2) !important;
 }
 
 /* Manage Crop Details Page */
@@ -1375,6 +1530,7 @@
   color: #0f172a;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }

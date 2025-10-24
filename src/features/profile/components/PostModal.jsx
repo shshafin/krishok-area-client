@@ -277,7 +277,7 @@ export default function PostModal({
       <div className="post-modal-content">
         <div className={`post-modal-media${useCarousel ? " post-modal-media--carousel" : ""}`}>
           {hasVideo ? (
-            <video src={media.src} controls muted loop />
+            <video src={media.src} controls autoPlay loop />
           ) : hasGallery ? (
             useCarousel ? (
               <div className="post-modal-carousel">

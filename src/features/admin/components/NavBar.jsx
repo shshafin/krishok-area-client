@@ -52,6 +52,12 @@ export default function Navbar() {
     },
     {
       type: "item",
+      to: "/admin/video/add",
+      label: "Add Video",
+      icon: addIcon,
+    },
+    {
+      type: "item",
       to: "/admin/crops/add-category",
       label: "Add Crop Category",
       icon: addIcon,
@@ -86,6 +92,12 @@ export default function Navbar() {
       type: "item",
       to: "/admin/media/manage-gallery-photo",
       label: "Manage All Gallery Photo",
+      icon: manageIcon,
+    },
+    {
+      type: "item",
+      to: "/admin/video/manage-videos",
+      label: "Manage Videos",
       icon: manageIcon,
     },
     {

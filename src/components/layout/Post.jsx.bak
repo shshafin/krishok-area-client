@@ -183,7 +183,7 @@ export default function Post({
               <video
                 preload="metadata"
                 className="media-preview"
-                muted
+                autoPlay
               >
                 <source src={url.startsWith('http') ? url : `${baseApi}${url}`} type="video/mp4" />
               </video>

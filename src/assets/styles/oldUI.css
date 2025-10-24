@@ -7725,7 +7725,18 @@ h4 {
 
 .btn-outline-secondary {
   color: white !important;
+  background: #0062cc !important;
 }
+
+.card-bodyy {
+  width: 100% !important;
+  padding: 1rem 0;
+}
+
+.container-fluid form .row {
+  width: 100%;
+}
+
 
 .spaceAddProduct {
   width: 100%;
@@ -7735,7 +7746,7 @@ h4 {
 }
 
 .addBtn {
-  background: #22c55e;
+  background: #007bff;
   padding: .5rem 1rem;
   border-radius: 4px;
   color: white;

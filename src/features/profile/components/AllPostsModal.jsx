@@ -14,7 +14,7 @@ export default function AllPostsModal({ open, onClose, posts, onSelect }) {
               onClick={() => onSelect?.(post)}
             >
               {post.media?.type === "video" ? (
-                <video src={post.media?.src} muted />
+                <video src={post.media?.src} />
               ) : (
                 <img src={post.media?.src} alt={post.content || "পোস্টের ছবি"} />
               )}

@@ -30,6 +30,7 @@ const AdminPage = lazy(() => import("./features/admin/pages/AdminPage"));
 const EditProfilePage = lazy(() => import("./features/admin/pages/EditProfilePage"));
 const AddPhotosPage = lazy(() => import("./features/admin/pages/AddPhotosPage"));
 const AddVideosPage = lazy(() => import("./features/admin/pages/AddVideosPage"));
+const ManageVideosPage = lazy(() => import("./features/admin/pages/ManageVideosPage"));
 const AddCropCategoryPage = lazy(() => import("./features/admin/pages/AddCropCategoryPage"));
 const AddCropDetailsPage = lazy(() => import("./features/admin/pages/AddCropDetailsPage"));
 const AddCompanyCategoryPage = lazy(() => import("./features/admin/pages/AddCompanyCategoryPage"));
@@ -238,6 +239,8 @@ function App() {
           <Route path="profile/edit" element={<EditProfilePage />} />
           <Route path="media/add-photo" element={<AddPhotosPage />} />
           <Route path="media/add-video" element={<AddVideosPage />} />
+          <Route path="video/add" element={<AddVideosPage />} />
+          <Route path="video/manage-videos" element={<ManageVideosPage />} />
           <Route path="media/manage-gallery-photo" element={<ManageGalleryPhotosPage />} />
           <Route path="companies/add-category" element={<AddCompanyCategoryPage />} />
           <Route path="posts/manage" element={<ManagePostsPage />} />

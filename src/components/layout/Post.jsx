@@ -179,8 +179,8 @@ export default function Post({
               {isVideo ? (
                 <video
                   src={url.startsWith("http") ? url : `${baseApi}${url}`}
-                  muted
                   controls
+                  autoPlay
                   preload="metadata"
                   className="media-video"
                 />

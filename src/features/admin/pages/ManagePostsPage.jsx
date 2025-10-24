@@ -210,13 +210,13 @@ export default function ManagePostsPage() {
                   <div className="manage-post-media">
                     {post.videos && post.videos.length > 0 ? (
                       <video
+                        autoPlay
                         src={
                           post.videos[0].startsWith("http")
                             ? post.videos[0]
                             : `${config.url}${post.videos[0]}`
                         }
                         className="manage-post-video"
-                        muted
                         onClick={() => openLightbox(post.videos[0])}
                       />
                     ) : post.images && post.images.length > 0 ? (
