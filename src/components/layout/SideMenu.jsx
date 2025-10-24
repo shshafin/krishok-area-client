@@ -21,6 +21,7 @@ export default function SideMenu({
   user = {
     name: "",
     avatar: "https://api.dicebear.com/9.x/initials/svg?seed=K",
+    role: "",
   },
   items: itemsProp,
 }) {
@@ -40,6 +41,7 @@ export default function SideMenu({
     }
   };
 
+
   // Close on ESC
   useEffect(() => {
     if (!open) return;
@@ -48,22 +50,32 @@ export default function SideMenu({
     return () => document.removeEventListener("keydown", onKey);
   }, [open, onClose]);
 
-  const items = useMemo(
-    () =>
-      itemsProp ?? [
-        { to: "/weather", label: "প্রতিদিনের আবহাওয়া", Icon: CloudIcon },
-        {
-          to: "/companyes",
-          label: "কীটনাশক ও কোম্পানি",
-          Icon: MessageCircleIcon,
-        },
-        { to: "/market", label: "বাজার দর", Icon: MarcketIcon },
-        { to: "/seed-market", label: "বিজ বাজার", Icon: SeedIcon },
-        { to: "/follow", label: "নতুন ব্যবহারকারী", Icon: UserPlusIcon },
-        { to: "/logout", label: "লগ আউট", Icon: LogOutIcon },
-      ],
-    [itemsProp]
-  );
+  const items = useMemo(() => {
+    // Base menu items (visible to all)
+    const baseItems = [
+      { to: "/weather", label: "প্রতিদিনের আবহাওয়া", Icon: CloudIcon },
+      {
+        to: "/companyes",
+        label: "কীটনাশক ও কোম্পানি",
+        Icon: MessageCircleIcon,
+      },
+      { to: "/market", label: "বাজার দর", Icon: MarcketIcon },
+      { to: "/seed-market", label: "বিজ বাজার", Icon: SeedIcon },
+      { to: "/follow", label: "নতুন ব্যবহারকারী", Icon: UserPlusIcon },
+      { to: "/logout", label: "লগ আউট", Icon: LogOutIcon },
+    ];
+
+    // If admin, prepend the admin dashboard
+    if (user?.role === "admin") {
+      baseItems.unshift({
+        to: "/admin",
+        label: "অ্যাডমিন ড্যাশবোর্ড",
+        Icon: UserPlusIcon,
+      });
+    }
+
+    return itemsProp ?? baseItems;
+  }, [itemsProp, user?.role]);
 
   if (!open) return null;
 
@@ -159,5 +171,3 @@ export default function SideMenu({
     document.body
   );
 }
-
-

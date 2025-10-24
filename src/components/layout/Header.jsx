@@ -36,6 +36,7 @@ export default function Header() {
         setProfile({
           name: me?.name || me?.username || "User",
           avatar: me?.profileImage,
+          role: me?.role,
         });
       } catch (e) {
         console.error("Failed to fetch profile:", e);
@@ -66,6 +67,7 @@ export default function Header() {
     return {
       name: profile.name,
       avatar: profile.avatar,
+      role: profile.role,
     };
   }, [profile]);
 
