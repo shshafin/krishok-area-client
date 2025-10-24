@@ -5,12 +5,11 @@ import Home from "@/features/home/pages/Home";
 import Gallery from "@/features/gallery/pages/Gallery";
 import Auth from "@/features/auth/pages/Auth";
 import TableViewPage from "@/features/guidelines/pages/TableViewPage";
-// import DiscoverPage from "@/features/discover/page/DiscoverPage";
 import PrivateRoute from "./components/privateRoute/PrivateRoute";
 import PublicRoute from "./components/privateRoute/PublicRoute";
+import ProfilePage from "@/features/profile/pages/Profile";
 import RoleBasedRoute from "./components/privateRoute/RoleBasedRoute";
 import SettingsPage from "@/features/settings/pages/SettingsPage";
-import ProfilePage from "@/features/profile/pages/Profile";
 import FollowPage from "@/features/follow/pages/Follow";
 
 import GalleryPost from "./features/gallery/pages/GalleryPost";
@@ -166,14 +165,6 @@ function App() {
           }
         />
 
-        <Route
-          path="/discover"
-          element={
-            <PrivateRoute>
-              {/* <DiscoverPage /> */}
-            </PrivateRoute>
-          }
-        />
 
         <Route
           path="/profile"
@@ -189,6 +180,15 @@ function App() {
           element={
             <PrivateRoute>
               <Weather />
+            </PrivateRoute>
+          }
+        />
+
+                <Route
+          path="/me"
+          element={
+            <PrivateRoute>
+              <ProfilePage />
             </PrivateRoute>
           }
         />
